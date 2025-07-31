@@ -1,10 +1,12 @@
-﻿using MudBlazor.Services;
+﻿using MudBlazor;
+using MudBlazor.Services;
 using QuantumSummerLab.Web.Components;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add MudBlazor services
 builder.Services.AddMudServices();
+builder.Services.AddMudMarkdownServices();
 builder.Services.AddApplicationServices(builder.Configuration);
 
 // Add services to the container.

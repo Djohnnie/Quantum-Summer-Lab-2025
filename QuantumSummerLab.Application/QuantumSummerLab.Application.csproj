@@ -16,6 +16,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Challenges\Commands\" />
+    <Folder Include="Scores\Queries\" />
     <Folder Include="Teams\Queries\" />
   </ItemGroup>
 

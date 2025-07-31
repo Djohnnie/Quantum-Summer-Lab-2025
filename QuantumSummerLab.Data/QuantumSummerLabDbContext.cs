@@ -32,6 +32,7 @@ public class QuantumSummerLabDbContext : DbContext
             entityBuilder.HasKey(x => x.Id).IsClustered(false);
             entityBuilder.Property(x => x.SysId).ValueGeneratedOnAdd();
             entityBuilder.HasIndex(x => x.SysId).IsClustered();
+            entityBuilder.HasIndex(x => x.Name).IsUnique();
         });
 
         modelBuilder.Entity<Team>(entityBuilder =>
@@ -40,6 +41,7 @@ public class QuantumSummerLabDbContext : DbContext
             entityBuilder.HasKey(x => x.Id).IsClustered(false);
             entityBuilder.Property(x => x.SysId).ValueGeneratedOnAdd();
             entityBuilder.HasIndex(x => x.SysId).IsClustered();
+            entityBuilder.HasIndex(x => x.Name).IsUnique();
         });
 
         modelBuilder.Entity<Score>(entityBuilder =>

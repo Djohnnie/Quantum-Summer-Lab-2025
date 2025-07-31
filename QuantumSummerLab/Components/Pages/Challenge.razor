@@ -1,0 +1,70 @@
+﻿@using MediatR
+@using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
+@using QuantumSummerLab.Application.Challenges.Queries
+@using QuantumSummerLab.Application.Scores.Commands
+@using QuantumSummerLab.Application.Teams.Commands
+
+@inject NavigationManager NavigationManager
+@inject ProtectedSessionStorage ProtectedSessionStore
+@inject IMediator Mediator
+
+@page "/challenge/{ChallengeName}"
+
+<PageTitle>Challenge</PageTitle>
+
+<MudText Typo="Typo.h4" Class="my-4">Challenge @ChallengeName</MudText>
+
+<MudText Typo="Typo.h5" Class="my-4">@Title</MudText>
+
+<MudText Typo="Typo.body1" Class="my-4">@Description</MudText>
+
+<MudText Typo="Typo.body1" Class="my-4">The operation containing your solution should match the following signature. Please copy paste this code-snippet into your Visual Studio Code editor to work on it.</MudText>
+
+<MudMarkdown Value="@SolutionTemplate" />
+
+<MudCard Elevation="5" Class="my-4">
+    <MudCardHeader>
+        <CardHeaderContent>
+            <MudText Typo="Typo.h6">Submit your solution here</MudText>
+        </CardHeaderContent>
+    </MudCardHeader>
+    <MudCardContent>
+        <MudTextField @bind-Value="Solution" Label="Your solution" AutoGrow Lines="5" Variant="Variant.Outlined" Class="monospace"></MudTextField>
+    </MudCardContent>
+    <MudCardActions>
+        <MudButton Variant="Variant.Text" Color="Color.Primary" OnClick="@Submit">Submit</MudButton>
+    </MudCardActions>
+</MudCard>
+
+@code {
+
+    private int currentCount = 0;
+
+    [Parameter]
+    public string ChallengeName { get; set; }
+
+    private string Title { get; set; }
+    private string Description { get; set; }
+    private string SolutionTemplate { get; set; }
+
+    private string Solution { get; set; }
+
+    protected async override Task OnInitializedAsync()
+    {
+        var challenge = await Mediator.Send(new GetChallengeByNameQuery { ChallengeName = ChallengeName });
+        Title = challenge.Title;
+        Description = challenge.Description;
+        SolutionTemplate = $"```js{Environment.NewLine}{challenge.SolutionTemplate}{Environment.NewLine}```";
+    }
+
+    protected async Task Submit()
+    {
+        var response = await Mediator.Send(new VerifyChallengeSolutionCommand
+        {
+            ChallengeName = ChallengeName,
+            TeamName = "djohnnie",
+            Solution = Solution,
+            Timestamp = DateTime.UtcNow
+        });
+    }
+}

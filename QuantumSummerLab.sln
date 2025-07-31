@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuantumSummerLab.Data", "Qu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuantumSummerLab.Application", "QuantumSummerLab.Application\QuantumSummerLab.Application.csproj", "{98206820-926C-460E-B74F-BC7F6DE53723}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuantumSummerLab.Tools", "QuantumSummerLab.Tools\QuantumSummerLab.Tools.csproj", "{C19381CB-01E2-4701-B798-00FB7D077AE8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{98206820-926C-460E-B74F-BC7F6DE53723}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{98206820-926C-460E-B74F-BC7F6DE53723}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{98206820-926C-460E-B74F-BC7F6DE53723}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C19381CB-01E2-4701-B798-00FB7D077AE8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C19381CB-01E2-4701-B798-00FB7D077AE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C19381CB-01E2-4701-B798-00FB7D077AE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C19381CB-01E2-4701-B798-00FB7D077AE8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
