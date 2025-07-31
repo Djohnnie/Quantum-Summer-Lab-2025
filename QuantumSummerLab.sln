@@ -11,6 +11,18 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuantumSummerLab.Applicatio
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuantumSummerLab.Tools", "QuantumSummerLab.Tools\QuantumSummerLab.Tools.csproj", "{C19381CB-01E2-4701-B798-00FB7D077AE8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QSharp.Community.QSharpBridge", "QSharp.Community.QSharpBridge\QSharp.Community.QSharpBridge.csproj", "{99BCF8EC-71E0-2F14-8657-D89258A25066}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0. QSharpBridge", "0. QSharpBridge", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1. Application", "1. Application", "{FE40D4D9-AB2C-4552-95C7-CA5C3D605EA8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2. Data", "2. Data", "{BC6376C0-32D8-4538-AFC5-E5B099286568}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3. Web", "3. Web", "{C9BC7190-0230-4E80-AA8B-D51F208F271C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4. Tools", "4. Tools", "{D31736AF-9999-4990-AAF3-7630991D74A6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,9 +45,20 @@ Global
 		{C19381CB-01E2-4701-B798-00FB7D077AE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C19381CB-01E2-4701-B798-00FB7D077AE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C19381CB-01E2-4701-B798-00FB7D077AE8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{99BCF8EC-71E0-2F14-8657-D89258A25066}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99BCF8EC-71E0-2F14-8657-D89258A25066}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99BCF8EC-71E0-2F14-8657-D89258A25066}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99BCF8EC-71E0-2F14-8657-D89258A25066}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{8B91B515-5553-3A4C-6D1F-342FD1163BFD} = {C9BC7190-0230-4E80-AA8B-D51F208F271C}
+		{135F10D9-DE2D-4FA9-B92F-70BBD3C5BD02} = {BC6376C0-32D8-4538-AFC5-E5B099286568}
+		{98206820-926C-460E-B74F-BC7F6DE53723} = {FE40D4D9-AB2C-4552-95C7-CA5C3D605EA8}
+		{C19381CB-01E2-4701-B798-00FB7D077AE8} = {D31736AF-9999-4990-AAF3-7630991D74A6}
+		{99BCF8EC-71E0-2F14-8657-D89258A25066} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B32F087F-A9DE-461C-A37A-DD50DDECCAED}

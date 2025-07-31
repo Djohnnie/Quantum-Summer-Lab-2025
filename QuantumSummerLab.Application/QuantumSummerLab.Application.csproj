@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\QSharp.Community.QSharpBridge\QSharp.Community.QSharpBridge.csproj" />
     <ProjectReference Include="..\QuantumSummerLab.Data\QuantumSummerLab.Data.csproj" />
   </ItemGroup>
 

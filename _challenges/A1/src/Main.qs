@@ -15,5 +15,7 @@ operation Main() : Bool
 
 operation Solve (q : Qubit, expectedResult : Result) : Unit
 {
-    // Your solution logic goes here.
+    if(expectedResult == One) {
+        X(q);
+    }
 }

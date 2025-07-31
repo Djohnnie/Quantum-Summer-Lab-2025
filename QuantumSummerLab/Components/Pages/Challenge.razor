@@ -36,6 +36,8 @@
     </MudCardActions>
 </MudCard>
 
+<MudText Typo="Typo.h5" Class="my-4">@IsSuccess</MudText>
+
 @code {
 
     private int currentCount = 0;
@@ -48,6 +50,8 @@
     private string SolutionTemplate { get; set; }
 
     private string Solution { get; set; }
+
+    private string IsSuccess { get; set; } = "Not submitted yet";
 
     protected async override Task OnInitializedAsync()
     {
@@ -66,5 +70,8 @@
             Solution = Solution,
             Timestamp = DateTime.UtcNow
         });
+
+        IsSuccess = response.Message;
+        StateHasChanged();
     }
 }
