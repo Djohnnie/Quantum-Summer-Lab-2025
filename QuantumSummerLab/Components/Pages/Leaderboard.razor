@@ -1,0 +1,60 @@
+﻿@using MediatR
+@using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
+@using QuantumSummerLab.Application.Scores.Queries
+@using QuantumSummerLab.Application.Teams.Commands
+
+@inject NavigationManager NavigationManager
+@inject ProtectedSessionStorage ProtectedSessionStore
+@inject IMediator Mediator
+
+@page "/leaderboard"
+
+<PageTitle>Leaderboard</PageTitle>
+
+<MudPaper Elevation="5" Class="mt-6">
+    <MudTable Items="@Entries" Hover="true" Bordered="true" Striped="true" Filter="new Func<LeaderboardEntry, bool>(FilterFunc)">
+        <ToolBarContent>
+            <MudText Typo="Typo.h6">Leaderboard</MudText>
+            <MudSpacer />
+            <MudTextField @bind-Value="SearchString" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+        </ToolBarContent>
+        <HeaderContent>
+            <MudTh>Position</MudTh>
+            <MudTh>Team</MudTh>
+            <MudTh>Score</MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="Nr">@context.Position</MudTd>
+            <MudTd DataLabel="Sign">@context.TeamName</MudTd>
+            <MudTd DataLabel="Name">@context.TotalPoints</MudTd>
+        </RowTemplate>
+        <PagerContent>
+            <MudTablePager />
+        </PagerContent>
+    </MudTable>
+</MudPaper>
+
+@code {
+
+    private int currentCount = 0;
+
+    private List<LeaderboardEntry> Entries { get; set; }
+    private string SearchString = string.Empty;
+
+    protected async override Task OnInitializedAsync()
+    {
+        var result = await Mediator.Send(new GetLeaderboardQuery());
+        Entries = result.Entries;
+    }
+
+    private bool FilterFunc(LeaderboardEntry element) => Filter(element, SearchString);
+
+    private bool Filter(LeaderboardEntry entry, string searchString)
+    {
+        if (string.IsNullOrWhiteSpace(searchString))
+            return true;
+        if (entry.TeamName.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        return false;
+    }
+}

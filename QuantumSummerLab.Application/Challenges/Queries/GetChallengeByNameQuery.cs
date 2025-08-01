@@ -12,6 +12,7 @@ public class GetChallengeByNameQuery : IRequest<GetChallengeByNameResponse>
 
 public class GetChallengeByNameResponse
 {
+    public bool IsAvailable { get; set; }
     public string Name { get; set; }
     public string Title { get; set; }
     public string Description { get; set; }
@@ -35,8 +36,14 @@ public class GetChallengeByNameQueryHandler : IRequestHandler<GetChallengeByName
         var challenge = await _dbContext.Challenges
             .FirstOrDefaultAsync(c => c.Name == request.ChallengeName, cancellationToken);
 
+        if (challenge is null)
+        {
+            return new GetChallengeByNameResponse { IsAvailable = false };
+        }
+
         return new GetChallengeByNameResponse
         {
+            IsAvailable = true,
             Name = challenge.Name,
             Title = challenge.Title,
             Description = challenge.Description,

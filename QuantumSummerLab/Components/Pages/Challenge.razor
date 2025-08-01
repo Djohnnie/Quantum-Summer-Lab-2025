@@ -10,33 +10,45 @@
 
 @page "/challenge/{ChallengeName}"
 
-<PageTitle>Challenge</PageTitle>
+<PageTitle>Challenge @ChallengeName</PageTitle>
 
 <MudText Typo="Typo.h4" Class="my-4">Challenge @ChallengeName</MudText>
 
-<MudText Typo="Typo.h5" Class="my-4">@Title</MudText>
+@if (IsLoading)
+{
+    <MudProgressCircular Indeterminate="true" Color="Color.Primary" Size="Size.Large" Class="my-4"></MudProgressCircular>
+}
+else if (IsAvailable)
+{
 
-<MudText Typo="Typo.body1" Class="my-4">@Description</MudText>
+    <MudText Typo="Typo.h5" Class="my-4">@Title</MudText>
 
-<MudText Typo="Typo.body1" Class="my-4">The operation containing your solution should match the following signature. Please copy paste this code-snippet into your Visual Studio Code editor to work on it.</MudText>
+    <MudText Typo="Typo.body1" Class="my-4">@Description</MudText>
 
-<MudMarkdown Value="@SolutionTemplate" />
+    <MudText Typo="Typo.body1" Class="my-4">The operation containing your solution should match the following signature. Please copy paste this code-snippet into your Visual Studio Code editor to work on it.</MudText>
 
-<MudCard Elevation="5" Class="my-4">
-    <MudCardHeader>
-        <CardHeaderContent>
-            <MudText Typo="Typo.h6">Submit your solution here</MudText>
-        </CardHeaderContent>
-    </MudCardHeader>
-    <MudCardContent>
-        <MudTextField @bind-Value="Solution" Label="Your solution" AutoGrow Lines="5" Variant="Variant.Outlined" Class="monospace"></MudTextField>
-    </MudCardContent>
-    <MudCardActions>
-        <MudButton Variant="Variant.Text" Color="Color.Primary" OnClick="@Submit">Submit</MudButton>
-    </MudCardActions>
-</MudCard>
+    <MudMarkdown Value="@SolutionTemplate" />
 
-<MudText Typo="Typo.h5" Class="my-4">@IsSuccess</MudText>
+    <MudCard Elevation="5" Class="my-4">
+        <MudCardHeader>
+            <CardHeaderContent>
+                <MudText Typo="Typo.h6">Submit your solution here</MudText>
+            </CardHeaderContent>
+        </MudCardHeader>
+        <MudCardContent>
+            <MudTextField @bind-Value="Solution" Label="Your solution" AutoGrow Lines="5" Variant="Variant.Outlined" Class="monospace"></MudTextField>
+        </MudCardContent>
+        <MudCardActions>
+            <MudButton Variant="Variant.Text" Color="Color.Primary" OnClick="@Submit">Submit</MudButton>
+        </MudCardActions>
+    </MudCard>
+
+    <MudText Typo="Typo.h5" Class="my-4">@IsSuccess</MudText>
+}
+else
+{
+    <MudAlert Severity="Severity.Warning">The challenge with name 'Challenge @ChallengeName' could not be loaded.</MudAlert>
+}
 
 @code {
 
@@ -44,6 +56,9 @@
 
     [Parameter]
     public string ChallengeName { get; set; }
+
+    private bool IsLoading { get; set; }
+    private bool IsAvailable { get; set; }
 
     private string Title { get; set; }
     private string Description { get; set; }
@@ -53,12 +68,15 @@
 
     private string IsSuccess { get; set; } = "Not submitted yet";
 
-    protected async override Task OnInitializedAsync()
+    protected override async Task OnParametersSetAsync()
     {
+        IsLoading = true;
         var challenge = await Mediator.Send(new GetChallengeByNameQuery { ChallengeName = ChallengeName });
+        IsAvailable = challenge.IsAvailable;
         Title = challenge.Title;
         Description = challenge.Description;
         SolutionTemplate = $"```js{Environment.NewLine}{challenge.SolutionTemplate}{Environment.NewLine}```";
+        IsLoading = false;
     }
 
     protected async Task Submit()
