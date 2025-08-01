@@ -1,10 +1,10 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using QsharpBridge;
+using QuantumSummerLab.Application.Extensions;
 using QuantumSummerLab.Application.Helpers;
 using QuantumSummerLab.Data;
 using QuantumSummerLab.Data.Model;
-using System.Text;
 
 namespace QuantumSummerLab.Application.Scores.Commands;
 
@@ -44,7 +44,7 @@ public class VerifyChallengeSolutionCommandHandler : IRequestHandler<VerifyChall
             var team = await _dbContext.Teams.SingleOrDefaultAsync(
                 x => x.Name == request.TeamName, cancellationToken);
 
-            var verificationTemplate = Encoding.UTF8.GetString(Convert.FromBase64String(challenge.VerificationTemplate));
+            var verificationTemplate = challenge.VerificationTemplate.FromBase64String();
             var solution = verificationTemplate.Replace("<<SOLVE>>", request.Solution);
 
             var isValid = _qSharpHelper.Verify(verificationTemplate, request.Solution, challenge.ExpectedOutput);
@@ -54,7 +54,7 @@ public class VerifyChallengeSolutionCommandHandler : IRequestHandler<VerifyChall
                 Challenge = challenge,
                 Team = team,
                 IsSuccessful = isValid,
-                ProposedSolution = Convert.ToBase64String(Encoding.UTF8.GetBytes(request.Solution)),
+                ProposedSolution = request.Solution.ToBase64String(),
                 SubmissionTimestamp = request.Timestamp
             });
             await _dbContext.SaveChangesAsync(cancellationToken);

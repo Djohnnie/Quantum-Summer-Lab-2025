@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
+using QuantumSummerLab.Application.Extensions;
 using QuantumSummerLab.Data;
-using System.Text;
 
 namespace QuantumSummerLab.Application.Challenges.Queries;
 
@@ -16,9 +16,9 @@ public class GetChallengeByNameResponse
     public string Name { get; set; }
     public string Title { get; set; }
     public string Description { get; set; }
-    public int Level { get; set; }
     public string SolutionTemplate { get; set; }
-    public string ExpectedOutput { get; set; }
+    public string ExampleDescription { get; set; }
+    public string ExampleCode { get; set; }
 }
 
 public class GetChallengeByNameQueryHandler : IRequestHandler<GetChallengeByNameQuery, GetChallengeByNameResponse>
@@ -47,9 +47,9 @@ public class GetChallengeByNameQueryHandler : IRequestHandler<GetChallengeByName
             Name = challenge.Name,
             Title = challenge.Title,
             Description = challenge.Description,
-            Level = challenge.Level,
-            SolutionTemplate = Encoding.UTF8.GetString(Convert.FromBase64String(challenge.SolutionTemplate)),
-            ExpectedOutput = challenge.ExpectedOutput
+            SolutionTemplate = challenge.SolutionTemplate.FromBase64String(),
+            ExampleDescription = challenge.ExampleDescription,
+            ExampleCode = challenge.ExampleCode.FromBase64String()
         };
     }
 }
