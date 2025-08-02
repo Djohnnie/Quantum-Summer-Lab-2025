@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using QuantumSummerLab.Application.Extensions;
 using QuantumSummerLab.Data;
 
@@ -23,17 +24,18 @@ public class GetChallengeByNameResponse
 
 public class GetChallengeByNameQueryHandler : IRequestHandler<GetChallengeByNameQuery, GetChallengeByNameResponse>
 {
-    private readonly QuantumSummerLabDbContext _dbContext;
+    private readonly IServiceScopeFactory _scopeFactory;
 
     public GetChallengeByNameQueryHandler(
-        QuantumSummerLabDbContext dbContext)
+        IServiceScopeFactory scopeFactory)
     {
-        _dbContext = dbContext;
+        _scopeFactory = scopeFactory;
     }
 
     public async Task<GetChallengeByNameResponse> Handle(GetChallengeByNameQuery request, CancellationToken cancellationToken)
     {
-        var challenge = await _dbContext.Challenges
+        using var dbContext = _scopeFactory.CreateScope().ServiceProvider.GetRequiredService<QuantumSummerLabDbContext>();
+        var challenge = await dbContext.Challenges
             .FirstOrDefaultAsync(c => c.Name == request.ChallengeName, cancellationToken);
 
         if (challenge is null)

@@ -14,7 +14,13 @@ public class LoginCommand : IRequest<LoginResponse>
 public class LoginResponse
 {
     public bool Success { get; set; }
-    public string Token { get; set; }
+    public AuthenticationToken Token { get; set; }
+}
+
+public class AuthenticationToken
+{
+    public Guid TeamId { get; set; }
+    public string TeamName { get; set; }
 }
 
 public class LoginCommandHandler : IRequestHandler<LoginCommand, LoginResponse>
@@ -60,7 +66,11 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, LoginResponse>
         return new LoginResponse
         {
             Success = true,
-            Token = existingTeam.Name
+            Token = new AuthenticationToken
+            {
+                TeamId = existingTeam.Id,
+                TeamName = existingTeam.Name
+            }
         };
     }
 }

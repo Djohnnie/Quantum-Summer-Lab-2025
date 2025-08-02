@@ -41,11 +41,10 @@
     private string TeamName { get; set; } = string.Empty;
     private string Password { get; set; } = string.Empty;
 
-    protected async override Task OnInitializedAsync()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        IsLoggedIn = (await ProtectedSessionStore.GetAsync<Guid>("authToken")).Success;
+        IsLoggedIn = (await ProtectedSessionStore.GetAsync<AuthenticationToken>("authToken")).Success;
     }
-
 
     protected async Task Authenticate()
     {
@@ -55,7 +54,15 @@
             Password = Password
         });
 
-        NavigationManager.NavigateTo("/");
+        if (response.Success)
+        {
+            await ProtectedSessionStore.SetAsync("authToken", response.Token);
+            NavigationManager.NavigateTo("/");
+        }
+        else
+        {
+            // Handle login failure (e.g., show an error message)
+        }
     }
 
     protected async Task Register()

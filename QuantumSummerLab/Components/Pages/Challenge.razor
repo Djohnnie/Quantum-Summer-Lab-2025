@@ -23,13 +23,16 @@ else if (IsAvailable)
 {
     <MudText Typo="Typo.h5" Class="my-4">@Title</MudText>
 
-    @if (IsSuccess)
+    @if (IsLoggedIn)
     {
-        <MudAlert Severity="Severity.Success">You have successfully solved this challenge in @NumberOfAttempts attempts!</MudAlert>
-    }
-    else
-    {
-        <MudAlert Severity="Severity.Info">@(NumberOfAttempts == 0 ? "You have not started this challenge!" : $"You have attempted {NumberOfAttempts} times to solve this challenge!")</MudAlert>
+        @if (IsSuccess)
+        {
+            <MudAlert Severity="Severity.Success">You have successfully solved this challenge in @NumberOfAttempts attempts!</MudAlert>
+        }
+        else
+        {
+            <MudAlert Severity="Severity.Info">@(NumberOfAttempts == 0 ? "You have not started this challenge!" : $"You have attempted {NumberOfAttempts} times to solve this challenge!")</MudAlert>
+        }
     }
 
     @foreach (var line in Description)
@@ -47,21 +50,28 @@ else if (IsAvailable)
         <MudMarkdown Value="@ExampleCode" />
     }
 
-    <MudCard Elevation="5" Class="my-4">
-        <MudCardHeader>
-            <CardHeaderContent>
-                <MudText Typo="Typo.h6">Submit your solution here</MudText>
-            </CardHeaderContent>
-        </MudCardHeader>
-        <MudCardContent>
-            <MudTextField @bind-Value="Solution" Label="Your solution" AutoGrow Lines="5" Variant="Variant.Outlined" Class="monospace"></MudTextField>
-        </MudCardContent>
-        <MudCardActions>
-            <MudButton Variant="Variant.Text" Color="Color.Primary" OnClick="@Submit">Submit</MudButton>
-        </MudCardActions>
-    </MudCard>
+    @if (IsLoggedIn)
+    {
+        <MudCard Elevation="5" Class="my-4">
+            <MudCardHeader>
+                <CardHeaderContent>
+                    <MudText Typo="Typo.h6">Submit your solution here</MudText>
+                </CardHeaderContent>
+            </MudCardHeader>
+            <MudCardContent>
+                <MudTextField @bind-Value="Solution" Label="Your solution" AutoGrow Lines="5" Variant="Variant.Outlined" Class="monospace"></MudTextField>
+            </MudCardContent>
+            <MudCardActions>
+                <MudButton Variant="Variant.Text" Color="Color.Primary" OnClick="@Submit">Submit</MudButton>
+            </MudCardActions>
+        </MudCard>
 
-    <MudText Typo="Typo.h5" Class="my-4">@IsSuccess</MudText>
+        <MudText Typo="Typo.h5" Class="my-4">@IsSuccess</MudText>
+    }
+    else
+    {
+        <MudAlert Severity="Severity.Info" Class="my-4">You should <MudLink Href="/login">login</MudLink> to be able to submit solutions!</MudAlert>
+    }
 }
 else
 {
@@ -75,6 +85,7 @@ else
     [Parameter]
     public string ChallengeName { get; set; }
 
+    private bool IsLoggedIn { get; set; }
     private bool IsLoading { get; set; }
     private bool IsAvailable { get; set; }
 
@@ -104,8 +115,14 @@ else
         }
 
         IsLoading = false;
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {        
+        IsLoggedIn = (await ProtectedSessionStore.GetAsync<AuthenticationToken>("authToken")).Success;
 
         await LoadScore();
+        StateHasChanged();
     }
 
     protected async Task Submit()
@@ -125,8 +142,13 @@ else
 
     private async Task LoadScore()
     {
-        var score = await Mediator.Send(new GetYourScoreQuery { ChallengeName = ChallengeName, TeamName = "djohnnie" });
-        IsSuccess = score.IsSuccess;
-        NumberOfAttempts = score.TotalAttempts;
+        var authToken = await ProtectedSessionStore.GetAsync<AuthenticationToken>("authToken");
+
+        if (authToken.Success)
+        {
+            var score = await Mediator.Send(new GetYourScoreQuery { ChallengeName = ChallengeName, TeamName = authToken.Value.TeamName });
+            IsSuccess = score.IsSuccess;
+            NumberOfAttempts = score.TotalAttempts;
+        }
     }
 }

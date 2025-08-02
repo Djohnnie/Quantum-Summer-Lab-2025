@@ -1,6 +1,13 @@
 ﻿@page "/"
+@using MediatR
+@using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
+@using QuantumSummerLab.Application.Scores.Queries
+@using QuantumSummerLab.Application.Teams.Commands
 
-<PageTitle>Home</PageTitle>
+@inject ProtectedSessionStorage ProtectedSessionStore
+@inject IMediator Mediator
+
+<PageTitle>Quantum Summer Lab - Home</PageTitle>
 
 <MudText Typo="Typo.h3" GutterBottom="true">Hello, world!</MudText>
 <MudText Class="mb-8">Welcome to your new app, powered by MudBlazor and the .NET 9 Template!</MudText>
@@ -13,47 +20,104 @@
 </MudAlert>
 
 <br />
-<MudText Typo="Typo.h5" GutterBottom="true">Interactivity in this Template</MudText>
-<br />
-<MudText Typo="Typo.body2">
-    When you opt for the "Global" Interactivity Location, <br />
-    the render modes are defined in App.razor and consequently apply to all child components.<br />
-    In this case, providers are globally set in the MainLayout.<br />
-    <br />
-    On the other hand, if you choose the "Per page/component" Interactivity Location,<br />
-    it is necessary to include the <br />
-    <br />
-    &lt;MudPopoverProvider /&gt; <br />
-    &lt;MudDialogProvider /&gt; <br />
-    &lt;MudSnackbarProvider /&gt; <br />
-    <br />
-    components on every interactive page.<br />
-    <br />
-    If a render mode is not specified for a page, it defaults to Server-Side Rendering (SSR),<br />
-    similar to this page. While MudBlazor allows pages to be rendered in SSR,<br />
-    please note that interactive features, such as buttons and dropdown menus, will not be functional.
-</MudText>
 
-<br />
-<MudText Typo="Typo.h5" GutterBottom="true">What's New in Blazor with the Release of .NET 9</MudText>
-<br />
+<MudGrid>
+    <MudItem xs="12" md="4" Class="mt-16">
+        <div class="docs-sticky-info explore-text">
+            <MudText Typo="Typo.h5">Example challenges</MudText>
+            <MudText Typo="Typo.subtitle1">More info about example challenges</MudText>
+        </div>
+    </MudItem>
+    <MudItem xs="12" md="8" Class="mt-16">
+        <div class="explore-mudblazor-items">
+            <ExploreCard Title="Challenge 0" Link="/challenge/0">
+                <MudIcon Icon="@Icons.Material.Filled.MenuBook" Color="@(IsLoggedIn? IsChallenge0Completed ? Color.Tertiary : Color.Secondary : Color.Primary)" Style="font-size:64px;" />
+            </ExploreCard>
+        </div>
+    </MudItem>
+    <MudItem xs="12" md="4" Class="mt-16">
+        <div class="docs-sticky-info explore-text">
+            <MudText Typo="Typo.h5">Easy challenges</MudText>
+            <MudText Typo="Typo.subtitle1">More info about easy challenges</MudText>
+        </div>
+    </MudItem>
+    <MudItem xs="12" md="8" Class="mt-16">
+        <div class="explore-mudblazor-items">
+            <ExploreCard Title="Challenge A1" Link="/challenge/A1">
+                <MudIcon Icon="@Icons.Material.Filled.Extension" Color="Color.Primary" Style="font-size:64px;" />
+            </ExploreCard>
 
-<MudText Typo="Typo.h6" GutterBottom="true">Prerendering</MudText>
-<MudText Typo="Typo.body2" GutterBottom="true">
-    If you're exploring the features of .NET 9 Blazor,<br /> you might be pleasantly surprised to learn that each page is prerendered on the server,<br /> regardless of the selected render mode.<br /><br />
-    This means that you'll need to inject all necessary services on the server,<br /> even when opting for the wasm (WebAssembly) render mode.<br /><br />
-    This prerendering functionality is crucial to ensuring that WebAssembly mode feels fast and responsive,<br /> especially when it comes to initial page load times.<br /><br />
-    For more information on how to detect prerendering and leverage the RenderContext, you can refer to the following link:
-    <MudLink Href="https://github.com/dotnet/aspnetcore/issues/51468#issuecomment-1783568121" Target="_blank" Typo="Typo.body2" Color="Color.Primary">
-        More details
-    </MudLink>
-</MudText>
+            <ExploreCard Title="Challenge A2" Link="/components/A2">
+                <MudIcon Icon="@Icons.Material.Filled.Extension" Color="Color.Primary" Style="font-size:64px;" />
+            </ExploreCard>
 
-<br />
-<MudText Typo="Typo.h6" GutterBottom="true">InteractiveAuto</MudText>
-<MudText Typo="Typo.body2">
-    A discussion on how to achieve this can be found here:
-    <MudLink Href="https://github.com/dotnet/aspnetcore/issues/51468#issue-1950424116" Target="_blank" Typo="Typo.body2" Color="Color.Primary">
-        More details
-    </MudLink>
-</MudText>
+            <ExploreCard Title="Challenge A3" Link="/components/A3">
+                <MudIcon Icon="@Icons.Material.Filled.Extension" Color="Color.Primary" Style="font-size:64px;" />
+            </ExploreCard>
+        </div>
+    </MudItem>
+    <MudItem xs="12" md="4" Class="mt-16">
+        <div class="docs-sticky-info explore-text">
+            <MudText Typo="Typo.h5">Moderate challenges</MudText>
+            <MudText Typo="Typo.subtitle1">More info about moderate challenges</MudText>
+        </div>
+    </MudItem>
+    <MudItem xs="12" md="8" Class="mt-16">
+        <div class="explore-mudblazor-items">
+            <ExploreCard Title="Challenge B1" Link="/challenge/B1">
+                <MudIcon Icon="@Icons.Material.Filled.Extension" Color="Color.Primary" Style="font-size:64px;" />
+            </ExploreCard>
+
+            <ExploreCard Title="Challenge B2" Link="/components/B2">
+                <MudIcon Icon="@Icons.Material.Filled.Extension" Color="Color.Primary" Style="font-size:64px;" />
+            </ExploreCard>
+
+            <ExploreCard Title="Challenge B3" Link="/components/B3">
+                <MudIcon Icon="@Icons.Material.Filled.Extension" Color="Color.Primary" Style="font-size:64px;" />
+            </ExploreCard>
+        </div>
+    </MudItem>
+    <MudItem xs="12" md="4" Class="mt-16">
+        <div class="docs-sticky-info explore-text">
+            <MudText Typo="Typo.h5">Difficult challenges</MudText>
+            <MudText Typo="Typo.subtitle1">More info about difficult challenges</MudText>
+        </div>
+    </MudItem>
+    <MudItem xs="12" md="8" Class="mt-16">
+        <div class="explore-mudblazor-items">
+            <ExploreCard Title="Challenge C1" Link="/challenge/C1">
+                <MudIcon Icon="@Icons.Material.Filled.Extension" Color="Color.Primary" Style="font-size:64px;" />
+            </ExploreCard>
+
+            <ExploreCard Title="Challenge C2" Link="/components/C2">
+                <MudIcon Icon="@Icons.Material.Filled.Extension" Color="Color.Primary" Style="font-size:64px;" />
+            </ExploreCard>
+
+            <ExploreCard Title="Challenge C3" Link="/components/C3">
+                <MudIcon Icon="@Icons.Material.Filled.Extension" Color="Color.Primary" Style="font-size:64px;" />
+            </ExploreCard>
+        </div>
+    </MudItem>
+</MudGrid>
+
+@code
+{
+    private bool IsLoggedIn { get; set; }
+    private bool IsChallenge0Completed { get; set; }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        var authToken = await ProtectedSessionStore.GetAsync<AuthenticationToken>("authToken");
+
+        IsLoggedIn = authToken.Success;
+
+        if (IsLoggedIn)
+        {
+            var teamName = authToken.Value.TeamName;
+            var result = await Mediator.Send(new GetYourScoreQuery { ChallengeName = "0", TeamName = teamName });
+            IsChallenge0Completed = result.IsSuccess;
+        }
+
+        StateHasChanged();
+    }
+}

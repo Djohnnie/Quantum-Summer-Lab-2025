@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using QuantumSummerLab.Data;
 
 namespace QuantumSummerLab.Application.Scores.Queries;
@@ -19,17 +20,18 @@ public class GetYourScoreResponse
 
 public class GetYourScoreQueryHandler : IRequestHandler<GetYourScoreQuery, GetYourScoreResponse>
 {
-    private readonly QuantumSummerLabDbContext _dbContext;
+    private readonly IServiceScopeFactory _scopeFactory;
 
     public GetYourScoreQueryHandler(
-        QuantumSummerLabDbContext dbContext)
+        IServiceScopeFactory scopeFactory)
     {
-        _dbContext = dbContext;
+        _scopeFactory = scopeFactory;
     }
 
     public async Task<GetYourScoreResponse> Handle(GetYourScoreQuery request, CancellationToken cancellationToken)
     {
-        var scores = await _dbContext.Scores
+        using var dbContext = _scopeFactory.CreateScope().ServiceProvider.GetRequiredService<QuantumSummerLabDbContext>();
+        var scores = await dbContext.Scores
             .Where(x => x.Challenge.Name == request.ChallengeName && x.Team.Name == request.TeamName)
             .Select(x => new
             {
