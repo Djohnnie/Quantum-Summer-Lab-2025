@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using QsharpBridge;
 using QuantumSummerLab.Application.Extensions;
 using QuantumSummerLab.Application.Helpers;
@@ -19,19 +20,19 @@ public class VerifyChallengeSolutionCommand : IRequest<VerifyChallengeSolutionRe
 public class VerifyChallengeSolutionResponse
 {
     public bool IsValid { get; set; }
-    public string Message { get; set; }
+    public string FeedbackMessage { get; set; }
 }
 
 public class VerifyChallengeSolutionCommandHandler : IRequestHandler<VerifyChallengeSolutionCommand, VerifyChallengeSolutionResponse>
 {
-    private readonly QuantumSummerLabDbContext _dbContext;
+    private readonly IServiceScopeFactory _scopeFactory;
     private readonly IQSharpHelper _qSharpHelper;
 
     public VerifyChallengeSolutionCommandHandler(
-        QuantumSummerLabDbContext dbContext,
+        IServiceScopeFactory scopeFactory,
         IQSharpHelper qSharpHelper)
     {
-        _dbContext = dbContext;
+        _scopeFactory = scopeFactory;
         _qSharpHelper = qSharpHelper;
     }
 
@@ -39,9 +40,11 @@ public class VerifyChallengeSolutionCommandHandler : IRequestHandler<VerifyChall
     {
         try
         {
-            var challenge = await _dbContext.Challenges.SingleOrDefaultAsync(
+            using var dbContext = _scopeFactory.CreateScope().ServiceProvider.GetRequiredService<QuantumSummerLabDbContext>();
+           
+            var challenge = await dbContext.Challenges.SingleOrDefaultAsync(
                 x => x.Name == request.ChallengeName, cancellationToken);
-            var team = await _dbContext.Teams.SingleOrDefaultAsync(
+            var team = await dbContext.Teams.SingleOrDefaultAsync(
                 x => x.Name == request.TeamName, cancellationToken);
 
             var verificationTemplate = challenge.VerificationTemplate.FromBase64String();
@@ -49,7 +52,7 @@ public class VerifyChallengeSolutionCommandHandler : IRequestHandler<VerifyChall
 
             var isValid = _qSharpHelper.Verify(verificationTemplate, request.Solution, challenge.ExpectedOutput);
 
-            _dbContext.Scores.Add(new Score
+            dbContext.Scores.Add(new Score
             {
                 Challenge = challenge,
                 Team = team,
@@ -57,12 +60,12 @@ public class VerifyChallengeSolutionCommandHandler : IRequestHandler<VerifyChall
                 ProposedSolution = request.Solution.ToBase64String(),
                 SubmissionTimestamp = request.Timestamp
             });
-            await _dbContext.SaveChangesAsync(cancellationToken);
+            await dbContext.SaveChangesAsync(cancellationToken);
 
             return new VerifyChallengeSolutionResponse
             {
                 IsValid = isValid,
-                Message = $"Solution {(isValid ? "is" : "is not")} valid."
+                FeedbackMessage = $"Your submitted solution {(isValid ? "is" : "is not")} correct."
             };
         }
         catch (QsException ex)
@@ -70,7 +73,7 @@ public class VerifyChallengeSolutionCommandHandler : IRequestHandler<VerifyChall
             return new VerifyChallengeSolutionResponse
             {
                 IsValid = false,
-                Message = ex.Message
+                FeedbackMessage = "There has been an error while compiling or running your Q# code!"
             };
         }
     }

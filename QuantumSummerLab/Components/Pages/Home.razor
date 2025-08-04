@@ -25,13 +25,13 @@
     <MudItem xs="12" md="4" Class="mt-16">
         <div class="docs-sticky-info explore-text">
             <MudText Typo="Typo.h5">Example challenges</MudText>
-            <MudText Typo="Typo.subtitle1">More info about example challenges</MudText>
+            <MudText Typo="Typo.subtitle1">In this example challenge, you can learn about what kind of challenges to expect and how to submit solutions.</MudText>
         </div>
     </MudItem>
     <MudItem xs="12" md="8" Class="mt-16">
         <div class="explore-mudblazor-items">
             <ExploreCard Title="Challenge 0" Link="/challenge/0">
-                <MudIcon Icon="@Icons.Material.Filled.MenuBook" Color="@(IsLoggedIn? IsChallenge0Completed ? Color.Tertiary : Color.Secondary : Color.Primary)" Style="font-size:64px;" />
+                <MudIcon Icon="@Icons.Material.Filled.MenuBook" Size="Size.Large" Color="@(IsLoggedIn? IsChallenge0Completed ? Color.Tertiary : Color.Secondary : Color.Primary)" Style="font-size:64px;" />
             </ExploreCard>
         </div>
     </MudItem>
@@ -44,15 +44,15 @@
     <MudItem xs="12" md="8" Class="mt-16">
         <div class="explore-mudblazor-items">
             <ExploreCard Title="Challenge A1" Link="/challenge/A1">
-                <MudIcon Icon="@Icons.Material.Filled.Extension" Color="Color.Primary" Style="font-size:64px;" />
+                <MudIcon Icon="@Icons.Material.Filled.LooksOne" Color="@(IsLoggedIn? IsChallengeA1Completed ? Color.Tertiary : Color.Secondary : Color.Primary)" Style="font-size:64px;" />
             </ExploreCard>
 
             <ExploreCard Title="Challenge A2" Link="/components/A2">
-                <MudIcon Icon="@Icons.Material.Filled.Extension" Color="Color.Primary" Style="font-size:64px;" />
+                <MudIcon Icon="@Icons.Material.Filled.LooksTwo" Color="@(IsLoggedIn? IsChallengeA2Completed ? Color.Tertiary : Color.Secondary : Color.Primary)" Style="font-size:64px;" />
             </ExploreCard>
 
             <ExploreCard Title="Challenge A3" Link="/components/A3">
-                <MudIcon Icon="@Icons.Material.Filled.Extension" Color="Color.Primary" Style="font-size:64px;" />
+                <MudIcon Icon="@Icons.Material.Filled.Looks3" Color="@(IsLoggedIn? IsChallengeA3Completed ? Color.Tertiary : Color.Secondary : Color.Primary)" Style="font-size:64px;" />
             </ExploreCard>
         </div>
     </MudItem>
@@ -65,15 +65,15 @@
     <MudItem xs="12" md="8" Class="mt-16">
         <div class="explore-mudblazor-items">
             <ExploreCard Title="Challenge B1" Link="/challenge/B1">
-                <MudIcon Icon="@Icons.Material.Filled.Extension" Color="Color.Primary" Style="font-size:64px;" />
+                <MudIcon Icon="@Icons.Material.Filled.LooksOne" Color="@(IsLoggedIn? IsChallengeB1Completed ? Color.Tertiary : Color.Secondary : Color.Primary)" Style="font-size:64px;" />
             </ExploreCard>
 
             <ExploreCard Title="Challenge B2" Link="/components/B2">
-                <MudIcon Icon="@Icons.Material.Filled.Extension" Color="Color.Primary" Style="font-size:64px;" />
+                <MudIcon Icon="@Icons.Material.Filled.LooksTwo" Color="@(IsLoggedIn? IsChallengeB2Completed ? Color.Tertiary : Color.Secondary : Color.Primary)" Style="font-size:64px;" />
             </ExploreCard>
 
             <ExploreCard Title="Challenge B3" Link="/components/B3">
-                <MudIcon Icon="@Icons.Material.Filled.Extension" Color="Color.Primary" Style="font-size:64px;" />
+                <MudIcon Icon="@Icons.Material.Filled.Looks3" Color="@(IsLoggedIn? IsChallengeB3Completed ? Color.Tertiary : Color.Secondary : Color.Primary)" Style="font-size:64px;" />
             </ExploreCard>
         </div>
     </MudItem>
@@ -86,15 +86,15 @@
     <MudItem xs="12" md="8" Class="mt-16">
         <div class="explore-mudblazor-items">
             <ExploreCard Title="Challenge C1" Link="/challenge/C1">
-                <MudIcon Icon="@Icons.Material.Filled.Extension" Color="Color.Primary" Style="font-size:64px;" />
+                <MudIcon Icon="@Icons.Material.Filled.LooksOne" Color="@(IsLoggedIn? IsChallengeC1Completed ? Color.Tertiary : Color.Secondary : Color.Primary)" Style="font-size:64px;" />
             </ExploreCard>
 
             <ExploreCard Title="Challenge C2" Link="/components/C2">
-                <MudIcon Icon="@Icons.Material.Filled.Extension" Color="Color.Primary" Style="font-size:64px;" />
+                <MudIcon Icon="@Icons.Material.Filled.LooksTwo" Color="@(IsLoggedIn? IsChallengeC2Completed ? Color.Tertiary : Color.Secondary : Color.Primary)" Style="font-size:64px;" />
             </ExploreCard>
 
             <ExploreCard Title="Challenge C3" Link="/components/C3">
-                <MudIcon Icon="@Icons.Material.Filled.Extension" Color="Color.Primary" Style="font-size:64px;" />
+                <MudIcon Icon="@Icons.Material.Filled.Looks3" Color="@(IsLoggedIn? IsChallengeC3Completed ? Color.Tertiary : Color.Secondary : Color.Primary)" Style="font-size:64px;" />
             </ExploreCard>
         </div>
     </MudItem>
@@ -102,22 +102,44 @@
 
 @code
 {
+
     private bool IsLoggedIn { get; set; }
     private bool IsChallenge0Completed { get; set; }
+    private bool IsChallengeA1Completed { get; set; }
+    private bool IsChallengeA2Completed { get; set; }
+    private bool IsChallengeA3Completed { get; set; }
+    private bool IsChallengeB1Completed { get; set; }
+    private bool IsChallengeB2Completed { get; set; }
+    private bool IsChallengeB3Completed { get; set; }
+    private bool IsChallengeC1Completed { get; set; }
+    private bool IsChallengeC2Completed { get; set; }
+    private bool IsChallengeC3Completed { get; set; }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        var authToken = await ProtectedSessionStore.GetAsync<AuthenticationToken>("authToken");
-
-        IsLoggedIn = authToken.Success;
-
-        if (IsLoggedIn)
+        if (firstRender)
         {
-            var teamName = authToken.Value.TeamName;
-            var result = await Mediator.Send(new GetYourScoreQuery { ChallengeName = "0", TeamName = teamName });
-            IsChallenge0Completed = result.IsSuccess;
-        }
+            var authToken = await ProtectedSessionStore.GetAsync<AuthenticationToken>("authToken");
 
-        StateHasChanged();
+            IsLoggedIn = authToken.Success;
+
+            if (IsLoggedIn)
+            {
+                var teamName = authToken.Value.TeamName;
+                var result = await Mediator.Send(new GetYourScoresQuery { TeamName = teamName });
+                IsChallenge0Completed = result.Scores.SingleOrDefault(x => x.ChallengeName == "0")?.IsSuccess ?? false;
+                IsChallengeA1Completed = result.Scores.SingleOrDefault(x => x.ChallengeName == "A1")?.IsSuccess ?? false;
+                IsChallengeA2Completed = result.Scores.SingleOrDefault(x => x.ChallengeName == "A2")?.IsSuccess ?? false;
+                IsChallengeA3Completed = result.Scores.SingleOrDefault(x => x.ChallengeName == "A3")?.IsSuccess ?? false;
+                IsChallengeB1Completed = result.Scores.SingleOrDefault(x => x.ChallengeName == "B1")?.IsSuccess ?? false;
+                IsChallengeB2Completed = result.Scores.SingleOrDefault(x => x.ChallengeName == "B2")?.IsSuccess ?? false;
+                IsChallengeB3Completed = result.Scores.SingleOrDefault(x => x.ChallengeName == "B3")?.IsSuccess ?? false;
+                IsChallengeC1Completed = result.Scores.SingleOrDefault(x => x.ChallengeName == "C1")?.IsSuccess ?? false;
+                IsChallengeC2Completed = result.Scores.SingleOrDefault(x => x.ChallengeName == "C2")?.IsSuccess ?? false;
+                IsChallengeC3Completed = result.Scores.SingleOrDefault(x => x.ChallengeName == "C3")?.IsSuccess ?? false;
+            }
+
+            StateHasChanged();
+        }
     }
 }

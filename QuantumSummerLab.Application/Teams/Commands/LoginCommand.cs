@@ -15,6 +15,7 @@ public class LoginResponse
 {
     public bool Success { get; set; }
     public AuthenticationToken Token { get; set; }
+    public string ErrorMessage { get; set; }
 }
 
 public class AuthenticationToken
@@ -45,7 +46,8 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, LoginResponse>
         {
             return new LoginResponse
             {
-                Success = false
+                Success = false,
+                ErrorMessage = "The team name and password provided are not valid!"
             };
         }
 
@@ -59,7 +61,8 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, LoginResponse>
         {
             return new LoginResponse
             {
-                Success = false
+                Success = false,
+                ErrorMessage = "The team name and password provided are not valid!"
             };
         }
 

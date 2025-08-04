@@ -48,11 +48,14 @@
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        IsLoggedIn = (await ProtectedSessionStore.GetAsync<AuthenticationToken>("authToken")).Success;
-        var result = await Mediator.Send(new GetLeaderboardQuery());
-        Entries = result.Entries;
+        if (firstRender)
+        {
+            IsLoggedIn = (await ProtectedSessionStore.GetAsync<AuthenticationToken>("authToken")).Success;
+            var result = await Mediator.Send(new GetLeaderboardQuery());
+            Entries = result.Entries;
 
-        StateHasChanged();
+            StateHasChanged();
+        }
     }
 
     private bool FilterFunc(LeaderboardEntry element) => Filter(element, SearchString);

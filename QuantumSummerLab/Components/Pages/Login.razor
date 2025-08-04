@@ -10,40 +10,55 @@
 
 <PageTitle>Login</PageTitle>
 
-<MudText Typo="Typo.h3" GutterBottom="true">Login</MudText>
+<MudText Typo="Typo.h4" Class="my-4">@(IsLoggedIn ? "Logout" : "Login")</MudText>
 
-<MudCard>
-    <MudCardHeader>
-        <CardHeaderContent>
-            <MudText Typo="Typo.h6">The Story Book</MudText>
-        </CardHeaderContent>
-        <CardHeaderActions>
-            <MudIconButton Icon="@Icons.Material.Filled.Settings" Color="Color.Default" />
-        </CardHeaderActions>
-    </MudCardHeader>
-    <MudCardContent>
-        <MudText>This day everything happened.</MudText>
-        <MudText Typo="Typo.body2">The quick, brown fox jumps over a lazy dog.</MudText>
-        <MudTextField @bind-Value="TeamName" Label="Team" Variant="Variant.Text"></MudTextField>
-        <MudTextField @bind-Value="Password" Label="Password" InputType="InputType.Password" Variant="Variant.Text"></MudTextField>
-    </MudCardContent>
-    <MudCardActions>
-        <MudButton Variant="Variant.Text" Color="Color.Primary" OnClick="@Authenticate">Login</MudButton>
-        <MudButton Variant="Variant.Text" Color="Color.Primary" OnClick="@Register">Register</MudButton>
-    </MudCardActions>
-</MudCard>
+<MudContainer Class="d-flex justify-center flex-grow-1 gap-4">
+    @if (!IsLoggedIn)
+    {
+        <MudCard Elevation="5">
+            <MudCardHeader>
+                <CardHeaderContent>
+                    <MudText Typo="Typo.h6">Login or create team account</MudText>
+                </CardHeaderContent>
+            </MudCardHeader>
+            <MudCardContent>
+                <MudText>Login or create team account</MudText>
+                <MudText Typo="Typo.body2">Using this form, you can login using your existing team account or create a new team account.</MudText>
+                @if (!string.IsNullOrEmpty(ErrorMessage))
+                {
+                    <MudAlert Severity="Severity.Error" Class="my-2">@ErrorMessage</MudAlert>
+                }
+                <MudTextField @bind-Value="TeamName" Class="my-2" Label="Team name" Variant="Variant.Text"></MudTextField>
+                <MudTextField @bind-Value="Password" Class="my-2" Label="Password" InputType="InputType.Password" Variant="Variant.Text"></MudTextField>
+            </MudCardContent>
+            <MudCardActions>
+                <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Login" Color="Color.Success" OnClick="@Authenticate" Class="mr-1">Login</MudButton>
+                <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.GroupAdd" Color="Color.Primary" OnClick="@Register" Class="ml-1">Register</MudButton>
+            </MudCardActions>
+        </MudCard>
+    }
+    else
+    {
+        <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Logout" Color="Color.Error" OnClick="@Logout">Logout</MudButton>
+    }
+</MudContainer>
 
 @code {
 
     private int currentCount = 0;
 
     private bool IsLoggedIn { get; set; }
+    private string ErrorMessage { get; set; } = string.Empty;
     private string TeamName { get; set; } = string.Empty;
     private string Password { get; set; } = string.Empty;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        IsLoggedIn = (await ProtectedSessionStore.GetAsync<AuthenticationToken>("authToken")).Success;
+        if (firstRender)
+        {
+            IsLoggedIn = (await ProtectedSessionStore.GetAsync<AuthenticationToken>("authToken")).Success;
+            StateHasChanged();
+        }
     }
 
     protected async Task Authenticate()
@@ -61,7 +76,8 @@
         }
         else
         {
-            // Handle login failure (e.g., show an error message)
+            ErrorMessage = response.ErrorMessage;
+            StateHasChanged();
         }
     }
 
@@ -72,5 +88,22 @@
             TeamName = TeamName,
             Password = Password
         });
+
+        if (response.Success)
+        {
+            await ProtectedSessionStore.SetAsync("authToken", response.Token);
+            NavigationManager.NavigateTo("/");
+        }
+        else
+        {
+            ErrorMessage = response.ErrorMessage;
+            StateHasChanged();
+        }
+    }
+
+    protected async Task Logout()
+    {
+        await ProtectedSessionStore.DeleteAsync("authToken");
+        NavigationManager.NavigateTo("/");
     }
 }

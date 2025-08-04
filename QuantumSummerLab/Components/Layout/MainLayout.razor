@@ -1,5 +1,9 @@
-﻿@inherits LayoutComponentBase
+﻿@using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
+@using QuantumSummerLab.Application.Teams.Commands
+@inherits LayoutComponentBase
+
 @inject NavigationManager NavigationManager
+@inject ProtectedSessionStorage ProtectedSessionStore
 
 <MudThemeProvider @ref="_mudThemeProvider" Theme="@_theme" IsDarkMode="_isDarkMode" />
 <MudPopoverProvider />
@@ -8,12 +12,17 @@
 <MudLayout>
     <MudAppBar Elevation="1">
         <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
-        <MudText Typo="Typo.h5" Class="ml-3">Quantum Summer Lab 2025</MudText>
+        <MudIcon Icon="@Icons.Material.Filled.Webhook" Class="ml-3" />
+        <MudLink Href="/" Typo="Typo.h5" Class="ml-3" Color="Color.Default" Style="text-decoration: none;">Quantum Summer Lab 2025</MudLink>
         <MudSpacer />
         <MudIconButton Icon="@(DarkLightModeButtonIcon)" Color="Color.Inherit" OnClick="@DarkModeToggle" />
-        <MudTooltip Text="Login">
+        <MudTooltip Text="@(string.IsNullOrEmpty(TeamName) ? "Login" : "Logout")">
             <MudIconButton Icon="@Icons.Material.Filled.AccountBox" Color="Color.Inherit" Edge="Edge.End" OnClick="@Login" />
         </MudTooltip>
+        @if (!string.IsNullOrEmpty(TeamName))
+        {
+            <MudText Edge="Edge.End" Class="ml-3">@TeamName</MudText>
+        }
     </MudAppBar>
     <MudDrawer id="nav-drawer" @bind-Open="_drawerOpen" ClipMode="DrawerClipMode.Always" Elevation="2">
         <NavMenu />
@@ -34,6 +43,9 @@
     private bool _drawerOpen = true;
     private bool _isDarkMode = true;
     private MudTheme? _theme = null;
+    private bool? _lastLoggedIn;
+
+    private string TeamName { get; set; }
 
     protected override void OnInitialized()
     {
@@ -52,6 +64,14 @@
         if (firstRender)
         {
             _isDarkMode = await _mudThemeProvider.GetSystemDarkModeAsync();
+        }
+
+        var authToken = await ProtectedSessionStore.GetAsync<AuthenticationToken>("authToken");
+
+        if (_lastLoggedIn == null || _lastLoggedIn != authToken.Success)
+        {
+            TeamName = authToken.Success ? authToken.Value.TeamName : string.Empty;
+            _lastLoggedIn = authToken.Success;
             StateHasChanged();
         }
     }

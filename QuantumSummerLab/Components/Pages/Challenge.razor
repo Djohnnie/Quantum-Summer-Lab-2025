@@ -34,6 +34,10 @@ else if (IsAvailable)
             <MudAlert Severity="Severity.Info">@(NumberOfAttempts == 0 ? "You have not started this challenge!" : $"You have attempted {NumberOfAttempts} times to solve this challenge!")</MudAlert>
         }
     }
+    else
+    {
+        <MudAlert Severity="Severity.Info" Class="my-4">You should <MudLink Href="/login">login</MudLink> to be able to submit solutions!</MudAlert>
+    }
 
     @foreach (var line in Description)
     {
@@ -52,21 +56,21 @@ else if (IsAvailable)
 
     @if (IsLoggedIn)
     {
-        <MudCard Elevation="5" Class="my-4">
+        <MudCard Elevation="5" Class="my-8">
             <MudCardHeader>
                 <CardHeaderContent>
                     <MudText Typo="Typo.h6">Submit your solution here</MudText>
                 </CardHeaderContent>
             </MudCardHeader>
             <MudCardContent>
+                <MudAlert Severity="@(IsValid.HasValue ? IsValid.Value ? Severity.Success: Severity.Error : Severity.Normal)" Class="mt-n4 mb-4">@FeedbackMessage</MudAlert>
                 <MudTextField @bind-Value="Solution" Label="Your solution" AutoGrow Lines="5" Variant="Variant.Outlined" Class="monospace"></MudTextField>
             </MudCardContent>
             <MudCardActions>
-                <MudButton Variant="Variant.Text" Color="Color.Primary" OnClick="@Submit">Submit</MudButton>
+                <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Send" Color="Color.Primary" OnClick="@Submit" Class="mr-1">Submit your solution</MudButton>
+                <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Clear" Color="Color.Error" OnClick="@Clear" Class="ml-1">Clear</MudButton>
             </MudCardActions>
         </MudCard>
-
-        <MudText Typo="Typo.h5" Class="my-4">@IsSuccess</MudText>
     }
     else
     {
@@ -78,14 +82,15 @@ else
     <MudAlert Severity="Severity.Warning">The challenge with name 'Challenge @ChallengeName' could not be loaded.</MudAlert>
 }
 
-@code {
-
-    private int currentCount = 0;
+@code
+{
+    private bool? _lastLoggedIn;
 
     [Parameter]
     public string ChallengeName { get; set; }
 
     private bool IsLoggedIn { get; set; }
+    private string TeamName { get; set; }
     private bool IsLoading { get; set; }
     private bool IsAvailable { get; set; }
 
@@ -94,6 +99,8 @@ else
     private string SolutionTemplate { get; set; }
     private string[] ExampleDescription { get; set; }
     private string ExampleCode { get; set; }
+    private string FeedbackMessage { get; set; }
+    private bool? IsValid { get; set; }
 
     private string Solution { get; set; }
 
@@ -112,17 +119,26 @@ else
             SolutionTemplate = $"```js{Environment.NewLine}{challenge.SolutionTemplate}{Environment.NewLine}```";
             ExampleDescription = challenge.ExampleDescription.Split("[BR]");
             ExampleCode = $"```js{Environment.NewLine}{challenge.ExampleCode}{Environment.NewLine}```";
+            FeedbackMessage = "You have not yet submitted a solution";
+            await LoadScore();
         }
 
         IsLoading = false;
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
-    {        
-        IsLoggedIn = (await ProtectedSessionStore.GetAsync<AuthenticationToken>("authToken")).Success;
+    {
+        var authToken = await ProtectedSessionStore.GetAsync<AuthenticationToken>("authToken");
 
-        await LoadScore();
-        StateHasChanged();
+        if (_lastLoggedIn == null || _lastLoggedIn != authToken.Success)
+        {
+            IsLoggedIn = authToken.Success;
+            TeamName = authToken.Success ? authToken.Value.TeamName : string.Empty;
+            _lastLoggedIn = authToken.Success;
+
+            await LoadScore();
+            StateHasChanged();
+        }
     }
 
     protected async Task Submit()
@@ -130,23 +146,29 @@ else
         var response = await Mediator.Send(new VerifyChallengeSolutionCommand
         {
             ChallengeName = ChallengeName,
-            TeamName = "djohnnie",
+            TeamName = TeamName,
             Solution = Solution,
             Timestamp = DateTime.UtcNow
         });
 
-        //IsSuccess = response.Message;
+        IsValid = response.IsValid;
+        FeedbackMessage = response.FeedbackMessage;
+
         await LoadScore();
+        StateHasChanged();
+    }
+
+    protected void Clear()
+    {
+        Solution = string.Empty;
         StateHasChanged();
     }
 
     private async Task LoadScore()
     {
-        var authToken = await ProtectedSessionStore.GetAsync<AuthenticationToken>("authToken");
-
-        if (authToken.Success)
+        if (!string.IsNullOrEmpty(TeamName))
         {
-            var score = await Mediator.Send(new GetYourScoreQuery { ChallengeName = ChallengeName, TeamName = authToken.Value.TeamName });
+            var score = await Mediator.Send(new GetYourScoreQuery { ChallengeName = ChallengeName, TeamName = TeamName });
             IsSuccess = score.IsSuccess;
             NumberOfAttempts = score.TotalAttempts;
         }
