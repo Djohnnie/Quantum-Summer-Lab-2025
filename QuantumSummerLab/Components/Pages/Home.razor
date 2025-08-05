@@ -9,15 +9,16 @@
 
 <PageTitle>Quantum Summer Lab - Home</PageTitle>
 
-<MudText Typo="Typo.h3" GutterBottom="true">Hello, world!</MudText>
-<MudText Class="mb-8">Welcome to your new app, powered by MudBlazor and the .NET 9 Template!</MudText>
+<MudText Typo="Typo.h4" GutterBottom="true">Quantum Summer Lab 2025</MudText>
+<MudText Class="mt-8">Welcome to the first technical part of the Quantum Summr Lab 2025.</MudText>
+<MudText Class="mb-4">Using this platform, you are able to practice on multiple challenges, ranging from easy to more difficult.</MudText>
+<MudText>The Quantum Summer Lab 2025 was made possible by</MudText>
 
-<MudAlert Severity="Severity.Normal" ContentAlignment="HorizontalAlignment.Start">
-    You can find documentation and examples on our website here:
-    <MudLink Href="https://mudblazor.com" Target="_blank" Typo="Typo.body2" Color="Color.Primary">
-        <b>www.mudblazor.com</b>
-    </MudLink>
-</MudAlert>
+<div class="d-flex justify-center flex-wrap gap-12 mt-8">
+    <MudImage Src="micronos.svg" Width="200" Alt="The Cronos Group" />
+    <MudImage Src="microsoft.svg" Width="200" Alt="The Cronos Group" />
+    <MudImage Src="pasqal.svg" Width="200" Alt="The Cronos Group" />
+</div>
 
 <br />
 
@@ -37,8 +38,8 @@
     </MudItem>
     <MudItem xs="12" md="4" Class="mt-16">
         <div class="docs-sticky-info explore-text">
-            <MudText Typo="Typo.h5">Easy challenges</MudText>
-            <MudText Typo="Typo.subtitle1">More info about easy challenges</MudText>
+            <MudText Typo="Typo.h5">Introductory challenges</MudText>
+            <MudText Typo="Typo.subtitle1">These challenges are created to teach you about the basics on quantum logic, gates and circuits.</MudText>
         </div>
     </MudItem>
     <MudItem xs="12" md="8" Class="mt-16">
@@ -58,8 +59,8 @@
     </MudItem>
     <MudItem xs="12" md="4" Class="mt-16">
         <div class="docs-sticky-info explore-text">
-            <MudText Typo="Typo.h5">Moderate challenges</MudText>
-            <MudText Typo="Typo.subtitle1">More info about moderate challenges</MudText>
+            <MudText Typo="Typo.h5">Easy challenges</MudText>
+            <MudText Typo="Typo.subtitle1">These challenges build on the introductory challenges and provide you with a slightly greater challenge.</MudText>
         </div>
     </MudItem>
     <MudItem xs="12" md="8" Class="mt-16">
@@ -79,8 +80,8 @@
     </MudItem>
     <MudItem xs="12" md="4" Class="mt-16">
         <div class="docs-sticky-info explore-text">
-            <MudText Typo="Typo.h5">Difficult challenges</MudText>
-            <MudText Typo="Typo.subtitle1">More info about difficult challenges</MudText>
+            <MudText Typo="Typo.h5">Moderate challenges</MudText>
+            <MudText Typo="Typo.subtitle1">These challenges ask for some more quantum insight.</MudText>
         </div>
     </MudItem>
     <MudItem xs="12" md="8" Class="mt-16">
@@ -95,6 +96,27 @@
 
             <ExploreCard Title="Challenge C3" Link="/components/C3">
                 <MudIcon Icon="@Icons.Material.Filled.Looks3" Color="@(IsLoggedIn? IsChallengeC3Completed ? Color.Tertiary : Color.Secondary : Color.Primary)" Style="font-size:64px;" />
+            </ExploreCard>
+        </div>
+    </MudItem>
+    <MudItem xs="12" md="4" Class="mt-16">
+        <div class="docs-sticky-info explore-text">
+            <MudText Typo="Typo.h5">Difficult challenges</MudText>
+            <MudText Typo="Typo.subtitle1">These challenges are there for you if you need some more thinking.</MudText>
+        </div>
+    </MudItem>
+    <MudItem xs="12" md="8" Class="mt-16">
+        <div class="explore-mudblazor-items">
+            <ExploreCard Title="Challenge D1" Link="/challenge/D1">
+                <MudIcon Icon="@Icons.Material.Filled.LooksOne" Color="@(IsLoggedIn? IsChallengeD1Completed ? Color.Tertiary : Color.Secondary : Color.Primary)" Style="font-size:64px;" />
+            </ExploreCard>
+
+            <ExploreCard Title="Challenge D2" Link="/components/D2">
+                <MudIcon Icon="@Icons.Material.Filled.LooksTwo" Color="@(IsLoggedIn? IsChallengeD2Completed ? Color.Tertiary : Color.Secondary : Color.Primary)" Style="font-size:64px;" />
+            </ExploreCard>
+
+            <ExploreCard Title="Challenge D3" Link="/components/D3">
+                <MudIcon Icon="@Icons.Material.Filled.Looks3" Color="@(IsLoggedIn? IsChallengeD3Completed ? Color.Tertiary : Color.Secondary : Color.Primary)" Style="font-size:64px;" />
             </ExploreCard>
         </div>
     </MudItem>
@@ -114,6 +136,9 @@
     private bool IsChallengeC1Completed { get; set; }
     private bool IsChallengeC2Completed { get; set; }
     private bool IsChallengeC3Completed { get; set; }
+    private bool IsChallengeD1Completed { get; set; }
+    private bool IsChallengeD2Completed { get; set; }
+    private bool IsChallengeD3Completed { get; set; }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -137,6 +162,9 @@
                 IsChallengeC1Completed = result.Scores.SingleOrDefault(x => x.ChallengeName == "C1")?.IsSuccess ?? false;
                 IsChallengeC2Completed = result.Scores.SingleOrDefault(x => x.ChallengeName == "C2")?.IsSuccess ?? false;
                 IsChallengeC3Completed = result.Scores.SingleOrDefault(x => x.ChallengeName == "C3")?.IsSuccess ?? false;
+                IsChallengeD1Completed = result.Scores.SingleOrDefault(x => x.ChallengeName == "D1")?.IsSuccess ?? false;
+                IsChallengeD2Completed = result.Scores.SingleOrDefault(x => x.ChallengeName == "D2")?.IsSuccess ?? false;
+                IsChallengeD3Completed = result.Scores.SingleOrDefault(x => x.ChallengeName == "D3")?.IsSuccess ?? false;
             }
 
             StateHasChanged();

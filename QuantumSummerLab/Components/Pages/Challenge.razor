@@ -63,7 +63,7 @@ else if (IsAvailable)
                 </CardHeaderContent>
             </MudCardHeader>
             <MudCardContent>
-                <MudAlert Severity="@(IsValid.HasValue ? IsValid.Value ? Severity.Success: Severity.Error : Severity.Normal)" Class="mt-n4 mb-4">@FeedbackMessage</MudAlert>
+                <MudAlert Severity="@(IsValid.HasValue? IsValid.Value? Severity.Success: Severity.Error : Severity.Normal)" Class="mt-n4 mb-4">@FeedbackMessage</MudAlert>
                 <MudTextField @bind-Value="Solution" Label="Your solution" AutoGrow Lines="5" Variant="Variant.Outlined" Class="monospace"></MudTextField>
             </MudCardContent>
             <MudCardActions>
@@ -71,6 +71,52 @@ else if (IsAvailable)
                 <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Clear" Color="Color.Error" OnClick="@Clear" Class="ml-1">Clear</MudButton>
             </MudCardActions>
         </MudCard>
+
+        @if (YourSubmissions != null && YourSubmissions.Any())
+        {
+            <MudCard Elevation="5" Class="my-8">
+                <MudCardHeader>
+                    <CardHeaderContent>
+                        <MudText Typo="Typo.h6">Your submission history</MudText>
+                    </CardHeaderContent>
+                </MudCardHeader>
+                <MudCardContent>
+                    @if (IsSuccess)
+                    {
+                        <MudAlert Severity="Severity.Success" Class="mt-n6 mb-2">You have successfully solved this challenge in @NumberOfAttempts attempts!</MudAlert>
+                    }
+                    else
+                    {
+                        <MudAlert Severity="Severity.Info" Class="mt-n6 mb-2">@(NumberOfAttempts == 0 ? "You have not started this challenge!" : $"You have attempted {NumberOfAttempts} times to solve this challenge!")</MudAlert>
+                    }
+                    <MudExpansionPanels Outlined="false" Elevation="0">
+                        @foreach (var submission in YourSubmissions)
+                        {
+                            <MudExpansionPanel>
+                                <TitleContent>
+                                    <div class="d-flex">
+                                        @if (submission.IsSuccessful)
+                                        {
+                                            <MudIcon Icon="@Icons.Material.Filled.PlaylistAddCheck" Color="Color.Success" class="mr-3"></MudIcon>
+                                            <MudText Color="Color.Success">You have submitted a <strong>correct solution</strong> at @submission.SubmissionTimestamp.ToString("f")</MudText>
+                                        }
+                                        else
+                                        {
+                                            <MudIcon Icon="@Icons.Material.Filled.PlaylistRemove" Color="Color.Error" class="mr-3"></MudIcon>
+                                            <MudText Color="Color.Error">You have submitted a <strong>wrong solution</strong> at @submission.SubmissionTimestamp.ToString("f")</MudText>
+                                        }
+                                    </div>
+                                </TitleContent>
+                                <ChildContent>
+                                    <MudMarkdown Value="@submission.ProposedSolution" />
+                                </ChildContent>
+                            </MudExpansionPanel>
+                            <MudDivider />
+                        }
+                    </MudExpansionPanels>
+                </MudCardContent>
+            </MudCard>
+        }
     }
     else
     {
@@ -93,6 +139,7 @@ else
     private string TeamName { get; set; }
     private bool IsLoading { get; set; }
     private bool IsAvailable { get; set; }
+    private List<YourSubmission> YourSubmissions { get; set; }
 
     private string Title { get; set; }
     private string[] Description { get; set; }
@@ -171,6 +218,9 @@ else
             var score = await Mediator.Send(new GetYourScoreQuery { ChallengeName = ChallengeName, TeamName = TeamName });
             IsSuccess = score.IsSuccess;
             NumberOfAttempts = score.TotalAttempts;
+
+            var submissions = await Mediator.Send(new GetYourSubmissionsQuery { ChallengeName = ChallengeName = ChallengeName, TeamName = TeamName });
+            YourSubmissions = submissions.YourSubmissions;
         }
     }
 }

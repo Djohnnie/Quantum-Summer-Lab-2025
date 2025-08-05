@@ -41,7 +41,7 @@ public class VerifyChallengeSolutionCommandHandler : IRequestHandler<VerifyChall
         try
         {
             using var dbContext = _scopeFactory.CreateScope().ServiceProvider.GetRequiredService<QuantumSummerLabDbContext>();
-           
+
             var challenge = await dbContext.Challenges.SingleOrDefaultAsync(
                 x => x.Name == request.ChallengeName, cancellationToken);
             var team = await dbContext.Teams.SingleOrDefaultAsync(
@@ -73,7 +73,20 @@ public class VerifyChallengeSolutionCommandHandler : IRequestHandler<VerifyChall
             return new VerifyChallengeSolutionResponse
             {
                 IsValid = false,
-                FeedbackMessage = "There has been an error while compiling or running your Q# code!"
+                FeedbackMessage = ex.Message switch
+                {
+                    string a when a.Contains("error: Compile") => "There has been an error compiling your Q# code!",
+                    string b when b.Contains("error: Eval") => "There has been an error running your Q# code!",
+                    _ => "There has been an unknown error :("
+                }
+            };
+        }
+        catch
+        {
+            return new VerifyChallengeSolutionResponse
+            {
+                IsValid = false,
+                FeedbackMessage = "There has been an unknown error :("
             };
         }
     }

@@ -12,9 +12,9 @@
 
 <MudText Typo="Typo.h4" Class="my-4">@(IsLoggedIn ? "Logout" : "Login")</MudText>
 
-<MudContainer Class="d-flex justify-center flex-grow-1 gap-4">
-    @if (!IsLoggedIn)
-    {
+@if (!IsLoggedIn)
+{
+    <MudContainer Class="d-flex justify-center flex-grow-1 gap-4">
         <MudCard Elevation="5">
             <MudCardHeader>
                 <CardHeaderContent>
@@ -36,18 +36,22 @@
                 <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.GroupAdd" Color="Color.Primary" OnClick="@Register" Class="ml-1">Register</MudButton>
             </MudCardActions>
         </MudCard>
-    }
-    else
-    {
+    </MudContainer>
+}
+else
+{
+    <MudContainer MaxWidth="MaxWidth.ExtraSmall" Class="d-flex flex-column justify-center gap-4">
+        <MudAlert Severity="Severity.Info" Class="my-4">You are logged in as '@LoggedInTeamName'</MudAlert>
         <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Logout" Color="Color.Error" OnClick="@Logout">Logout</MudButton>
-    }
-</MudContainer>
+    </MudContainer>
+}
 
 @code {
 
     private int currentCount = 0;
 
     private bool IsLoggedIn { get; set; }
+    private string LoggedInTeamName { get; set; }
     private string ErrorMessage { get; set; } = string.Empty;
     private string TeamName { get; set; } = string.Empty;
     private string Password { get; set; } = string.Empty;
@@ -56,7 +60,10 @@
     {
         if (firstRender)
         {
-            IsLoggedIn = (await ProtectedSessionStore.GetAsync<AuthenticationToken>("authToken")).Success;
+            var authentication = await ProtectedSessionStore.GetAsync<AuthenticationToken>("authToken");
+            IsLoggedIn = authentication.Success;
+            LoggedInTeamName = authentication.Value?.TeamName ?? string.Empty;
+
             StateHasChanged();
         }
     }

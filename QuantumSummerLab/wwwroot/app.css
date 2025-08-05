@@ -1,6 +1,6 @@
-﻿textarea {
-    font-family: 'Courier New', Courier, monospace;
-    font-size: 0.9em;
+﻿.mud-input > textarea.mud-input-root-outlined {
+    font-family: monospace !important;
+    font-size: 0.8em;
     color: #333;
 }
 
