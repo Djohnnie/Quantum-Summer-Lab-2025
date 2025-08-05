@@ -64,7 +64,7 @@ else if (IsAvailable)
             </MudCardHeader>
             <MudCardContent>
                 <MudAlert Severity="@(IsValid.HasValue? IsValid.Value? Severity.Success: Severity.Error : Severity.Normal)" Class="mt-n4 mb-4">@FeedbackMessage</MudAlert>
-                <MudTextField @bind-Value="Solution" Label="Your solution" AutoGrow Lines="5" Variant="Variant.Outlined" Class="monospace"></MudTextField>
+                <MudTextField @bind-Value="Solution" Label="Your solution" spellcheck="false" AutoGrow Lines="5" Variant="Variant.Outlined" Class="monospace"></MudTextField>
             </MudCardContent>
             <MudCardActions>
                 <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Send" Color="Color.Primary" OnClick="@Submit" Class="mr-1">Submit your solution</MudButton>

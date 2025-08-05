@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using QuantumSummerLab.Application.Helpers;
 using QuantumSummerLab.Data;
 using QuantumSummerLab.Data.Model;
@@ -15,44 +16,52 @@ public class RegisterCommand : IRequest<RegisterResponse>
 public class RegisterResponse
 {
     public bool Success { get; set; }
-    public string Token { get; set; }
+    public AuthenticationToken Token { get; set; }
     public string ErrorMessage { get; set; }
 }
 
 public class RegisterCommandHandler : IRequestHandler<RegisterCommand, RegisterResponse>
 {
+    private readonly IServiceScopeFactory _scopeFactory;
     private readonly IPasswordHashHelper _passwordHashHelper;
-    private readonly QuantumSummerLabDbContext _dbContext;
 
     public RegisterCommandHandler(
-        IPasswordHashHelper passwordHashHelper,
-        QuantumSummerLabDbContext dbContext)
+        IServiceScopeFactory scopeFactory,
+        IPasswordHashHelper passwordHashHelper)
     {
+        _scopeFactory = scopeFactory;
         _passwordHashHelper = passwordHashHelper;
-        _dbContext = dbContext;
     }
 
     public async Task<RegisterResponse> Handle(RegisterCommand request, CancellationToken cancellationToken)
     {
         try
         {
+            using var dbContext = _scopeFactory.CreateScope().ServiceProvider.GetRequiredService<QuantumSummerLabDbContext>();
             var passwordHash = _passwordHashHelper.CalculateHash(new PasswordHash
             {
                 Password = request.Password
             });
 
-            _dbContext.Teams.Add(new Team
+            var newTeam = new Team
             {
                 Name = request.TeamName,
                 PasswordSalt = passwordHash.Salt,
                 PasswordHash = passwordHash.Hash
-            });
+            };
 
-            await _dbContext.SaveChangesAsync(cancellationToken);
+            var trackedTeam = dbContext.Teams.Add(newTeam);
+
+            await dbContext.SaveChangesAsync(cancellationToken);
 
             return new RegisterResponse
             {
                 Success = true,
+                Token = new AuthenticationToken
+                {
+                    TeamId = newTeam.Id,
+                    TeamName = newTeam.Name
+                }
             };
         }
         catch (DbUpdateException ex)  

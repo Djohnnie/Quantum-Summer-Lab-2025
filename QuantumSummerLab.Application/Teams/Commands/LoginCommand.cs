@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using QuantumSummerLab.Application.Helpers;
 using QuantumSummerLab.Data;
 
@@ -26,20 +27,21 @@ public class AuthenticationToken
 
 public class LoginCommandHandler : IRequestHandler<LoginCommand, LoginResponse>
 {
+    private readonly IServiceScopeFactory _scopeFactory;
     private readonly IPasswordHashHelper _passwordHashHelper;
-    private readonly QuantumSummerLabDbContext _dbContext;
 
     public LoginCommandHandler(
-        IPasswordHashHelper passwordHashHelper,
-        QuantumSummerLabDbContext dbContext)
+        IServiceScopeFactory scopeFactory,
+        IPasswordHashHelper passwordHashHelper)
     {
+        _scopeFactory = scopeFactory;
         _passwordHashHelper = passwordHashHelper;
-        _dbContext = dbContext;
     }
 
     public async Task<LoginResponse> Handle(LoginCommand request, CancellationToken cancellationToken)
     {
-        var existingTeam = await _dbContext.Teams
+        using var dbContext = _scopeFactory.CreateScope().ServiceProvider.GetRequiredService<QuantumSummerLabDbContext>();
+        var existingTeam = await dbContext.Teams
             .FirstOrDefaultAsync(t => t.Name == request.TeamName, cancellationToken);
 
         if (existingTeam == null)

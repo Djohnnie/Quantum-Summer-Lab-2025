@@ -1,7 +1,8 @@
 ﻿.mud-input > textarea.mud-input-root-outlined {
     font-family: monospace !important;
-    font-size: 0.8em;
-    color: #333;
+    font-weight: bold !important;
+    font-size: 0.9em !important;
+    color: #338 !important;
 }
 
 .explore-mudblazor-items {
