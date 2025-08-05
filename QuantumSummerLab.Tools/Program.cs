@@ -4,11 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using QuantumSummerLab.Data;
 using QuantumSummerLab.Data.Model;
-
-
-Console.WriteLine("Quantum Summer Lab 2025 console tool");
-Console.WriteLine("------------------------------------");
-Console.WriteLine();
+using QuantumSummerLab.Tools;
 
 var configuration = new ConfigurationBuilder()
     .AddEnvironmentVariables()
@@ -19,53 +15,87 @@ serviceCollection.AddApplicationServices(configuration);
 serviceCollection.AddSingleton<IConfiguration>(configuration);
 using var serviceProvider = serviceCollection.BuildServiceProvider();
 
-var dbContext = serviceProvider.GetService<QuantumSummerLabDbContext>();
-if (!await dbContext.Challenges.AnyAsync(x => x.Name == "0"))
+Console.WriteLine("Quantum Summer Lab 2025 console tool");
+Console.WriteLine("------------------------------------");
+Console.WriteLine();
+Console.WriteLine("1. Clear database");
+Console.WriteLine("2. Add challenges");
+Console.WriteLine("3. Exit");
+Console.WriteLine();
+
+var key = Console.ReadKey(true);
+
+switch (key.Key)
 {
-    dbContext.Challenges.Add(new Challenge
-    {
-        Name = "0",
-        Title = "Example Challenge",
-        Description = "You are given a single qubit, prepared in the |0⟩ state, and a Result with a possible Zero or One value.[BR]Make sure to change the qubit state and leave it in a state that corresponds with the provided Result value.[BR]You should implement the following Solve method to make that happen and keep the signature of the method exactly like it is.[BR]Go ahead and copy/paste the following template in your Q# project in Visual Studio Code to start working on the solution.",
-        SolutionTemplate = "b3BlcmF0aW9uIFNvbHZlIChxIDogUXViaXQsIGV4cGVjdGVkUmVzdWx0IDogUmVzdWx0KSA6IFVuaXQKewogICAgLy8gWW91ciBzb2x1dGlvbiBsb2dpYyBnb2VzIGhlcmUuCn0=",
-        ExampleDescription = "Below, you can find a possible solution and additionally, just for reference, the code that will be executed internally to validate the submitted solution.[BR]You should only submit the Solve operation with your implemented solution, or in this example case, a copy from the provided solution below.",
-        ExampleCode = "b3BlcmF0aW9uIE1haW4oKSA6IEJvb2wKeyAgICAKICAgIHVzZSBxID0gUXViaXQoKTsKCiAgICBTb2x2ZShxLCBaZXJvKTsKICAgIGxldCBiMSA9IE0ocSk7CiAgICBSZXNldChxKTsKCiAgICBTb2x2ZShxLCBPbmUpOwogICAgbGV0IGIyID0gTShxKTsKICAgIFJlc2V0KHEpOwoKICAgIHJldHVybiBiMSA9PSBaZXJvIGFuZCBiMiA9PSBPbmU7Cn0KCm9wZXJhdGlvbiBTb2x2ZSAocSA6IFF1Yml0LCBleHBlY3RlZFJlc3VsdCA6IFJlc3VsdCkgOiBVbml0CnsKICAgIGlmKGV4cGVjdGVkUmVzdWx0ID09IE9uZSkgewogICAgICAgIFgocSk7CiAgICB9Cn0=",
-        VerificationTemplate = "b3BlcmF0aW9uIE1haW4oKSA6IEJvb2wKeyAgICAKICAgIHVzZSBxID0gUXViaXQoKTsKCiAgICBTb2x2ZShxLCBaZXJvKTsKICAgIGxldCBiMSA9IE0ocSk7CiAgICBSZXNldChxKTsKCiAgICBTb2x2ZShxLCBPbmUpOwogICAgbGV0IGIyID0gTShxKTsKICAgIFJlc2V0KHEpOwoKICAgIHJldHVybiBiMSA9PSBaZXJvIGFuZCBiMiA9PSBPbmU7Cn0KCjw8U09MVkU+Pg==",
-        ExpectedOutput = "true",
-        Level = 0
-    });
+    case ConsoleKey.D1:
+    case ConsoleKey.NumPad1:
+        await ClearDatabase(serviceProvider);
+        break;
+    case ConsoleKey.D2:
+    case ConsoleKey.NumPad2:
+        await AddChallenges(serviceProvider);
+        break;
+    case ConsoleKey.D3:
+    case ConsoleKey.NumPad3:
+        return;
+    default:
+        Console.WriteLine("Invalid option. Exiting...");
+        return;
 }
 
-if (!await dbContext.Challenges.AnyAsync(x => x.Name == "A2"))
+static async Task ClearDatabase(IServiceProvider serviceProvider)
 {
-    dbContext.Challenges.Add(new Challenge
-    {
-        Name = "A2",
-        Title = "Example Challenge",
-        Description = "You are given a single qubit, prepared in the |0⟩ state, and a Result with a possible Zero or One value.[BR]Make sure to change the qubit state and leave it in a state that corresponds with the provided Result value.[BR]You should implement the following Solve method to make that happen and keep the signature of the method exactly like it is.[BR]Go ahead and copy/paste the following template in your Q# project in Visual Studio Code to start working on the solution.",
-        SolutionTemplate = "b3BlcmF0aW9uIFNvbHZlIChxIDogUXViaXQsIGV4cGVjdGVkUmVzdWx0IDogUmVzdWx0KSA6IFVuaXQKewogICAgLy8gWW91ciBzb2x1dGlvbiBsb2dpYyBnb2VzIGhlcmUuCn0=",
-        ExampleDescription = "Below, you can find a possible solution and additionally, just for reference, the code that will be executed internally to validate the submitted solution.[BR]You should only submit the Solve operation with your implemented solution, or in this example case, a copy from the provided solution below.",
-        ExampleCode = "b3BlcmF0aW9uIE1haW4oKSA6IEJvb2wKeyAgICAKICAgIHVzZSBxID0gUXViaXQoKTsKCiAgICBTb2x2ZShxLCBaZXJvKTsKICAgIGxldCBiMSA9IE0ocSk7CiAgICBSZXNldChxKTsKCiAgICBTb2x2ZShxLCBPbmUpOwogICAgbGV0IGIyID0gTShxKTsKICAgIFJlc2V0KHEpOwoKICAgIHJldHVybiBiMSA9PSBaZXJvIGFuZCBiMiA9PSBPbmU7Cn0KCm9wZXJhdGlvbiBTb2x2ZSAocSA6IFF1Yml0LCBleHBlY3RlZFJlc3VsdCA6IFJlc3VsdCkgOiBVbml0CnsKICAgIGlmKGV4cGVjdGVkUmVzdWx0ID09IE9uZSkgewogICAgICAgIFgocSk7CiAgICB9Cn0=",
-        VerificationTemplate = "b3BlcmF0aW9uIE1haW4oKSA6IEJvb2wKeyAgICAKICAgIHVzZSBxID0gUXViaXQoKTsKCiAgICBTb2x2ZShxLCBaZXJvKTsKICAgIGxldCBiMSA9IE0ocSk7CiAgICBSZXNldChxKTsKCiAgICBTb2x2ZShxLCBPbmUpOwogICAgbGV0IGIyID0gTShxKTsKICAgIFJlc2V0KHEpOwoKICAgIHJldHVybiBiMSA9PSBaZXJvIGFuZCBiMiA9PSBPbmU7Cn0KCjw8U09MVkU+Pg==",
-        ExpectedOutput = "true",
-        Level = 0
-    });
+    Console.WriteLine("Clearing database...");
+
+    var dbContext = serviceProvider.GetService<QuantumSummerLabDbContext>();
+    await dbContext.Scores.ExecuteDeleteAsync();
+    await dbContext.Challenges.ExecuteDeleteAsync();
+    await dbContext.Teams.ExecuteDeleteAsync();
+
+    Console.WriteLine("Done clearing database. Exiting...");
 }
 
-if (!await dbContext.Challenges.AnyAsync(x => x.Name == "A3"))
+static async Task AddChallenges(IServiceProvider serviceProvider)
 {
-    dbContext.Challenges.Add(new Challenge
-    {
-        Name = "A3",
-        Title = "Example Challenge",
-        Description = "You are given a single qubit, prepared in the |0⟩ state, and a Result with a possible Zero or One value.[BR]Make sure to change the qubit state and leave it in a state that corresponds with the provided Result value.[BR]You should implement the following Solve method to make that happen and keep the signature of the method exactly like it is.[BR]Go ahead and copy/paste the following template in your Q# project in Visual Studio Code to start working on the solution.",
-        SolutionTemplate = "b3BlcmF0aW9uIFNvbHZlIChxIDogUXViaXQsIGV4cGVjdGVkUmVzdWx0IDogUmVzdWx0KSA6IFVuaXQKewogICAgLy8gWW91ciBzb2x1dGlvbiBsb2dpYyBnb2VzIGhlcmUuCn0=",
-        ExampleDescription = "Below, you can find a possible solution and additionally, just for reference, the code that will be executed internally to validate the submitted solution.[BR]You should only submit the Solve operation with your implemented solution, or in this example case, a copy from the provided solution below.",
-        ExampleCode = "b3BlcmF0aW9uIE1haW4oKSA6IEJvb2wKeyAgICAKICAgIHVzZSBxID0gUXViaXQoKTsKCiAgICBTb2x2ZShxLCBaZXJvKTsKICAgIGxldCBiMSA9IE0ocSk7CiAgICBSZXNldChxKTsKCiAgICBTb2x2ZShxLCBPbmUpOwogICAgbGV0IGIyID0gTShxKTsKICAgIFJlc2V0KHEpOwoKICAgIHJldHVybiBiMSA9PSBaZXJvIGFuZCBiMiA9PSBPbmU7Cn0KCm9wZXJhdGlvbiBTb2x2ZSAocSA6IFF1Yml0LCBleHBlY3RlZFJlc3VsdCA6IFJlc3VsdCkgOiBVbml0CnsKICAgIGlmKGV4cGVjdGVkUmVzdWx0ID09IE9uZSkgewogICAgICAgIFgocSk7CiAgICB9Cn0=",
-        VerificationTemplate = "b3BlcmF0aW9uIE1haW4oKSA6IEJvb2wKeyAgICAKICAgIHVzZSBxID0gUXViaXQoKTsKCiAgICBTb2x2ZShxLCBaZXJvKTsKICAgIGxldCBiMSA9IE0ocSk7CiAgICBSZXNldChxKTsKCiAgICBTb2x2ZShxLCBPbmUpOwogICAgbGV0IGIyID0gTShxKTsKICAgIFJlc2V0KHEpOwoKICAgIHJldHVybiBiMSA9PSBaZXJvIGFuZCBiMiA9PSBPbmU7Cn0KCjw8U09MVkU+Pg==",
-        ExpectedOutput = "true",
-        Level = 0
-    });
+    Console.WriteLine("Adding challenges...");
+
+    var dbContext = serviceProvider.GetService<QuantumSummerLabDbContext>();
+
+    await ProcessChallenge(dbContext, Challenges.CHALLENGE_0);
+    await ProcessChallenge(dbContext, Challenges.CHALLENGE_A1);
+    await ProcessChallenge(dbContext, Challenges.CHALLENGE_A2);
+    await ProcessChallenge(dbContext, Challenges.CHALLENGE_A3);
+    await ProcessChallenge(dbContext, Challenges.CHALLENGE_B1);
+    await ProcessChallenge(dbContext, Challenges.CHALLENGE_B2);
+    await ProcessChallenge(dbContext, Challenges.CHALLENGE_B3);
+    await ProcessChallenge(dbContext, Challenges.CHALLENGE_C1);
+    await ProcessChallenge(dbContext, Challenges.CHALLENGE_C2);
+    await ProcessChallenge(dbContext, Challenges.CHALLENGE_C3);
+    await ProcessChallenge(dbContext, Challenges.CHALLENGE_D1);
+    await ProcessChallenge(dbContext, Challenges.CHALLENGE_D2);
+    await ProcessChallenge(dbContext, Challenges.CHALLENGE_D3);
+
+    Console.WriteLine("Done adding challenges. Exiting...");
 }
 
-await dbContext.SaveChangesAsync();
+static async Task ProcessChallenge(QuantumSummerLabDbContext dbContext, Challenge challenge)
+{
+    if (await dbContext.Challenges.AnyAsync(x => x.Name == challenge.Name))
+    {
+        await dbContext.Challenges.Where(x => x.Name == challenge.Name).ExecuteUpdateAsync(setters =>
+            setters.SetProperty(p => p.Title, challenge.Title)
+                   .SetProperty(p => p.Description, challenge.Description)
+                   .SetProperty(p => p.SolutionTemplate, challenge.SolutionTemplate)
+                   .SetProperty(p => p.ExampleDescription, challenge.ExampleDescription)
+                   .SetProperty(p => p.ExampleCode, challenge.ExampleCode)
+                   .SetProperty(p => p.VerificationTemplate, challenge.VerificationTemplate)
+                   .SetProperty(p => p.ExpectedOutput, challenge.ExpectedOutput)
+                   .SetProperty(p => p.Level, challenge.Level)
+        );
+    }
+    else
+    {
+        dbContext.Challenges.Add(challenge);
+        await dbContext.SaveChangesAsync();
+    }
+}
