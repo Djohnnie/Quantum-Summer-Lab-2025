@@ -2,8 +2,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using QuantumSummerLab.Application.Extensions;
+using QuantumSummerLab.Application.Helpers;
 using QuantumSummerLab.Data;
-using QuantumSummerLab.Data.Model;
+using System.Text.Json;
 
 namespace QuantumSummerLab.Application.Scores.Queries;
 
@@ -21,8 +22,15 @@ public class GetYourSubmissionsResponse
 public class YourSubmission
 {
     public bool IsSuccessful { get; set; }
-    public string ProposedSolution { get; set; }
     public DateTime SubmissionTimestamp { get; set; }
+    public string ProposedSolution { get; set; }
+    public List<SubmissionFeedback> Feedback { get; set; }
+}
+
+public class SubmissionFeedback
+{
+    public bool Valid { get; set; }
+    public string Message { get; set; }
 }
 
 public class GetYourSubmissionsQueryHandler : IRequestHandler<GetYourSubmissionsQuery, GetYourSubmissionsResponse>
@@ -38,20 +46,35 @@ public class GetYourSubmissionsQueryHandler : IRequestHandler<GetYourSubmissions
     public async Task<GetYourSubmissionsResponse> Handle(GetYourSubmissionsQuery request, CancellationToken cancellationToken)
     {
         using var dbContext = _scopeFactory.CreateScope().ServiceProvider.GetRequiredService<QuantumSummerLabDbContext>();
-        var submissions = await dbContext.Scores
+        var scores = await dbContext.Scores
             .Where(x => x.Challenge.Name == request.ChallengeName && x.Team.Name == request.TeamName)
             .OrderByDescending(x => x.SubmissionTimestamp)
-            .Select(x => new YourSubmission
+            .Select(x => new
             {
-                IsSuccessful = x.IsSuccessful,
-                ProposedSolution = x.ProposedSolution,
-                SubmissionTimestamp = x.SubmissionTimestamp
+                x.IsSuccessful,
+                x.ProposedSolution,
+                x.SubmissionTimestamp,
+                x.Feedback
             })
             .ToListAsync(cancellationToken);
 
-        foreach (var submission in submissions)
+        var submissions = new List<YourSubmission>();
+
+        foreach (var score in scores)
         {
-            submission.ProposedSolution = $"```js{Environment.NewLine}{submission.ProposedSolution.FromBase64String()}{Environment.NewLine}```";
+            var feedback = string.IsNullOrEmpty(score.Feedback) ? new QSharpFeedback() : JsonSerializer.Deserialize<QSharpFeedback>(score.Feedback);
+
+            submissions.Add(new YourSubmission
+            {
+                IsSuccessful = score.IsSuccessful,
+                ProposedSolution = $"```js{Environment.NewLine}{score.ProposedSolution.FromBase64String()}{Environment.NewLine}```",
+                SubmissionTimestamp = score.SubmissionTimestamp,
+                Feedback = feedback.Messages.Select(x => new SubmissionFeedback
+                {
+                    Valid = x.Valid,
+                    Message = x.Message
+                }).ToList()
+            });
         }
 
         return new GetYourSubmissionsResponse

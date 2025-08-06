@@ -8,5 +8,6 @@ public class Score
     public Team Team { get; set; }
     public string ProposedSolution { get; set; }
     public bool IsSuccessful { get; set; }
+    public string Feedback { get; set; }
     public DateTime SubmissionTimestamp { get; set; }
 }

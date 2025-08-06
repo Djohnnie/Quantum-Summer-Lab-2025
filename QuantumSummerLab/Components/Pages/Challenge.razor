@@ -43,9 +43,10 @@ else if (IsAvailable)
     {
         <MudText Typo="Typo.body1" Class="my-4">@line</MudText>
     }
+
     <MudMarkdown Value="@SolutionTemplate" />
 
-    @if (!string.IsNullOrEmpty(ExampleCode))
+    @if (!ExampleDescription.Any())
     {
         @foreach (var line in ExampleDescription)
         {
@@ -64,6 +65,19 @@ else if (IsAvailable)
             </MudCardHeader>
             <MudCardContent>
                 <MudAlert Severity="@(IsValid.HasValue? IsValid.Value? Severity.Success: Severity.Error : Severity.Normal)" Class="mt-n4 mb-4">@FeedbackMessage</MudAlert>
+
+                @if (VerificationFeedback != null)
+                {
+                    <MudContainer Class="mb-4">
+                        @foreach (var feedback in VerificationFeedback)
+                        {
+                            <div class="d-flex ml-4">
+                                <MudIcon Icon="@(feedback.Valid? Icons.Material.Filled.Check : Icons.Material.Filled.Close)" Color="@(feedback.Valid? Color.Success: Color.Error)" class="mr-3"></MudIcon>
+                                <MudText Color="@(feedback.Valid? Color.Success: Color.Error)">@feedback.Message</MudText>
+                            </div>
+                        }
+                    </MudContainer>
+                }
                 <MudTextField @bind-Value="Solution" Label="Your solution" spellcheck="false" AutoGrow Lines="5" Variant="Variant.Outlined" Class="monospace"></MudTextField>
             </MudCardContent>
             <MudCardActions>
@@ -98,16 +112,25 @@ else if (IsAvailable)
                                         @if (submission.IsSuccessful)
                                         {
                                             <MudIcon Icon="@Icons.Material.Filled.PlaylistAddCheck" Color="Color.Success" class="mr-3"></MudIcon>
-                                            <MudText Color="Color.Success">You have submitted a <strong>correct solution</strong> at @submission.SubmissionTimestamp.ToString("f")</MudText>
+                                            <MudText Color="Color.Default">You have submitted a <strong>correct solution</strong> at @submission.SubmissionTimestamp.ToString("f")</MudText>
                                         }
                                         else
                                         {
                                             <MudIcon Icon="@Icons.Material.Filled.PlaylistRemove" Color="Color.Error" class="mr-3"></MudIcon>
-                                            <MudText Color="Color.Error">You have submitted a <strong>wrong solution</strong> at @submission.SubmissionTimestamp.ToString("f")</MudText>
+                                            <MudText Color="Color.Default">You have submitted a <strong>wrong solution</strong> at @submission.SubmissionTimestamp.ToString("f")</MudText>
                                         }
                                     </div>
                                 </TitleContent>
                                 <ChildContent>
+                                    <MudContainer Class="mb-4">
+                                        @foreach (var feedback in submission.Feedback)
+                                        {
+                                            <div class="d-flex ml-4">
+                                                <MudIcon Icon="@(feedback.Valid? Icons.Material.Filled.Check : Icons.Material.Filled.Close)" Color="@(feedback.Valid? Color.Success: Color.Error)" class="mr-3"></MudIcon>
+                                                <MudText Color="@(feedback.Valid? Color.Success: Color.Error)">@feedback.Message</MudText>
+                                            </div>
+                                        }
+                                    </MudContainer>
                                     <MudMarkdown Value="@submission.ProposedSolution" />
                                 </ChildContent>
                             </MudExpansionPanel>
@@ -140,6 +163,7 @@ else
     private bool IsLoading { get; set; }
     private bool IsAvailable { get; set; }
     private List<YourSubmission> YourSubmissions { get; set; }
+    private List<VerificationFeedback> VerificationFeedback { get; set; } = new List<VerificationFeedback>();
 
     private string Title { get; set; }
     private string[] Description { get; set; }
@@ -167,6 +191,8 @@ else
             ExampleDescription = challenge.ExampleDescription.Split("[BR]");
             ExampleCode = $"```js{Environment.NewLine}{challenge.ExampleCode}{Environment.NewLine}```";
             FeedbackMessage = "You have not yet submitted a solution";
+            VerificationFeedback = new List<VerificationFeedback>();
+            Clear();
             await LoadScore();
         }
 
@@ -200,6 +226,7 @@ else
 
         IsValid = response.IsValid;
         FeedbackMessage = response.FeedbackMessage;
+        VerificationFeedback = response.Feedback;
 
         await LoadScore();
         StateHasChanged();
@@ -208,6 +235,9 @@ else
     protected void Clear()
     {
         Solution = string.Empty;
+        IsValid = null;
+        FeedbackMessage = "You have not yet submitted a solution";
+        VerificationFeedback = new List<VerificationFeedback>();
         StateHasChanged();
     }
 

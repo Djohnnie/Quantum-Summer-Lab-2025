@@ -4,8 +4,10 @@ using Microsoft.Extensions.DependencyInjection;
 using QsharpBridge;
 using QuantumSummerLab.Application.Extensions;
 using QuantumSummerLab.Application.Helpers;
+using QuantumSummerLab.Application.Scores.Queries;
 using QuantumSummerLab.Data;
 using QuantumSummerLab.Data.Model;
+using System.Text.Json;
 
 namespace QuantumSummerLab.Application.Scores.Commands;
 
@@ -21,6 +23,13 @@ public class VerifyChallengeSolutionResponse
 {
     public bool IsValid { get; set; }
     public string FeedbackMessage { get; set; }
+    public List<VerificationFeedback> Feedback { get; set; }
+}
+
+public class VerificationFeedback
+{
+    public bool Valid { get; set; }
+    public string Message { get; set; }
 }
 
 public class VerifyChallengeSolutionCommandHandler : IRequestHandler<VerifyChallengeSolutionCommand, VerifyChallengeSolutionResponse>
@@ -50,13 +59,14 @@ public class VerifyChallengeSolutionCommandHandler : IRequestHandler<VerifyChall
             var verificationTemplate = challenge.VerificationTemplate.FromBase64String();
             var solution = verificationTemplate.Replace("<<SOLVE>>", request.Solution);
 
-            var isValid = _qSharpHelper.Verify(verificationTemplate, request.Solution, challenge.ExpectedOutput);
+            var feedback = _qSharpHelper.Verify(verificationTemplate, request.Solution, challenge.ExpectedOutput);
 
             dbContext.Scores.Add(new Score
             {
                 Challenge = challenge,
                 Team = team,
-                IsSuccessful = isValid,
+                IsSuccessful = feedback.IsValid,
+                Feedback = JsonSerializer.Serialize(feedback),
                 ProposedSolution = request.Solution.ToBase64String(),
                 SubmissionTimestamp = request.Timestamp
             });
@@ -64,8 +74,13 @@ public class VerifyChallengeSolutionCommandHandler : IRequestHandler<VerifyChall
 
             return new VerifyChallengeSolutionResponse
             {
-                IsValid = isValid,
-                FeedbackMessage = $"Your submitted solution {(isValid ? "is" : "is not")} correct."
+                IsValid = feedback.IsValid,
+                FeedbackMessage = $"Your submitted solution {(feedback.IsValid ? "is" : "is not")} correct.",
+                Feedback = feedback.Messages.Select(m => new VerificationFeedback
+                {
+                    Valid = m.Valid,
+                    Message = m.Message
+                }).ToList()
             };
         }
         catch (QsException ex)
