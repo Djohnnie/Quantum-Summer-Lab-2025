@@ -5,10 +5,18 @@ import Std.Math.*;
 import Std.Measurement.*;
 
 operation Main() : Bool
-{    
+{
     let result = CheckOperationsAreEqual(8, Solve, Expected);
 
+    LogMessage(result, "You have successfully generated equal superposition of all basis states", "You have failed to generate equal superposition of all basis states");
+
     return result;
+}
+
+function LogMessage(isValid: Bool, validMessage: String, invalidMessage: String) : ()
+{
+    let message = "{\"valid\": " + (isValid ? "true" | "false") + ", \"message\": \"" + (isValid ? validMessage | invalidMessage) + "\"}";
+    Message(message);
 }
 
 operation Expected (qs : Qubit[]) : Unit is Adj
@@ -37,7 +45,7 @@ operation Solve (qs : Qubit[]) : Unit
 //     SolutionTemplate = "b3BlcmF0aW9uIFNvbHZlIChxcyA6IFF1Yml0W10pIDogVW5pdCAKewogICAgLy8gWW91ciBzb2x1dGlvbiBsb2dpYyBnb2VzIGhlcmUuCn0=",
 //     ExampleDescription = "",
 //     ExampleCode = "",
-//     VerificationTemplate = "aW1wb3J0IFN0ZC5Bcml0aG1ldGljLio7CmltcG9ydCBTdGQuQ2Fub24uKjsKaW1wb3J0IFN0ZC5EaWFnbm9zdGljcy4qOwppbXBvcnQgU3RkLk1hdGguKjsKaW1wb3J0IFN0ZC5NZWFzdXJlbWVudC4qOwoKb3BlcmF0aW9uIE1haW4oKSA6IEJvb2wKeyAgICAKICAgIGxldCByZXN1bHQgPSBDaGVja09wZXJhdGlvbnNBcmVFcXVhbCg4LCBTb2x2ZSwgRXhwZWN0ZWQpOwoKICAgIHJldHVybiByZXN1bHQ7Cn0KCm9wZXJhdGlvbiBFeHBlY3RlZCAocXMgOiBRdWJpdFtdKSA6IFVuaXQgaXMgQWRqCnsKICAgIGZvciBxIGluIHFzIAogICAgewogICAgICAgIEgocSk7CiAgICB9Cn0KCjw8U09MVkU+Pg==",
+//     VerificationTemplate = "aW1wb3J0IFN0ZC5Bcml0aG1ldGljLio7CmltcG9ydCBTdGQuQ2Fub24uKjsKaW1wb3J0IFN0ZC5EaWFnbm9zdGljcy4qOwppbXBvcnQgU3RkLk1hdGguKjsKaW1wb3J0IFN0ZC5NZWFzdXJlbWVudC4qOwoKb3BlcmF0aW9uIE1haW4oKSA6IEJvb2wKewogICAgbGV0IHJlc3VsdCA9IENoZWNrT3BlcmF0aW9uc0FyZUVxdWFsKDgsIFNvbHZlLCBFeHBlY3RlZCk7CgogICAgTG9nTWVzc2FnZShyZXN1bHQsICJZb3UgaGF2ZSBzdWNjZXNzZnVsbHkgZ2VuZXJhdGVkIGVxdWFsIHN1cGVycG9zaXRpb24gb2YgYWxsIGJhc2lzIHN0YXRlcyIsICJZb3UgaGF2ZSBmYWlsZWQgdG8gZ2VuZXJhdGUgZXF1YWwgc3VwZXJwb3NpdGlvbiBvZiBhbGwgYmFzaXMgc3RhdGVzIik7CgogICAgcmV0dXJuIHJlc3VsdDsKfQoKZnVuY3Rpb24gTG9nTWVzc2FnZShpc1ZhbGlkOiBCb29sLCB2YWxpZE1lc3NhZ2U6IFN0cmluZywgaW52YWxpZE1lc3NhZ2U6IFN0cmluZykgOiAoKQp7CiAgICBsZXQgbWVzc2FnZSA9ICJ7XCJ2YWxpZFwiOiAiICsgKGlzVmFsaWQgPyAidHJ1ZSIgfCAiZmFsc2UiKSArICIsIFwibWVzc2FnZVwiOiBcIiIgKyAoaXNWYWxpZCA/IHZhbGlkTWVzc2FnZSB8IGludmFsaWRNZXNzYWdlKSArICJcIn0iOwogICAgTWVzc2FnZShtZXNzYWdlKTsKfQoKb3BlcmF0aW9uIEV4cGVjdGVkIChxcyA6IFF1Yml0W10pIDogVW5pdCBpcyBBZGoKewogICAgZm9yIHEgaW4gcXMgCiAgICB7CiAgICAgICAgSChxKTsKICAgIH0KfQoKPDxTT0xWRT4+",
 //     ExpectedOutput = "true",
 //     Level = 0
 // };
