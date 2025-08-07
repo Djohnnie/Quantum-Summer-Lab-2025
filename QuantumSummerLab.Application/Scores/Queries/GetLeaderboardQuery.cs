@@ -22,7 +22,8 @@ public class LeaderboardEntry
     public int TotalPoints { get; set; }
     public int ChallengesTried { get; set; }
     public int ChallengesCompleted { get; set; }
-    public int TotalChallenges { get; set; }
+    public string Description { get; set; }
+    public long Timestamp { get; set; }
 }
 
 public class GetLeaderboardQueryHandler : IRequestHandler<GetLeaderboardQuery, GetLeaderboardResponse>
@@ -38,27 +39,75 @@ public class GetLeaderboardQueryHandler : IRequestHandler<GetLeaderboardQuery, G
     public async Task<GetLeaderboardResponse> Handle(GetLeaderboardQuery request, CancellationToken cancellationToken)
     {
         using var dbContext = _scopeFactory.CreateScope().ServiceProvider.GetRequiredService<QuantumSummerLabDbContext>();
+
+        var teams = await dbContext.Teams.ToListAsync(cancellationToken);
+
         var scores = await dbContext.Scores
             .Include(s => s.Team)
             .GroupBy(s => s.Team)
-            .Select(g => new LeaderboardEntry
+            .Select(g => new
             {
                 TeamName = g.Key.Name,
-                TotalPoints = g.Sum(s => s.IsSuccessful ? 1 : 0),
-                ChallengesTried = g.Count(),
-                ChallengesCompleted = g.Count(s => s.IsSuccessful),
-                TotalChallenges = dbContext.Challenges.Count()
+                Scores = g.Select(s => new
+                {
+                    s.IsSuccessful,
+                    Score = s.IsSuccessful ? s.Challenge.Level * 100 : -1,
+                    ChallengeName = s.Challenge.Name,
+                    Timestamp = s.SubmissionTimestamp
+                })
             })
-            .OrderByDescending(e => e.TotalPoints)
             .ToListAsync(cancellationToken);
+
+        var entries = new List<LeaderboardEntry>();
+
+        foreach (var team in teams)
+        {
+            var scoresForTeam = scores.SingleOrDefault(x => x.TeamName == team.Name);
+            if (scoresForTeam != null)
+            {
+                entries.Add(new LeaderboardEntry
+                {
+                    TeamName = scoresForTeam.TeamName,
+                    TotalPoints = scoresForTeam.Scores.Sum(x => x.Score),
+                    ChallengesTried = scoresForTeam.Scores.Count(),
+                    ChallengesCompleted = scoresForTeam.Scores.GroupBy(x => x.ChallengeName).Count(x => x.Any(a => a.IsSuccessful)),
+                    Timestamp = scoresForTeam.Scores.Any(x => x.IsSuccessful)
+                        ? scoresForTeam.Scores
+                            .Where(x => x.IsSuccessful)
+                            .GroupBy(x => x.ChallengeName)
+                            .Select(g => g.MinBy(s => s.Timestamp)?.Timestamp.Ticks ?? 0)
+                            .Sum()
+                        : 0
+                });
+            }
+            else
+            {
+                entries.Add(new LeaderboardEntry
+                {
+                    TeamName = team.Name,
+                    TotalPoints = 0,
+                    ChallengesTried = 0,
+                    ChallengesCompleted = 0,
+                    Timestamp = 0,
+                    Description = "No scores recorded"
+                });
+            }
+        }
+
+        entries = entries.OrderByDescending(e => e.TotalPoints).ThenBy(x => x.Timestamp).ToList();
+
+        for (int i = 0; i < entries.Count; i++)
+        {
+            entries[i].Position = i + 1;
+            if (string.IsNullOrEmpty(entries[i].Description))
+            {
+                entries[i].Description = $"{entries[i].ChallengesCompleted} challenges completed in {entries[i].ChallengesTried} tries!";
+            }
+        }
 
         return new GetLeaderboardResponse
         {
-            Entries = scores.Select((e, index) =>
-            {
-                e.Position = index + 1;
-                return e;
-            }).ToList()
+            Entries = entries
         };
     }
 }
