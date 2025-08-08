@@ -9,43 +9,46 @@
 @using QuantumSummerLab.Web.Copilot
 
 @inject NavigationManager NavigationManager
+@inject IScrollManager ScrollManager
 @inject ProtectedSessionStorage ProtectedSessionStore
 @inject IMediator Mediator
 @inject ICopilotHelper CopilotHelper
 
 @page "/copilot"
 
-<PageTitle>Quantum Summer Lab Copilot</PageTitle>
+<PageTitle>Quantum Summer Lab - Copilot</PageTitle>
 
 <MudText Typo="Typo.h4" Class="my-4">Quantum Summer Lab Copilot</MudText>
 
 @if (IsLoggedIn)
 {
-    <MudContainer Class="pa-12">
-        @foreach (var message in _chatHistory.Messages)
-        {
-            if (message.Role != ChatRole.System)
+    <div id="scrollableContainer">
+        <MudContainer Class="pa-12">
+            @foreach (var message in _chatHistory.Messages)
             {
-                <MudChat ChatPosition="@(message.Role == ChatRole.Assistant ? ChatBubblePosition.Start : ChatBubblePosition.End)">
-                    <MudAvatar Color="@(message.Role == ChatRole.Assistant ? Color.Default : Color.Info)">
-                        <MudIcon Icon="@(message.Role == ChatRole.Assistant ? Icons.Material.Filled.Webhook : Icons.Material.Filled.Face)" Color="Color.Default" />
-                    </MudAvatar>
+                if (message.Role != ChatRole.System)
+                {
+                    <MudChat ChatPosition="@(message.Role == ChatRole.Assistant ? ChatBubblePosition.Start : ChatBubblePosition.End)">
+                        <MudAvatar Color="@(message.Role == ChatRole.Assistant ? Color.Default : Color.Info)">
+                            <MudIcon Icon="@(message.Role == ChatRole.Assistant ? Icons.Material.Filled.Webhook : Icons.Material.Filled.Face)" Color="Color.Default" />
+                        </MudAvatar>
 
-                    @foreach (var sentence in message.Content.Split("[BR]", StringSplitOptions.RemoveEmptyEntries))
-                    {
-                        <MudChatBubble Color="@(message.Role == ChatRole.Assistant ? Color.Default : Color.Info)">
-                            @sentence.Trim()
-                        </MudChatBubble>
-                    }
-                </MudChat>
+                        @foreach (var sentence in message.Content.Split("[BR]", StringSplitOptions.RemoveEmptyEntries))
+                        {
+                            <MudChatBubble Color="@(message.Role == ChatRole.Assistant ? Color.Default : Color.Info)">
+                                @sentence.Trim()
+                            </MudChatBubble>
+                        }
+                    </MudChat>
+                }
             }
-        }
-    </MudContainer>
+        </MudContainer>
 
-    <MudContainer MaxWidth="MaxWidth.Medium" Class="d-flex flex-column justify-center gap-4">
-        <MudTextField T="string" Label="Outlined" Variant="Variant.Outlined" @bind-Value="Chat" Immediate="true" OnKeyDown="@OnKeyDown" TextUpdateSuppression="false"
-                      Adornment="Adornment.End" AdornmentColor="Color.Primary" AdornmentIcon="@Icons.Material.Filled.Send" OnAdornmentClick="@AskQuestion" />
-    </MudContainer>
+        <MudContainer MaxWidth="MaxWidth.Medium" Class="d-flex flex-column justify-center gap-4">
+            <MudTextField T="string" Label="Your question" Variant="Variant.Outlined" @bind-Value="Chat" Immediate="true" OnKeyDown="@OnKeyDown" TextUpdateSuppression="false"
+                          Adornment="Adornment.End" AdornmentColor="Color.Primary" AdornmentIcon="@Icons.Material.Filled.Send" OnAdornmentClick="@AskQuestion" />
+        </MudContainer>
+    </div>
 }
 else
 {
@@ -83,6 +86,9 @@ else
                         break;
                 }
             }
+            StateHasChanged();
+            await Task.Delay(1000);
+            await ScrollManager.ScrollToBottomAsync("scrollableContainer", ScrollBehavior.Smooth);
         }
     }
 
