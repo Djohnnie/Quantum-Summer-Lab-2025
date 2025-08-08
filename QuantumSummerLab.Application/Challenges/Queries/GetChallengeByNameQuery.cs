@@ -15,11 +15,13 @@ public class GetChallengeByNameResponse
 {
     public bool IsAvailable { get; set; }
     public string Name { get; set; }
+    public int Level { get; set; }
     public string Title { get; set; }
     public string Description { get; set; }
     public string SolutionTemplate { get; set; }
     public string ExampleDescription { get; set; }
     public string ExampleCode { get; set; }
+    public string CopilotInstructions { get; set; }
 }
 
 public class GetChallengeByNameQueryHandler : IRequestHandler<GetChallengeByNameQuery, GetChallengeByNameResponse>
@@ -47,11 +49,13 @@ public class GetChallengeByNameQueryHandler : IRequestHandler<GetChallengeByName
         {
             IsAvailable = true,
             Name = challenge.Name,
+            Level = challenge.Level,
             Title = challenge.Title,
             Description = challenge.Description,
             SolutionTemplate = challenge.SolutionTemplate.FromBase64String(),
             ExampleDescription = challenge.ExampleDescription,
-            ExampleCode = challenge.ExampleCode.FromBase64String()
+            ExampleCode = challenge.ExampleCode.FromBase64String(),
+            CopilotInstructions = challenge.CopilotInstructions
         };
     }
 }

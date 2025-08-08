@@ -4,10 +4,12 @@
 @using QuantumSummerLab.Application.Scores.Commands
 @using QuantumSummerLab.Application.Scores.Queries
 @using QuantumSummerLab.Application.Teams.Commands
+@using QuantumSummerLab.Web.Copilot
 
 @inject NavigationManager NavigationManager
 @inject ProtectedSessionStorage ProtectedSessionStore
 @inject IMediator Mediator
+@inject ICopilotHelper CopilotHelper
 
 @page "/challenge/{ChallengeName}"
 
@@ -145,6 +147,9 @@ else if (IsAvailable)
     {
         <MudAlert Severity="Severity.Info" Class="my-4">You should <MudLink Href="/login">login</MudLink> to be able to submit solutions!</MudAlert>
     }
+
+    <MudTextField @bind-Value="Chat" />
+    <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Send" Color="Color.Primary" OnClick="@AskQuestion" Class="mr-1">Ask question</MudButton>
 }
 else
 {
@@ -174,6 +179,7 @@ else
     private bool? IsValid { get; set; }
 
     private string Solution { get; set; }
+    private string Chat { get; set; }
 
     private bool IsSuccess { get; set; }
     private int NumberOfAttempts { get; set; }
@@ -239,6 +245,26 @@ else
         FeedbackMessage = "You have not yet submitted a solution";
         VerificationFeedback = new List<VerificationFeedback>();
         StateHasChanged();
+    }
+
+    protected async Task AskQuestion()
+    {
+        if (string.IsNullOrWhiteSpace(Chat))
+        {
+            return;
+        }
+        var chatHistory = new ChatHistory();
+        chatHistory.Messages.Add(new Chat
+        {
+            Role = ChatRole.User,
+            Content = Chat
+        });
+        var response = await CopilotHelper.Chat(chatHistory);
+        if (response != null)
+        {
+            Chat = string.Join(Environment.NewLine, response.Messages.Select(x => x.Content));
+            StateHasChanged();
+        }
     }
 
     private async Task LoadScore()

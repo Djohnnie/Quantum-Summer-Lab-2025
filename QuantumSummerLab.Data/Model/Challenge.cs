@@ -13,4 +13,5 @@ public class Challenge
     public string VerificationTemplate { get; set; }
     public string SolutionTemplate { get; set; }
     public string ExpectedOutput { get; set; }
+    public string CopilotInstructions { get; set; }
 }
