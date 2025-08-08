@@ -28,8 +28,8 @@
                 {
                     <MudAlert Severity="Severity.Error" Class="my-2">@ErrorMessage</MudAlert>
                 }
-                <MudTextField @bind-Value="TeamName" Class="my-2" Label="Team name" Variant="Variant.Text"></MudTextField>
-                <MudTextField @bind-Value="Password" Class="my-2" Label="Password" InputType="InputType.Password" Variant="Variant.Text"></MudTextField>
+                <MudTextField @bind-Value="TeamName" Class="my-4" Label="Team name" Variant="Variant.Text"></MudTextField>
+                <MudTextField @bind-Value="Password" Class="my-4" Label="Password" InputType="InputType.Password" Variant="Variant.Text"></MudTextField>
             </MudCardContent>
             <MudCardActions>
                 <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Login" Color="Color.Success" OnClick="@Authenticate" Class="mr-1">Login</MudButton>
