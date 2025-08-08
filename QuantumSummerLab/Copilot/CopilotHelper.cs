@@ -70,10 +70,11 @@ internal class CopilotHelper : ICopilotHelper
             messageBuilder.Append(response.Message.Content);
         }
 
+        chatHistory.LatestMessage = messageBuilder.ToString().Replace("**", "");
         chatHistory.Messages.Add(new Chat
         {
             Role = ChatRole.Assistant,
-            Content = messageBuilder.ToString().Replace("**", "")
+            Content = chatHistory.LatestMessage
         });
 
         return chatHistory;
@@ -108,6 +109,7 @@ internal class ChatHistory
     public List<Chat> Messages { get; private set; } = new List<Chat>();
     public string TeamName { get; set; } = string.Empty;
     public string Instructions { get; set; } = string.Empty;
+    public string LatestMessage { get; set; } = string.Empty;
 
     public ChatHistory()
     {

@@ -1,6 +1,8 @@
 ﻿@using MediatR
 @using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
 @using QuantumSummerLab.Application.Challenges.Queries
+@using QuantumSummerLab.Application.Chats.Commands
+@using QuantumSummerLab.Application.Chats.Queries
 @using QuantumSummerLab.Application.Scores.Commands
 @using QuantumSummerLab.Application.Scores.Queries
 @using QuantumSummerLab.Application.Teams.Commands
@@ -53,11 +55,36 @@ else
 @code
 {
     private bool? _lastLoggedIn;
+    private bool? _lastRefreshed;
     private bool IsLoggedIn { get; set; }
     private string TeamName { get; set; }
 
     private ChatHistory _chatHistory = new ChatHistory();
     private string Chat { get; set; }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        await Task.Delay(500); // Allow the UI to render before loading chat history
+        if(!string.IsNullOrEmpty(TeamName))
+        {
+            var response = await Mediator.Send(new GetChatsQuery { TeamName = TeamName });
+            foreach (var chat in response.Messages)
+            {
+                switch (chat.Role)
+                {
+                    case "User":
+                        _chatHistory.AddUserMessage(chat.Message);
+                        break;
+                    case "Assistant":
+                        _chatHistory.AddAssistantMessage(chat.Message);
+                        break;
+                    default:
+                        _chatHistory.AddSystemMessage(chat.Message);
+                        break;
+                }
+            }
+        }
+    }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -82,9 +109,21 @@ else
 
         _chatHistory.TeamName = TeamName;
         _chatHistory.AddUserMessage(Chat);
+        await Mediator.Send(new SaveChatCommand
+        {
+            Message = Chat,
+            Role = "User",
+            TeamName = TeamName
+        });
         Chat = string.Empty;
         StateHasChanged();
         _chatHistory = await CopilotHelper.Chat(_chatHistory);
+        await Mediator.Send(new SaveChatCommand
+        {
+            Message = _chatHistory.LatestMessage,
+            Role = "Assistant",
+            TeamName = TeamName
+        });
         StateHasChanged();
     }
 

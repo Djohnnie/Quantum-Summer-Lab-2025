@@ -11,6 +11,7 @@ public class QuantumSummerLabDbContext : DbContext
     public DbSet<Challenge> Challenges { get; set; }
     public DbSet<Team> Teams { get; set; }
     public DbSet<Score> Scores { get; set; }
+    public DbSet<Chat> Chats { get; set; }
 
     public QuantumSummerLabDbContext(IConfiguration configuration)
     {
@@ -47,6 +48,14 @@ public class QuantumSummerLabDbContext : DbContext
         modelBuilder.Entity<Score>(entityBuilder =>
         {
             entityBuilder.ToTable("SCORES");
+            entityBuilder.HasKey(x => x.Id).IsClustered(false);
+            entityBuilder.Property(x => x.SysId).ValueGeneratedOnAdd();
+            entityBuilder.HasIndex(x => x.SysId).IsClustered();
+        });
+
+        modelBuilder.Entity<Chat>(entityBuilder =>
+        {
+            entityBuilder.ToTable("CHATS");
             entityBuilder.HasKey(x => x.Id).IsClustered(false);
             entityBuilder.Property(x => x.SysId).ValueGeneratedOnAdd();
             entityBuilder.HasIndex(x => x.SysId).IsClustered();
