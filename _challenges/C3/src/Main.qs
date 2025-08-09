@@ -10,6 +10,7 @@ operation Main() : Bool
     //LogMessage(result, "You have successfully generated the GHZ state", "You have failed to generate the GHZ state");
     
     DumpOperation(2,Solve);
+    DumpOperation(2,Expected);
 
     use qs = Qubit[2];
     Solve(qs);
@@ -70,5 +71,6 @@ operation Solve (qs : Qubit[]) : Unit
 //     ExampleCode = "",
 //     VerificationTemplate = "",
 //     ExpectedOutput = "",
-//     Level = 0
+//     CopilotInstructions = "",
+//     Level = 3
 // };
