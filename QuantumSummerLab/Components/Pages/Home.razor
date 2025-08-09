@@ -4,7 +4,7 @@
 @using QuantumSummerLab.Application.Scores.Queries
 @using QuantumSummerLab.Application.Teams.Commands
 
-@inject ProtectedSessionStorage ProtectedSessionStore
+@inject ProtectedLocalStorage ProtectedLocalStore
 @inject IMediator Mediator
 
 <PageTitle>Quantum Summer Lab - Home</PageTitle>
@@ -145,7 +145,7 @@
     {
         if (firstRender)
         {
-            var authToken = await ProtectedSessionStore.GetAsync<AuthenticationToken>("authToken");
+            var authToken = await ProtectedLocalStore.GetAsync<AuthenticationToken>("authToken");
 
             IsLoggedIn = authToken.Success;
 

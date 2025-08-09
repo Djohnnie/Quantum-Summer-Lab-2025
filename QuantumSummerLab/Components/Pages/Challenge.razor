@@ -7,7 +7,7 @@
 @using QuantumSummerLab.Web.Copilot
 
 @inject NavigationManager NavigationManager
-@inject ProtectedSessionStorage ProtectedSessionStore
+@inject ProtectedLocalStorage ProtectedLocalStore
 @inject IMediator Mediator
 @inject ICopilotHelper CopilotHelper
 
@@ -203,7 +203,7 @@ else
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        var authToken = await ProtectedSessionStore.GetAsync<AuthenticationToken>("authToken");
+        var authToken = await ProtectedLocalStore.GetAsync<AuthenticationToken>("authToken");
 
         if (_lastLoggedIn == null || _lastLoggedIn != authToken.Success)
         {

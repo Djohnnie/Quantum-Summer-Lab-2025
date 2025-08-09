@@ -19,7 +19,7 @@ public class CopilotFunctions
     [KernelFunction]
     [Description("Gets more information about a challenge with a specific name.")]
     [return: Description("The name, title, level, full description and the signature of the operation that needs to be written to complete the challenge.")]
-    public async Task<string> GetChallengeInformation([Description("The name of the challenge to get the information for.")] string challengeName)
+    public async Task<string> GetChallengeInformation([Description("The name of the challenge to get the information for [0, A1, A2, A3, B1, B2, B3, C1, C2, C3, D1, D2, D3]")] string challengeName)
     {
         var challenge = await _mediator.Send(new GetChallengeByNameQuery { ChallengeName = challengeName });
         if (!challenge.IsAvailable)

@@ -8,4 +8,5 @@ public class Chat
     public string Message { get; set; }
     public string Role { get; set; }
     public DateTime Timestamp { get; set; }
+    public bool IsReduced { get; set; }
 }

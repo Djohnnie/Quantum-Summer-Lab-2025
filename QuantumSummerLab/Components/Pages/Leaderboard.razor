@@ -4,7 +4,7 @@
 @using QuantumSummerLab.Application.Teams.Commands
 
 @inject NavigationManager NavigationManager
-@inject ProtectedSessionStorage ProtectedSessionStore
+@inject ProtectedLocalStorage ProtectedLocalStore
 @inject IMediator Mediator
 
 @page "/leaderboard"
@@ -53,7 +53,7 @@ else
     {
         if (firstRender)
         {
-            IsLoggedIn = (await ProtectedSessionStore.GetAsync<AuthenticationToken>("authToken")).Success;
+            IsLoggedIn = (await ProtectedLocalStore.GetAsync<AuthenticationToken>("authToken")).Success;
             var result = await Mediator.Send(new GetLeaderboardQuery());
             Entries = result.Entries;
 

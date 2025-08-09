@@ -17,8 +17,10 @@ public class GetChatsResponse
 
 public class ChatMessage
 {
+    public Guid Id { get; set; }
     public string Message { get; set; }
     public string Role { get; set; }
+    public bool IsReduced { get; set; }
 }
 
 public class GetChatsQueryHandler : IRequestHandler<GetChatsQuery, GetChatsResponse>
@@ -40,8 +42,10 @@ public class GetChatsQueryHandler : IRequestHandler<GetChatsQuery, GetChatsRespo
             .OrderBy(x => x.Timestamp)
             .Select(x => new ChatMessage
             {
+                Id = x.Id,
                 Role = x.Role,
-                Message = x.Message
+                Message = x.Message,
+                IsReduced = x.IsReduced
             })
             .ToListAsync(cancellationToken);
 

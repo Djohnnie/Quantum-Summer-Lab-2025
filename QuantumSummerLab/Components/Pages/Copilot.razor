@@ -10,7 +10,7 @@
 
 @inject NavigationManager NavigationManager
 @inject IScrollManager ScrollManager
-@inject ProtectedSessionStorage ProtectedSessionStore
+@inject ProtectedLocalStorage ProtectedLocalStore
 @inject IMediator Mediator
 @inject ICopilotHelper CopilotHelper
 
@@ -26,7 +26,7 @@
         <MudContainer Class="pa-12">
             @foreach (var message in _chatHistory.Messages)
             {
-                if (message.Role != ChatRole.System)
+                if (!string.IsNullOrWhiteSpace(message.Content) && message.Role != ChatRole.System && message.Role != ChatRole.Reduced)
                 {
                     <MudChat ChatPosition="@(message.Role == ChatRole.Assistant ? ChatBubblePosition.Start : ChatBubblePosition.End)">
                         <MudAvatar Color="@(message.Role == ChatRole.Assistant ? Color.Default : Color.Info)">
@@ -35,9 +35,12 @@
 
                         @foreach (var sentence in message.Content.Split("[BR]", StringSplitOptions.RemoveEmptyEntries))
                         {
-                            <MudChatBubble Color="@(message.Role == ChatRole.Assistant ? Color.Default : Color.Info)">
-                                @sentence.Trim()
-                            </MudChatBubble>
+                            @if (!string.IsNullOrWhiteSpace(sentence))
+                            {
+                                <MudChatBubble Color="@(message.Role == ChatRole.Assistant ? Color.Default : Color.Info)">
+                                    @sentence.Trim()
+                                </MudChatBubble>
+                            }
                         }
                     </MudChat>
                 }
@@ -68,24 +71,9 @@ else
     protected override async Task OnParametersSetAsync()
     {
         await Task.Delay(500); // Allow the UI to render before loading chat history
-        if(!string.IsNullOrEmpty(TeamName))
+        if (!string.IsNullOrEmpty(TeamName))
         {
-            var response = await Mediator.Send(new GetChatsQuery { TeamName = TeamName });
-            foreach (var chat in response.Messages)
-            {
-                switch (chat.Role)
-                {
-                    case "User":
-                        _chatHistory.AddUserMessage(chat.Message);
-                        break;
-                    case "Assistant":
-                        _chatHistory.AddAssistantMessage(chat.Message);
-                        break;
-                    default:
-                        _chatHistory.AddSystemMessage(chat.Message);
-                        break;
-                }
-            }
+            await RefreshChatHistory();
             StateHasChanged();
             await Task.Delay(1000);
             await ScrollManager.ScrollToBottomAsync("scrollableContainer", ScrollBehavior.Smooth);
@@ -94,7 +82,7 @@ else
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        var authToken = await ProtectedSessionStore.GetAsync<AuthenticationToken>("authToken");
+        var authToken = await ProtectedLocalStore.GetAsync<AuthenticationToken>("authToken");
 
         if (_lastLoggedIn == null || _lastLoggedIn != authToken.Success)
         {
@@ -131,6 +119,51 @@ else
             TeamName = TeamName
         });
         StateHasChanged();
+        await Task.Delay(1000);
+        await ScrollManager.ScrollToBottomAsync("scrollableContainer", ScrollBehavior.Smooth);
+
+        if (_chatHistory.Messages.Count(x => !x.IsReduced) > 10)
+        {
+            await ReduceChat();
+        }
+    }
+
+    private async Task RefreshChatHistory()
+    {
+        var response = await Mediator.Send(new GetChatsQuery { TeamName = TeamName });
+        _chatHistory = new ChatHistory();
+        foreach (var chat in response.Messages)
+        {
+            switch (chat.Role)
+            {
+                case "User":
+                    _chatHistory.AddUserMessage(chat.Message, chat.Id, chat.IsReduced);
+                    break;
+                case "Assistant":
+                    _chatHistory.AddAssistantMessage(chat.Message, chat.Id, chat.IsReduced);
+                    break;
+                case "Reduced":
+                    _chatHistory.AddReducedMessage(chat.Message, chat.Id, chat.IsReduced);
+                    break;
+                default:
+                    _chatHistory.AddSystemMessage(chat.Message, chat.Id, chat.IsReduced);
+                    break;
+            }
+        }
+    }
+
+    private async Task ReduceChat()
+    {
+        await RefreshChatHistory();
+        var chatIds = _chatHistory.Messages.Where(x => x.Id.HasValue && !x.IsReduced).Select(x => x.Id.Value).ToArray();
+        var newChatHistory = await CopilotHelper.Reduce(_chatHistory);
+        var response = await Mediator.Send(new ReduceChatCommand
+        {
+            TeamName = TeamName,
+            ChatsToReduce = chatIds,
+            ReducedMessage = newChatHistory.LatestMessage
+        });
+        await RefreshChatHistory();
     }
 
     protected async Task OnKeyDown(KeyboardEventArgs e)

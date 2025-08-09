@@ -3,7 +3,7 @@
 @using QuantumSummerLab.Application.Teams.Commands
 
 @inject NavigationManager NavigationManager
-@inject ProtectedSessionStorage ProtectedSessionStore
+@inject ProtectedLocalStorage ProtectedLocalStore
 @inject IMediator Mediator
 
 @page "/login"
@@ -60,7 +60,7 @@ else
     {
         if (firstRender)
         {
-            var authentication = await ProtectedSessionStore.GetAsync<AuthenticationToken>("authToken");
+            var authentication = await ProtectedLocalStore.GetAsync<AuthenticationToken>("authToken");
             IsLoggedIn = authentication.Success;
             LoggedInTeamName = authentication.Value?.TeamName ?? string.Empty;
 
@@ -78,7 +78,7 @@ else
 
         if (response.Success)
         {
-            await ProtectedSessionStore.SetAsync("authToken", response.Token);
+            await ProtectedLocalStore.SetAsync("authToken", response.Token);
             NavigationManager.NavigateTo("/");
         }
         else
@@ -98,7 +98,7 @@ else
 
         if (response.Success)
         {
-            await ProtectedSessionStore.SetAsync("authToken", response.Token);
+            await ProtectedLocalStore.SetAsync("authToken", response.Token);
             NavigationManager.NavigateTo("/");
         }
         else
@@ -110,7 +110,7 @@ else
 
     protected async Task Logout()
     {
-        await ProtectedSessionStore.DeleteAsync("authToken");
+        await ProtectedLocalStore.DeleteAsync("authToken");
         NavigationManager.NavigateTo("/");
     }
 
