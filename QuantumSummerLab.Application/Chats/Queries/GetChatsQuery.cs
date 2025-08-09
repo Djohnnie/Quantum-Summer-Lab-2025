@@ -20,6 +20,7 @@ public class ChatMessage
     public Guid Id { get; set; }
     public string Message { get; set; }
     public string Role { get; set; }
+    public int TokensUsed { get; set; }
     public bool IsReduced { get; set; }
 }
 
@@ -45,6 +46,7 @@ public class GetChatsQueryHandler : IRequestHandler<GetChatsQuery, GetChatsRespo
                 Id = x.Id,
                 Role = x.Role,
                 Message = x.Message,
+                TokensUsed = x.TokensUsed,
                 IsReduced = x.IsReduced
             })
             .ToListAsync(cancellationToken);

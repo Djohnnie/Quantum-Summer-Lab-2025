@@ -11,6 +11,7 @@ public class ReduceChatCommand : IRequest<ReduceChatResponse>
     public string TeamName { get; set; }
     public Guid[] ChatsToReduce { get; set; }
     public string ReducedMessage { get; set; }
+    public int TokensUsed { get; set; }
 }
 
 public class ReduceChatResponse
@@ -45,6 +46,7 @@ public class ReduceChatCommandHandler : IRequestHandler<ReduceChatCommand, Reduc
         {
             Role = "Reduced",
             Message = request.ReducedMessage,
+            TokensUsed = request.TokensUsed,
             Team = team,
             Timestamp = chatsToReduce.First().Timestamp
         });

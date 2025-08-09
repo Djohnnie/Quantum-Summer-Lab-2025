@@ -86,7 +86,7 @@ internal class CopilotHelper : ICopilotHelper
         }
 
         chatHistory.LatestMessage = messageBuilder.ToString().Replace("**", "");
-        chatHistory.AddAssistantMessage(chatHistory.LatestMessage);
+        chatHistory.AddAssistantMessage(chatHistory.LatestMessage, chatHistory.InputTokenCount + chatHistory.OutputTokenCount);
 
         return chatHistory;
     }
@@ -128,7 +128,7 @@ internal class CopilotHelper : ICopilotHelper
             LatestMessage = messageBuilder.ToString().Replace("**", "")
         };
 
-        newChatHistory.AddAssistantMessage(chatHistory.LatestMessage);
+        newChatHistory.AddAssistantMessage(chatHistory.LatestMessage, chatHistory.InputTokenCount + chatHistory.OutputTokenCount);
 
         return newChatHistory;
     }
@@ -174,7 +174,7 @@ internal class ChatHistory
 
     public ChatHistory()
     {
-        AddAssistantMessage("Hello! I am the Quantum Summer Lab Copilot. How can I assist you today?", null, true);
+        AddAssistantMessage("Hello! I am the Quantum Summer Lab Copilot. How can I assist you today?", 0, null, true);
     }
 
     public void AddSystemMessage(string message, Guid? id = null, bool isReduced = false)
@@ -199,24 +199,26 @@ internal class ChatHistory
         });
     }
 
-    public void AddAssistantMessage(string message, Guid? id = null, bool isReduced = false)
+    public void AddAssistantMessage(string message, int tokensUsed, Guid? id = null, bool isReduced = false)
     {
         Messages.Add(new Chat
         {
             Id = id,
             Role = ChatRole.Assistant,
             Content = message,
+            TokensUsed = tokensUsed,
             IsReduced = isReduced
         });
     }
 
-    public void AddReducedMessage(string message, Guid? id = null, bool isReduced = false)
+    public void AddReducedMessage(string message, int tokensUsed, Guid? id = null, bool isReduced = false)
     {
         Messages.Add(new Chat
         {
             Id = id,
             Role = ChatRole.Reduced,
             Content = message,
+            TokensUsed = tokensUsed,
             IsReduced = isReduced
         });
     }
@@ -233,6 +235,7 @@ internal class Chat
     public ChatRole Role { get; set; }
     public string Content { get; set; } = string.Empty;
     public bool IsReduced { get; set; }
+    public int TokensUsed { get; set; }
 }
 
 internal enum ChatRole

@@ -11,6 +11,7 @@ public class SaveChatCommand : IRequest<SaveChatResponse>
     public string TeamName { get; set; }
     public string Message { get; set; }
     public string Role { get; set; }
+    public int TokensUsed { get; set; }
 }
 
 public class SaveChatResponse
@@ -38,6 +39,7 @@ public class SaveChatCommandHandler : IRequestHandler<SaveChatCommand, SaveChatR
         {
             Role = request.Role,
             Message = request.Message,
+            TokensUsed = request.TokensUsed,
             Team = team,
             Timestamp = DateTime.UtcNow
         });

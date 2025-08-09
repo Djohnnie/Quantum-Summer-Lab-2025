@@ -42,6 +42,11 @@
                                 </MudChatBubble>
                             }
                         }
+
+                        @if (message.Role == ChatRole.Assistant)
+                        {
+                            <MudChatFooter Text="@($"{message.TokensUsed:D0} tokens used")" />
+                        }
                     </MudChat>
                 }
             }
@@ -116,6 +121,7 @@ else
         {
             Message = _chatHistory.LatestMessage,
             Role = "Assistant",
+            TokensUsed = _chatHistory.InputTokenCount + _chatHistory.OutputTokenCount,
             TeamName = TeamName
         });
         StateHasChanged();
@@ -140,10 +146,10 @@ else
                     _chatHistory.AddUserMessage(chat.Message, chat.Id, chat.IsReduced);
                     break;
                 case "Assistant":
-                    _chatHistory.AddAssistantMessage(chat.Message, chat.Id, chat.IsReduced);
+                    _chatHistory.AddAssistantMessage(chat.Message, chat.TokensUsed, chat.Id, chat.IsReduced);
                     break;
                 case "Reduced":
-                    _chatHistory.AddReducedMessage(chat.Message, chat.Id, chat.IsReduced);
+                    _chatHistory.AddReducedMessage(chat.Message, chat.TokensUsed, chat.Id, chat.IsReduced);
                     break;
                 default:
                     _chatHistory.AddSystemMessage(chat.Message, chat.Id, chat.IsReduced);
