@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.SemanticKernel;
 using QuantumSummerLab.Application.Challenges.Queries;
+using QuantumSummerLab.Application.Chats.Commands;
 using QuantumSummerLab.Application.Scores.Queries;
 using System.ComponentModel;
 using System.Text;
@@ -70,5 +71,15 @@ public class CopilotFunctions
         return proposals.YourSubmissions
             .OrderByDescending(x => x.SubmissionTimestamp)
             .FirstOrDefault()?.ProposedSolution ?? "No proposals found for this challenge.";
+    }
+
+    [KernelFunction]
+    [Description("Clear the chat history for a specific team.")]
+    [return: Description("A code that needs to be sent to the user after clearing has completed.")]
+    public async Task<string> ClearMyChatHistory([Description("The name of the team that would like to have its chat history cleared.")] string teamName)
+    {
+        await _mediator.Send(new ClearChatCommand { TeamName = teamName });
+
+        return "<<CHAT CLEARED>>";
     }
 }

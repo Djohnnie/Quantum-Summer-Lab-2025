@@ -22,6 +22,9 @@
 
 @if (IsLoggedIn)
 {
+    <MudAlert class="mb-4" Severity="Severity.Info">Use this experimental Copilot at your own risk. It will try its best to help you solve the challenges and keep track of your chat history. You can just ask it to clear the chat history and start from scratch if you think that is needed.</MudAlert>
+    <MudAlert Severity="Severity.Warning">Your chat history is stored in plain text in our internal database for your convenience. Please keep this in mind while chatting and don't share anything personal, sensitive or inappropriate.</MudAlert>
+
     <div id="scrollableContainer">
         <MudContainer Class="pa-12">
             @foreach (var message in _chatHistory.Messages)
