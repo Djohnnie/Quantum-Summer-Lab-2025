@@ -34,11 +34,11 @@ public class CopilotFunctions
         responseBuilder.AppendLine($"**Level: {challenge.Level}**");
         responseBuilder.AppendLine($"**Description: {challenge.Description.Replace("[BR]", "")}**");
         responseBuilder.AppendLine($"**Solution Template**");
+        responseBuilder.AppendLine(challenge.SolutionTemplate);
         if (string.IsNullOrEmpty(challenge.CopilotInstructions))
         {
             responseBuilder.AppendLine($"**Copilot Instructions that should never be mentioned to the user: {challenge.CopilotInstructions}* *");
         }
-        responseBuilder.AppendLine(challenge.SolutionTemplate);
         return responseBuilder.ToString();
     }
 
@@ -68,9 +68,20 @@ public class CopilotFunctions
             ChallengeName = challengeName
         });
 
-        return proposals.YourSubmissions
+        var latestProposal = proposals.YourSubmissions
             .OrderByDescending(x => x.SubmissionTimestamp)
-            .FirstOrDefault()?.ProposedSolution ?? "No proposals found for this challenge.";
+            .FirstOrDefault();
+
+        if (latestProposal == null)
+        {
+            return "No proposals found for this challenge.";
+        }
+
+        var responseBuilder = new StringBuilder();
+        responseBuilder.AppendLine($"**Your submission is {(latestProposal.IsSuccessful ? "correct" : "not correct")}**");
+        responseBuilder.AppendLine($"**Submission**");
+        responseBuilder.AppendLine(latestProposal.ProposedSolution);
+        return responseBuilder.ToString();
     }
 
     [KernelFunction]

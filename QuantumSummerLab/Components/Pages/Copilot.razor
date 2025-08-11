@@ -7,6 +7,7 @@
 @using QuantumSummerLab.Application.Scores.Queries
 @using QuantumSummerLab.Application.Teams.Commands
 @using QuantumSummerLab.Web.Copilot
+@using QuantumSummerLab.Web.Extensions
 
 @inject NavigationManager NavigationManager
 @inject IScrollManager ScrollManager
@@ -26,7 +27,7 @@
     <MudAlert Severity="Severity.Warning">Your chat history is stored in plain text in our internal database for your convenience. Please keep this in mind while chatting and don't share anything personal, sensitive or inappropriate.</MudAlert>
 
     <div id="scrollableContainer">
-        <MudContainer Class="pa-12">
+        <MudContainer Class="pa-0 pa-sm-12">
             @foreach (var message in _chatHistory.Messages)
             {
                 if (!string.IsNullOrWhiteSpace(message.Content) && message.Role != ChatRole.System && message.Role != ChatRole.Reduced)
@@ -35,6 +36,11 @@
                         <MudAvatar Color="@(message.Role == ChatRole.Assistant ? Color.Default : Color.Info)">
                             <MudIcon Icon="@(message.Role == ChatRole.Assistant ? Icons.Material.Filled.Webhook : Icons.Material.Filled.Face)" Color="Color.Default" />
                         </MudAvatar>
+
+                        @if (!string.IsNullOrEmpty(message.Header))
+                        {
+                            <MudChatHeader Name="@(message.Role == ChatRole.Assistant ? "Quantum Summer Lab Copilot" : "You")" Time="@message.Header" />
+                        }
 
                         @foreach (var sentence in message.Content.Split("[BR]", StringSplitOptions.RemoveEmptyEntries))
                         {
@@ -46,12 +52,38 @@
                             }
                         }
 
-                        @if (message.Role == ChatRole.Assistant)
+                        @if (message.TokensUsed > 0)
                         {
-                            <MudChatFooter Text="@($"{message.TokensUsed:D0} tokens used")" />
+                            <MudChatFooter Text="@($"{message.TokensUsed:N0} tokens used")" />
                         }
                     </MudChat>
                 }
+            }
+
+            @if (!string.IsNullOrEmpty(_chatHistory.LatestUserMessage))
+            {
+                <MudChat ChatPosition="ChatBubblePosition.End">
+                    <MudAvatar Color="Color.Info">
+                        <MudIcon Icon="@Icons.Material.Filled.Face" Color="Color.Default" />
+                    </MudAvatar>
+                    <MudChatHeader Name="You" Time="just now" />
+                    <MudChatBubble Color="Color.Info">
+                        @_chatHistory.LatestUserMessage
+                    </MudChatBubble>
+                </MudChat>
+            }
+
+            @if (_isLoading)
+            {
+                <MudChat ChatPosition="ChatBubblePosition.Start">
+                    <MudAvatar Color="Color.Default">
+                        <MudProgressCircular Size="Size.Small" Color="Color.Default" Indeterminate="true" />
+                    </MudAvatar>
+
+                    <MudChatBubble Color="Color.Default">
+                        ...
+                    </MudChatBubble>
+                </MudChat>
             }
         </MudContainer>
 
@@ -74,6 +106,7 @@ else
     private string TeamName { get; set; }
 
     private ChatHistory _chatHistory = new ChatHistory();
+    private bool _isLoading;
     private string Chat { get; set; }
 
     protected override async Task OnParametersSetAsync()
@@ -110,31 +143,17 @@ else
         }
 
         _chatHistory.TeamName = TeamName;
-        _chatHistory.AddUserMessage(Chat);
-        await Mediator.Send(new SaveChatCommand
-        {
-            Message = Chat,
-            Role = "User",
-            TeamName = TeamName
-        });
+        _chatHistory.LatestUserMessage = Chat;
         Chat = string.Empty;
         StateHasChanged();
+
+        _isLoading = true;
         _chatHistory = await CopilotHelper.Chat(_chatHistory);
-        await Mediator.Send(new SaveChatCommand
-        {
-            Message = _chatHistory.LatestMessage,
-            Role = "Assistant",
-            TokensUsed = _chatHistory.InputTokenCount + _chatHistory.OutputTokenCount,
-            TeamName = TeamName
-        });
+        _isLoading = false;
+
         StateHasChanged();
         await Task.Delay(1000);
         await ScrollManager.ScrollToBottomAsync("scrollableContainer", ScrollBehavior.Smooth);
-
-        if (_chatHistory.Messages.Count(x => !x.IsReduced) > 10)
-        {
-            await ReduceChat();
-        }
     }
 
     private async Task RefreshChatHistory()
@@ -146,10 +165,10 @@ else
             switch (chat.Role)
             {
                 case "User":
-                    _chatHistory.AddUserMessage(chat.Message, chat.Id, chat.IsReduced);
+                    _chatHistory.AddUserMessage(chat.Message, chat.TokensUsed, chat.Timestamp.AsTimeAgo(), chat.Id, chat.IsReduced);
                     break;
                 case "Assistant":
-                    _chatHistory.AddAssistantMessage(chat.Message, chat.TokensUsed, chat.Id, chat.IsReduced);
+                    _chatHistory.AddAssistantMessage(chat.Message, chat.TokensUsed, chat.Timestamp.AsTimeAgo(), chat.Id, chat.IsReduced);
                     break;
                 case "Reduced":
                     _chatHistory.AddReducedMessage(chat.Message, chat.TokensUsed, chat.Id, chat.IsReduced);
@@ -159,20 +178,6 @@ else
                     break;
             }
         }
-    }
-
-    private async Task ReduceChat()
-    {
-        await RefreshChatHistory();
-        var chatIds = _chatHistory.Messages.Where(x => x.Id.HasValue && !x.IsReduced).Select(x => x.Id.Value).ToArray();
-        var newChatHistory = await CopilotHelper.Reduce(_chatHistory);
-        var response = await Mediator.Send(new ReduceChatCommand
-        {
-            TeamName = TeamName,
-            ChatsToReduce = chatIds,
-            ReducedMessage = newChatHistory.LatestMessage
-        });
-        await RefreshChatHistory();
     }
 
     protected async Task OnKeyDown(KeyboardEventArgs e)

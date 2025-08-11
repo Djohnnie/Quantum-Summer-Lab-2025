@@ -22,6 +22,7 @@ public class ChatMessage
     public string Role { get; set; }
     public int TokensUsed { get; set; }
     public bool IsReduced { get; set; }
+    public DateTime Timestamp { get; set; }
 }
 
 public class GetChatsQueryHandler : IRequestHandler<GetChatsQuery, GetChatsResponse>
@@ -47,7 +48,8 @@ public class GetChatsQueryHandler : IRequestHandler<GetChatsQuery, GetChatsRespo
                 Role = x.Role,
                 Message = x.Message,
                 TokensUsed = x.TokensUsed,
-                IsReduced = x.IsReduced
+                IsReduced = x.IsReduced,
+                Timestamp = x.Timestamp
             })
             .ToListAsync(cancellationToken);
 

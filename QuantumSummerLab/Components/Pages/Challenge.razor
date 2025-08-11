@@ -5,6 +5,7 @@
 @using QuantumSummerLab.Application.Scores.Queries
 @using QuantumSummerLab.Application.Teams.Commands
 @using QuantumSummerLab.Web.Copilot
+@using QuantumSummerLab.Web.Extensions
 
 @inject NavigationManager NavigationManager
 @inject ProtectedLocalStorage ProtectedLocalStore
@@ -114,12 +115,12 @@ else if (IsAvailable)
                                         @if (submission.IsSuccessful)
                                         {
                                             <MudIcon Icon="@Icons.Material.Filled.PlaylistAddCheck" Color="Color.Success" class="mr-3"></MudIcon>
-                                            <MudText Color="Color.Default">You have submitted a <strong>correct solution</strong> at @submission.SubmissionTimestamp.ToString("f")</MudText>
+                                            <MudText Color="Color.Default">You have submitted a <strong>correct solution</strong> @submission.SubmissionTimestamp.AsTimeAgo()</MudText>
                                         }
                                         else
                                         {
                                             <MudIcon Icon="@Icons.Material.Filled.PlaylistRemove" Color="Color.Error" class="mr-3"></MudIcon>
-                                            <MudText Color="Color.Default">You have submitted a <strong>wrong solution</strong> at @submission.SubmissionTimestamp.ToString("f")</MudText>
+                                            <MudText Color="Color.Default">You have submitted a <strong>wrong solution</strong> @submission.SubmissionTimestamp.AsTimeAgo()</MudText>
                                         }
                                     </div>
                                 </TitleContent>

@@ -4,7 +4,6 @@ using Microsoft.Extensions.DependencyInjection;
 using QsharpBridge;
 using QuantumSummerLab.Application.Extensions;
 using QuantumSummerLab.Application.Helpers;
-using QuantumSummerLab.Application.Scores.Queries;
 using QuantumSummerLab.Data;
 using QuantumSummerLab.Data.Model;
 using System.Text.Json;
@@ -47,15 +46,15 @@ public class VerifyChallengeSolutionCommandHandler : IRequestHandler<VerifyChall
 
     public async Task<VerifyChallengeSolutionResponse> Handle(VerifyChallengeSolutionCommand request, CancellationToken cancellationToken)
     {
+        using var dbContext = _scopeFactory.CreateScope().ServiceProvider.GetRequiredService<QuantumSummerLabDbContext>();
+
+        var challenge = await dbContext.Challenges.SingleOrDefaultAsync(
+                x => x.Name == request.ChallengeName, cancellationToken);
+        var team = await dbContext.Teams.SingleOrDefaultAsync(
+            x => x.Name == request.TeamName, cancellationToken);
+
         try
         {
-            using var dbContext = _scopeFactory.CreateScope().ServiceProvider.GetRequiredService<QuantumSummerLabDbContext>();
-
-            var challenge = await dbContext.Challenges.SingleOrDefaultAsync(
-                x => x.Name == request.ChallengeName, cancellationToken);
-            var team = await dbContext.Teams.SingleOrDefaultAsync(
-                x => x.Name == request.TeamName, cancellationToken);
-
             var verificationTemplate = challenge.VerificationTemplate.FromBase64String();
             var solution = verificationTemplate.Replace("<<SOLVE>>", request.Solution);
 
@@ -85,23 +84,71 @@ public class VerifyChallengeSolutionCommandHandler : IRequestHandler<VerifyChall
         }
         catch (QsException ex)
         {
+            var feedback = ex.Message switch
+            {
+                string a when a.Contains("error: Compile") => "There has been an error compiling your Q# code!",
+                string b when b.Contains("error: Eval") => "There has been an error running your Q# code!",
+                _ => "There has been an unknown error :("
+            };
+
+            dbContext.Scores.Add(new Score
+            {
+                Challenge = challenge,
+                Team = team,
+                IsSuccessful = false,
+                Feedback = JsonSerializer.Serialize(new QSharpFeedback
+                {
+                    IsValid = false,
+                    Messages = new List<QSharpFeedbackMessage>
+                    {
+                        new QSharpFeedbackMessage
+                        {
+                            Valid = false,
+                            Message = feedback
+                        }
+                    }
+                }),
+                ProposedSolution = request.Solution.ToBase64String(),
+                SubmissionTimestamp = request.Timestamp
+            });
+            await dbContext.SaveChangesAsync(cancellationToken);
+
             return new VerifyChallengeSolutionResponse
             {
                 IsValid = false,
-                FeedbackMessage = ex.Message switch
-                {
-                    string a when a.Contains("error: Compile") => "There has been an error compiling your Q# code!",
-                    string b when b.Contains("error: Eval") => "There has been an error running your Q# code!",
-                    _ => "There has been an unknown error :("
-                }
+                FeedbackMessage = feedback
             };
         }
         catch
         {
+            var feedback = "There has been an unknown error :(";
+
+            dbContext.Scores.Add(new Score
+            {
+                Challenge = challenge,
+                Team = team,
+                IsSuccessful = false,
+                Feedback = JsonSerializer.Serialize(new QSharpFeedback
+                {
+                    IsValid = false,
+                    Messages = new List<QSharpFeedbackMessage>
+                    {
+                        new QSharpFeedbackMessage
+                        {
+                            Valid = false,
+                            Message = feedback
+                        }
+                    }
+                }),
+                ProposedSolution = request.Solution.ToBase64String(),
+                SubmissionTimestamp = request.Timestamp
+            });
+            await dbContext.SaveChangesAsync(cancellationToken);
+
             return new VerifyChallengeSolutionResponse
             {
                 IsValid = false,
-                FeedbackMessage = "There has been an unknown error :("
+                FeedbackMessage = feedback
             };
         }
     }

@@ -9,9 +9,10 @@ namespace QuantumSummerLab.Application.Chats.Commands;
 public class SaveChatCommand : IRequest<SaveChatResponse>
 {
     public string TeamName { get; set; }
-    public string Message { get; set; }
-    public string Role { get; set; }
-    public int TokensUsed { get; set; }
+    public string UserMessage { get; set; }
+    public string AssistantMessage { get; set; }
+    public int TokensUsedByUser { get; set; }
+    public int TokensUsedByAssistant { get; set; }
 }
 
 public class SaveChatResponse
@@ -37,9 +38,20 @@ public class SaveChatCommandHandler : IRequestHandler<SaveChatCommand, SaveChatR
 
         dbContext.Chats.Add(new Chat
         {
-            Role = request.Role,
-            Message = request.Message,
-            TokensUsed = request.TokensUsed,
+            Role = "User",
+            Message = request.UserMessage,
+            TokensUsed = request.TokensUsedByUser,
+            Team = team,
+            Timestamp = DateTime.UtcNow
+        });
+
+        await dbContext.SaveChangesAsync(cancellationToken);
+
+        dbContext.Chats.Add(new Chat
+        {
+            Role = "Assistant",
+            Message = request.AssistantMessage,
+            TokensUsed = request.TokensUsedByAssistant,
             Team = team,
             Timestamp = DateTime.UtcNow
         });
