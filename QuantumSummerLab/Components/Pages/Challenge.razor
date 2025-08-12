@@ -49,7 +49,7 @@ else if (IsAvailable)
 
     <MudMarkdown Value="@SolutionTemplate" />
 
-    @if (!ExampleDescription.Any())
+    @if (ExampleDescription.Any())
     {
         @foreach (var line in ExampleDescription)
         {
@@ -191,7 +191,7 @@ else
             Title = challenge.Title;
             Description = challenge.Description.Split("[BR]");
             SolutionTemplate = $"```js{Environment.NewLine}{challenge.SolutionTemplate}{Environment.NewLine}```";
-            ExampleDescription = challenge.ExampleDescription.Split("[BR]");
+            ExampleDescription = challenge.ExampleDescription.Split("[BR]", StringSplitOptions.RemoveEmptyEntries).Select(x => x.Trim()).ToArray();
             ExampleCode = $"```js{Environment.NewLine}{challenge.ExampleCode}{Environment.NewLine}```";
             FeedbackMessage = "You have not yet submitted a solution";
             VerificationFeedback = new List<VerificationFeedback>();
