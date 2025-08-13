@@ -1,7 +1,6 @@
 ﻿using MediatR;
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.Agents;
-using Microsoft.SemanticKernel.ChatCompletion;
 using Microsoft.SemanticKernel.Connectors.OpenAI;
 using OpenAI.Chat;
 using QuantumSummerLab.Application.Chats.Commands;

@@ -68,7 +68,7 @@ public class GetLeaderboardQueryHandler : IRequestHandler<GetLeaderboardQuery, G
                 entries.Add(new LeaderboardEntry
                 {
                     TeamName = scoresForTeam.TeamName,
-                    TotalPoints = scoresForTeam.Scores.Sum(x => x.Score),
+                    TotalPoints = 100 + scoresForTeam.Scores.Sum(x => x.Score),
                     ChallengesTried = scoresForTeam.Scores.Count(),
                     ChallengesCompleted = scoresForTeam.Scores.GroupBy(x => x.ChallengeName).Count(x => x.Any(a => a.IsSuccessful)),
                     Timestamp = scoresForTeam.Scores.Any(x => x.IsSuccessful)
@@ -89,7 +89,7 @@ public class GetLeaderboardQueryHandler : IRequestHandler<GetLeaderboardQuery, G
                     ChallengesTried = 0,
                     ChallengesCompleted = 0,
                     Timestamp = 0,
-                    Description = "No scores recorded"
+                    Description = "No scores recorded yet!"
                 });
             }
         }
@@ -101,7 +101,9 @@ public class GetLeaderboardQueryHandler : IRequestHandler<GetLeaderboardQuery, G
             entries[i].Position = i + 1;
             if (string.IsNullOrEmpty(entries[i].Description))
             {
-                entries[i].Description = $"{entries[i].ChallengesCompleted} challenges completed in {entries[i].ChallengesTried} tries!";
+                var challengesCompleted = entries[i].ChallengesCompleted;
+                var challengesTried = entries[i].ChallengesTried;
+                entries[i].Description = $"{(challengesCompleted > 0 ? $"{challengesCompleted}" : "No")} {(challengesCompleted == 1 ? "challenge" : "challenges")} completed in {challengesTried} {(challengesTried > 1 ? "tries" : "try")}!";
             }
         }
 
