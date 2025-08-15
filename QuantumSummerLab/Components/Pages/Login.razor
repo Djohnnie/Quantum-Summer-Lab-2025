@@ -28,12 +28,12 @@
                 {
                     <MudAlert Severity="Severity.Error" Class="my-2">@ErrorMessage</MudAlert>
                 }
-                <MudTextField @bind-Value="TeamName" Class="my-4" Label="Team name" Variant="Variant.Text" Immediate="true" OnKeyDown="@OnKeyDown" TextUpdateSuppression="false"></MudTextField>
-                <MudTextField @bind-Value="Password" Class="my-4" Label="Password" InputType="InputType.Password" Variant="Variant.Text" Immediate="true" OnKeyDown="@OnKeyDown" TextUpdateSuppression="false"></MudTextField>
+                <MudTextField @bind-Value="TeamName" Class="my-4" Label="Team name" spellcheck="false" Variant="Variant.Text" OnKeyUp="@OnKeyUp"></MudTextField>
+                <MudTextField @bind-Value="Password" Class="my-4" Label="Password" spellcheck="false" InputType="InputType.Password" Variant="Variant.Text" OnKeyUp="@OnKeyUp"></MudTextField>
             </MudCardContent>
             <MudCardActions>
-                <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Login" Color="Color.Success" OnClick="@Authenticate" Class="mr-1">Login</MudButton>
-                <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.GroupAdd" Color="Color.Primary" OnClick="@Register" Class="ml-1">Register</MudButton>
+                <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Login" Color="Color.Success" OnClick="@Authenticate" Class="ml-2 mb-2 mr-2">Login</MudButton>
+                <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.GroupAdd" Color="Color.Primary" OnClick="@Register" Class="ml-2 mb-2">Register</MudButton>
             </MudCardActions>
         </MudCard>
     </MudContainer>
@@ -114,7 +114,7 @@ else
         NavigationManager.NavigateTo("/");
     }
 
-    protected async Task OnKeyDown(KeyboardEventArgs e)
+    protected async Task OnKeyUp(KeyboardEventArgs e)
     {
         if (e.Key == "Enter")
         {

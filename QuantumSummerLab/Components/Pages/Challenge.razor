@@ -84,8 +84,8 @@ else if (IsAvailable)
                 <MudTextField @bind-Value="Solution" Label="Your solution" spellcheck="false" AutoGrow Lines="5" Variant="Variant.Outlined" Class="monospace"></MudTextField>
             </MudCardContent>
             <MudCardActions>
-                <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Send" Color="Color.Primary" OnClick="@Submit" Class="mr-1">Submit your solution</MudButton>
-                <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Clear" Color="Color.Error" OnClick="@Clear" Class="ml-1">Clear</MudButton>
+                <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Send" Color="Color.Primary" OnClick="@Submit" Class="ml-2 mb-2 mr-2">Submit your solution</MudButton>
+                <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Clear" Color="Color.Error" OnClick="@Clear" Class="ml-2 mb-2">Clear</MudButton>
             </MudCardActions>
         </MudCard>
 
@@ -143,10 +143,6 @@ else if (IsAvailable)
                 </MudCardContent>
             </MudCard>
         }
-    }
-    else
-    {
-        <MudAlert Severity="Severity.Info" Class="my-4">You should <MudLink Href="/login">login</MudLink> to be able to submit solutions!</MudAlert>
     }
 }
 else

@@ -88,7 +88,7 @@
         </MudContainer>
 
         <MudContainer MaxWidth="MaxWidth.Medium" Class="d-flex flex-column justify-center gap-4">
-            <MudTextField T="string" Label="Your question" Variant="Variant.Outlined" @bind-Value="Chat" Immediate="true" OnKeyDown="@OnKeyDown" TextUpdateSuppression="false"
+            <MudTextField T="string" Label="Your question" spellcheck="false" Variant="Variant.Outlined" @bind-Value="Chat" OnKeyUp="@OnKeyUp" TextUpdateSuppression="false"
                           Adornment="Adornment.End" AdornmentColor="Color.Primary" AdornmentIcon="@Icons.Material.Filled.Send" OnAdornmentClick="@AskQuestion" />
         </MudContainer>
     </div>
@@ -180,7 +180,7 @@ else
         }
     }
 
-    protected async Task OnKeyDown(KeyboardEventArgs e)
+    protected async Task OnKeyUp(KeyboardEventArgs e)
     {
         if (e.Key == "Enter")
         {

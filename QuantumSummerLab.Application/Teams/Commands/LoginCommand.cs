@@ -40,6 +40,15 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, LoginResponse>
 
     public async Task<LoginResponse> Handle(LoginCommand request, CancellationToken cancellationToken)
     {
+        if (string.IsNullOrWhiteSpace(request.TeamName) || string.IsNullOrWhiteSpace(request.Password))
+        {
+            return new LoginResponse
+            {
+                Success = false,
+                ErrorMessage = "Team name and password must be provided!"
+            };
+        }
+
         using var dbContext = _scopeFactory.CreateScope().ServiceProvider.GetRequiredService<QuantumSummerLabDbContext>();
         var existingTeam = await dbContext.Teams
             .FirstOrDefaultAsync(t => t.Name == request.TeamName, cancellationToken);

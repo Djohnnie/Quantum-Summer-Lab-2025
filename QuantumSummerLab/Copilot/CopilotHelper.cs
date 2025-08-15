@@ -45,85 +45,92 @@ internal class CopilotHelper : ICopilotHelper
 
     public async Task<ChatHistory> Chat(ChatHistory chatHistory)
     {
-        var chatHistoryCopy = chatHistory.Copy();
-
-        // Build the ChatCompletionAgent
-        var chatCompletionAgent = new ChatCompletionAgent
+        try
         {
-            Name = "QuantumSummerLabAgent",
-            Description = "Copilot agent that helps with the Quantum Summer Lab",
-            Instructions = BuildInstructions(chatHistoryCopy),
-            Kernel = _kernel,
-            Arguments = new KernelArguments(new OpenAIPromptExecutionSettings
+            var chatHistoryCopy = chatHistory.Copy();
+
+            // Build the ChatCompletionAgent
+            var chatCompletionAgent = new ChatCompletionAgent
             {
-                ToolCallBehavior = ToolCallBehavior.AutoInvokeKernelFunctions
-            }),
-        };
-
-        var tokensUsedForReducing = 0;
-
-        // Check if the chat history needs to be reduced
-        if (chatHistoryCopy.Messages.Where(x => !x.IsReduced).Count() > 10)
-        {
-            // Get the IDs of the messages to reduce.
-            var chatIds = chatHistoryCopy.Messages
-                .Where(x => x.Id.HasValue && !x.IsReduced)
-                .Select(x => x.Id.Value).ToArray();
-
-            // Reduce the chat history by summarizing it.
-            (var reducedMessage, tokensUsedForReducing) = await Reduce(chatHistoryCopy);
-
-            // Add the reduced message to the chat history and mark the original messages as reduced.
-            await _mediator.Send(new ReduceChatCommand
-            {
-                TeamName = chatHistory.TeamName,
-                ChatsToReduce = chatIds,
-                ReducedMessage = reducedMessage,
-                TokensUsed = tokensUsedForReducing
-            });
-
-            var response = await _mediator.Send(new GetChatsQuery { TeamName = chatHistory.TeamName });
-            chatHistoryCopy = GetChatHistoryFromResponse(response);
-        }
-
-        // Add the latest user message to the chat history
-        chatHistoryCopy.AddUserMessage(chatHistory.LatestUserMessage, 0, "Just now");
-
-        // Convert the chat history to an agent thread
-        var agentThread = GetAgentThreadFromChatHistory(chatHistoryCopy);
-
-        var isChatCleared = false;
-
-        // Invoke the agent with the chat history and process the response,
-        // including the input and output token usage.
-        var messageBuilder = new StringBuilder();
-        await foreach (var response in chatCompletionAgent.InvokeAsync(agentThread))
-        {
-            if (response.Message.Metadata.ContainsKey("Usage"))
-            {
-                var usage = response.Message.Metadata["Usage"] as ChatTokenUsage;
-                if (usage != null)
+                Name = "QuantumSummerLabAgent",
+                Description = "Copilot agent that helps with the Quantum Summer Lab",
+                Instructions = BuildInstructions(chatHistoryCopy),
+                Kernel = _kernel,
+                Arguments = new KernelArguments(new OpenAIPromptExecutionSettings
                 {
-                    chatHistoryCopy.InputTokenCount = usage.InputTokenCount;
-                    chatHistoryCopy.OutputTokenCount = usage.OutputTokenCount;
-                }
+                    ToolCallBehavior = ToolCallBehavior.AutoInvokeKernelFunctions
+                }),
+            };
+
+            var tokensUsedForReducing = 0;
+
+            // Check if the chat history needs to be reduced
+            if (chatHistoryCopy.Messages.Where(x => !x.IsReduced).Count() > 10)
+            {
+                // Get the IDs of the messages to reduce.
+                var chatIds = chatHistoryCopy.Messages
+                    .Where(x => x.Id.HasValue && !x.IsReduced)
+                    .Select(x => x.Id.Value).ToArray();
+
+                // Reduce the chat history by summarizing it.
+                (var reducedMessage, tokensUsedForReducing) = await Reduce(chatHistoryCopy);
+
+                // Add the reduced message to the chat history and mark the original messages as reduced.
+                await _mediator.Send(new ReduceChatCommand
+                {
+                    TeamName = chatHistory.TeamName,
+                    ChatsToReduce = chatIds,
+                    ReducedMessage = reducedMessage,
+                    TokensUsed = tokensUsedForReducing
+                });
+
+                var response = await _mediator.Send(new GetChatsQuery { TeamName = chatHistory.TeamName });
+                chatHistoryCopy = GetChatHistoryFromResponse(response);
             }
 
-            isChatCleared = ((ChatHistoryAgentThread)response.Thread).ChatHistory.Any(x => x.Content == "<<CHAT CLEARED>>");
-            messageBuilder.Append(response.Message.Content);
-        }
+            // Add the latest user message to the chat history
+            chatHistoryCopy.AddUserMessage(chatHistory.LatestUserMessage, 0, "Just now");
 
-        if (!isChatCleared)
-        {
-            // Save the latest user and assistant message to the database.
-            await _mediator.Send(new SaveChatCommand
+            // Convert the chat history to an agent thread
+            var agentThread = GetAgentThreadFromChatHistory(chatHistoryCopy);
+
+            var isChatCleared = false;
+
+            // Invoke the agent with the chat history and process the response,
+            // including the input and output token usage.
+            var messageBuilder = new StringBuilder();
+            await foreach (var response in chatCompletionAgent.InvokeAsync(agentThread))
             {
-                TeamName = chatHistory.TeamName,
-                UserMessage = chatHistory.LatestUserMessage,
-                TokensUsedByUser = chatHistoryCopy.InputTokenCount,
-                AssistantMessage = messageBuilder.ToString().Replace("**", ""),
-                TokensUsedByAssistant = chatHistoryCopy.OutputTokenCount + tokensUsedForReducing
-            });
+                if (response.Message.Metadata.ContainsKey("Usage"))
+                {
+                    var usage = response.Message.Metadata["Usage"] as ChatTokenUsage;
+                    if (usage != null)
+                    {
+                        chatHistoryCopy.InputTokenCount = usage.InputTokenCount;
+                        chatHistoryCopy.OutputTokenCount = usage.OutputTokenCount;
+                    }
+                }
+
+                isChatCleared = ((ChatHistoryAgentThread)response.Thread).ChatHistory.Any(x => x.Content == "<<CHAT CLEARED>>");
+                messageBuilder.Append(response.Message.Content);
+            }
+
+            if (!isChatCleared)
+            {
+                // Save the latest user and assistant message to the database.
+                await _mediator.Send(new SaveChatCommand
+                {
+                    TeamName = chatHistory.TeamName,
+                    UserMessage = chatHistory.LatestUserMessage,
+                    TokensUsedByUser = chatHistoryCopy.InputTokenCount,
+                    AssistantMessage = messageBuilder.ToString().Replace("**", ""),
+                    TokensUsedByAssistant = chatHistoryCopy.OutputTokenCount + tokensUsedForReducing
+                });
+            }
+        }
+        catch (Exception ex)
+        {
+            // Nothing to do here, the chat history will be returned as is.
         }
 
         // Fetch the latest chat history from the database to ensure consistency.

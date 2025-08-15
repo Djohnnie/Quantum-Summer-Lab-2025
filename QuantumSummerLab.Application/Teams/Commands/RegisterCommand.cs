@@ -37,6 +37,15 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, RegisterR
     {
         try
         {
+            if (string.IsNullOrWhiteSpace(request.TeamName) || string.IsNullOrWhiteSpace(request.Password))
+            {
+                return new RegisterResponse
+                {
+                    Success = false,
+                    ErrorMessage = "Team name and password must be provided!"
+                };
+            }
+
             using var dbContext = _scopeFactory.CreateScope().ServiceProvider.GetRequiredService<QuantumSummerLabDbContext>();
             var passwordHash = _passwordHashHelper.CalculateHash(new PasswordHash
             {
