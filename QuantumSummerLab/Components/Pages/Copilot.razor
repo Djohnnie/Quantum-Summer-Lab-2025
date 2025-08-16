@@ -23,75 +23,7 @@
 
 @if (IsLoggedIn)
 {
-    <MudAlert class="mb-4" Severity="Severity.Info">Use this experimental Copilot at your own risk. It will try its best to help you solve the challenges and keep track of your chat history. You can just ask it to clear the chat history and start from scratch if you think that is needed.</MudAlert>
-    <MudAlert Severity="Severity.Warning">Your chat history is stored in plain text in our internal database for your convenience. Please keep this in mind while chatting and don't share anything personal, sensitive or inappropriate.</MudAlert>
-
-    <div id="scrollableContainer">
-        <MudContainer Class="pa-0 pa-sm-12">
-            @foreach (var message in _chatHistory.Messages)
-            {
-                if (!string.IsNullOrWhiteSpace(message.Content) && message.Role != ChatRole.System && message.Role != ChatRole.Reduced)
-                {
-                    <MudChat ChatPosition="@(message.Role == ChatRole.Assistant ? ChatBubblePosition.Start : ChatBubblePosition.End)">
-                        <MudAvatar Color="@(message.Role == ChatRole.Assistant ? Color.Default : Color.Info)">
-                            <MudIcon Icon="@(message.Role == ChatRole.Assistant ? Icons.Material.Filled.Webhook : Icons.Material.Filled.Face)" Color="Color.Default" />
-                        </MudAvatar>
-
-                        @if (!string.IsNullOrEmpty(message.Header))
-                        {
-                            <MudChatHeader Name="@(message.Role == ChatRole.Assistant ? "Quantum Summer Lab Copilot" : "You")" Time="@message.Header" />
-                        }
-
-                        @foreach (var sentence in message.Content.Split("[BR]", StringSplitOptions.RemoveEmptyEntries))
-                        {
-                            @if (!string.IsNullOrWhiteSpace(sentence))
-                            {
-                                <MudChatBubble Color="@(message.Role == ChatRole.Assistant ? Color.Default : Color.Info)">
-                                    @sentence.Trim()
-                                </MudChatBubble>
-                            }
-                        }
-
-                        @if (message.TokensUsed > 0)
-                        {
-                            <MudChatFooter Text="@($"{message.TokensUsed:N0} tokens used")" />
-                        }
-                    </MudChat>
-                }
-            }
-
-            @if (!string.IsNullOrEmpty(_chatHistory.LatestUserMessage))
-            {
-                <MudChat ChatPosition="ChatBubblePosition.End">
-                    <MudAvatar Color="Color.Info">
-                        <MudIcon Icon="@Icons.Material.Filled.Face" Color="Color.Default" />
-                    </MudAvatar>
-                    <MudChatHeader Name="You" Time="just now" />
-                    <MudChatBubble Color="Color.Info">
-                        @_chatHistory.LatestUserMessage
-                    </MudChatBubble>
-                </MudChat>
-            }
-
-            @if (_isLoading)
-            {
-                <MudChat ChatPosition="ChatBubblePosition.Start">
-                    <MudAvatar Color="Color.Default">
-                        <MudProgressCircular Size="Size.Small" Color="Color.Default" Indeterminate="true" />
-                    </MudAvatar>
-
-                    <MudChatBubble Color="Color.Default">
-                        ...
-                    </MudChatBubble>
-                </MudChat>
-            }
-        </MudContainer>
-
-        <MudContainer MaxWidth="MaxWidth.Medium" Class="d-flex flex-column justify-center gap-4">
-            <MudTextField T="string" Label="Your question" spellcheck="false" Variant="Variant.Outlined" @bind-Value="Chat" OnKeyUp="@OnKeyUp" TextUpdateSuppression="false"
-                          Adornment="Adornment.End" AdornmentColor="Color.Primary" AdornmentIcon="@Icons.Material.Filled.Send" OnAdornmentClick="@AskQuestion" />
-        </MudContainer>
-    </div>
+    <CopilotPane @ref="_copilotPane" TeamName="@TeamName" />
 }
 else
 {
@@ -101,25 +33,10 @@ else
 @code
 {
     private bool? _lastLoggedIn;
-    private bool? _lastRefreshed;
     private bool IsLoggedIn { get; set; }
     private string TeamName { get; set; }
 
-    private ChatHistory _chatHistory = new ChatHistory();
-    private bool _isLoading;
-    private string Chat { get; set; }
-
-    protected override async Task OnParametersSetAsync()
-    {
-        await Task.Delay(500); // Allow the UI to render before loading chat history
-        if (!string.IsNullOrEmpty(TeamName))
-        {
-            await RefreshChatHistory();
-            StateHasChanged();
-            await Task.Delay(1000);
-            await ScrollManager.ScrollToBottomAsync("scrollableContainer", ScrollBehavior.Smooth);
-        }
-    }
+    private CopilotPane _copilotPane;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -135,56 +52,12 @@ else
         }
     }
 
-    protected async Task AskQuestion()
+    protected override async Task OnParametersSetAsync()
     {
-        if (string.IsNullOrWhiteSpace(Chat))
+        await Task.Delay(500);
+        if (_copilotPane != null)
         {
-            return;
-        }
-
-        _chatHistory.TeamName = TeamName;
-        _chatHistory.LatestUserMessage = Chat;
-        Chat = string.Empty;
-        StateHasChanged();
-
-        _isLoading = true;
-        _chatHistory = await CopilotHelper.Chat(_chatHistory);
-        _isLoading = false;
-
-        StateHasChanged();
-        await Task.Delay(1000);
-        await ScrollManager.ScrollToBottomAsync("scrollableContainer", ScrollBehavior.Smooth);
-    }
-
-    private async Task RefreshChatHistory()
-    {
-        var response = await Mediator.Send(new GetChatsQuery { TeamName = TeamName });
-        _chatHistory = new ChatHistory();
-        foreach (var chat in response.Messages)
-        {
-            switch (chat.Role)
-            {
-                case "User":
-                    _chatHistory.AddUserMessage(chat.Message, chat.TokensUsed, chat.Timestamp.AsTimeAgo(), chat.Id, chat.IsReduced);
-                    break;
-                case "Assistant":
-                    _chatHistory.AddAssistantMessage(chat.Message, chat.TokensUsed, chat.Timestamp.AsTimeAgo(), chat.Id, chat.IsReduced);
-                    break;
-                case "Reduced":
-                    _chatHistory.AddReducedMessage(chat.Message, chat.TokensUsed, chat.Id, chat.IsReduced);
-                    break;
-                default:
-                    _chatHistory.AddSystemMessage(chat.Message, chat.Id, chat.IsReduced);
-                    break;
-            }
-        }
-    }
-
-    protected async Task OnKeyUp(KeyboardEventArgs e)
-    {
-        if (e.Key == "Enter")
-        {
-            await AskQuestion();
+            await _copilotPane.Refresh();
         }
     }
 }

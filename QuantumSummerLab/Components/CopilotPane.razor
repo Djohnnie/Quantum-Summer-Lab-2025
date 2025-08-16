@@ -1,0 +1,198 @@
+﻿@using MediatR
+@using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
+@using QuantumSummerLab.Application.Challenges.Queries
+@using QuantumSummerLab.Application.Chats.Commands
+@using QuantumSummerLab.Application.Chats.Queries
+@using QuantumSummerLab.Application.Scores.Commands
+@using QuantumSummerLab.Application.Scores.Queries
+@using QuantumSummerLab.Application.Teams.Commands
+@using QuantumSummerLab.Web.Copilot
+@using QuantumSummerLab.Web.Extensions
+
+@inject IMediator Mediator
+@inject ICopilotHelper CopilotHelper
+@inject IScrollManager ScrollManager
+@inject ProtectedLocalStorage ProtectedLocalStore
+
+@if (_alert1)
+{
+    <MudAlert class="mb-4" Severity="Severity.Info" ShowCloseIcon="true" CloseIconClicked="@CloseAlert1">Use this experimental Copilot at your own risk. It will try its best to help you solve the challenges and keep track of your chat history. You can just ask it to clear the chat history and start from scratch if you think that is needed.</MudAlert>
+}
+
+@if (_alert2)
+{
+    <MudAlert Severity="Severity.Warning" ShowCloseIcon="true" CloseIconClicked="@CloseAlert2">Your chat history is stored in plain text in our internal database for your convenience. Please keep this in mind while chatting and don't share anything personal, sensitive or inappropriate.</MudAlert>
+}
+
+<MudContainer>
+    <MudContainer id="scrollableContainer">
+        <MudContainer Class="pa-0 pa-sm-12">
+            @foreach (var message in _chatHistory.Messages)
+            {
+                if (!string.IsNullOrWhiteSpace(message.Content) && message.Role != ChatRole.System && message.Role != ChatRole.Reduced)
+                {
+                    <MudChat ChatPosition="@(message.Role == ChatRole.Assistant ? ChatBubblePosition.Start : ChatBubblePosition.End)">
+                        <MudAvatar Color="@(message.Role == ChatRole.Assistant ? Color.Default : Color.Info)">
+                            <MudIcon Icon="@(message.Role == ChatRole.Assistant ? Icons.Material.Filled.Webhook : Icons.Material.Filled.Face)" Color="Color.Default" />
+                        </MudAvatar>
+
+                        @if (!string.IsNullOrEmpty(message.Header))
+                        {
+                            <MudChatHeader Name="@(message.Role == ChatRole.Assistant ? "Quantum Summer Lab Copilot" : "You")" Time="@message.Header" />
+                        }
+
+                        @foreach (var sentence in message.Content.Split("[BR]", StringSplitOptions.RemoveEmptyEntries))
+                        {
+                            @if (!string.IsNullOrWhiteSpace(sentence))
+                            {
+                                <MudChatBubble Color="@(message.Role == ChatRole.Assistant ? Color.Default : Color.Info)">
+                                    @sentence.Trim()
+                                </MudChatBubble>
+                            }
+                        }
+
+                        @if (message.TokensUsed > 0)
+                        {
+                            <MudChatFooter Text="@($"{message.TokensUsed:N0} tokens used")" />
+                        }
+                    </MudChat>
+                }
+            }
+
+            @if (!string.IsNullOrEmpty(_chatHistory.LatestUserMessage))
+            {
+                <MudChat ChatPosition="ChatBubblePosition.End">
+                    <MudAvatar Color="Color.Info">
+                        <MudIcon Icon="@Icons.Material.Filled.Face" Color="Color.Default" />
+                    </MudAvatar>
+                    <MudChatHeader Name="You" Time="just now" />
+                    <MudChatBubble Color="Color.Info">
+                        @_chatHistory.LatestUserMessage
+                    </MudChatBubble>
+                </MudChat>
+            }
+
+            @if (_isLoading)
+            {
+                <MudChat ChatPosition="ChatBubblePosition.Start">
+                    <MudAvatar Color="Color.Default">
+                        <MudProgressCircular Size="Size.Small" Color="Color.Default" Indeterminate="true" />
+                    </MudAvatar>
+
+                    <MudChatBubble Color="Color.Default">
+                        ...
+                    </MudChatBubble>
+                </MudChat>
+            }
+        </MudContainer>
+
+        <MudContainer MaxWidth="MaxWidth.Medium" Class="d-flex flex-column justify-center gap-4 mb-4">
+            <MudTextField T="string" Label="Your question" spellcheck="false" Variant="Variant.Outlined" @bind-Value="Chat" OnKeyUp="@OnKeyUp" TextUpdateSuppression="false"
+                          Adornment="Adornment.End" AdornmentColor="Color.Primary" AdornmentIcon="@Icons.Material.Filled.Send" OnAdornmentClick="@AskQuestion" />
+        </MudContainer>
+    </MudContainer>
+</MudContainer>
+
+@code
+{
+    [Parameter]
+    public string TeamName { get; set; }
+
+    private ChatHistory _chatHistory = new ChatHistory();
+    private bool _isLoading;
+    private bool _alert1;
+    private bool _alert2;
+    private string Chat { get; set; }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var alert1 = await ProtectedLocalStore.GetAsync<bool>("ALERT_1");
+            _alert1 = alert1.Success ? alert1.Value : true;
+
+            var alert2 = await ProtectedLocalStore.GetAsync<bool>("ALERT_2");
+            _alert2 = alert2.Success ? alert2.Value : true;
+
+            StateHasChanged();
+        }
+    }
+
+    public async Task Refresh()
+    {
+        if (!string.IsNullOrEmpty(TeamName))
+        {
+            await RefreshChatHistory();
+            StateHasChanged();
+            await Task.Delay(1000);
+            await ScrollManager.ScrollToBottomAsync("scrollableContainer", ScrollBehavior.Smooth);
+        }
+    }
+
+    protected async Task AskQuestion()
+    {
+        if (string.IsNullOrWhiteSpace(Chat))
+        {
+            return;
+        }
+
+        _chatHistory.TeamName = TeamName;
+        _chatHistory.LatestUserMessage = Chat;
+        Chat = string.Empty;
+        StateHasChanged();
+
+        _isLoading = true;
+        _chatHistory = await CopilotHelper.Chat(_chatHistory);
+        _isLoading = false;
+
+        StateHasChanged();
+        await Task.Delay(1000);
+        await ScrollManager.ScrollToBottomAsync("scrollableContainer", ScrollBehavior.Smooth);
+    }
+
+    private async Task RefreshChatHistory()
+    {
+        var response = await Mediator.Send(new GetChatsQuery { TeamName = TeamName });
+        _chatHistory = new ChatHistory();
+        foreach (var chat in response.Messages)
+        {
+            switch (chat.Role)
+            {
+                case "User":
+                    _chatHistory.AddUserMessage(chat.Message, chat.TokensUsed, chat.Timestamp.AsTimeAgo(), chat.Id, chat.IsReduced);
+                    break;
+                case "Assistant":
+                    _chatHistory.AddAssistantMessage(chat.Message, chat.TokensUsed, chat.Timestamp.AsTimeAgo(), chat.Id, chat.IsReduced);
+                    break;
+                case "Reduced":
+                    _chatHistory.AddReducedMessage(chat.Message, chat.TokensUsed, chat.Id, chat.IsReduced);
+                    break;
+                default:
+                    _chatHistory.AddSystemMessage(chat.Message, chat.Id, chat.IsReduced);
+                    break;
+            }
+        }
+    }
+
+    protected async Task OnKeyUp(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter")
+        {
+            await AskQuestion();
+        }
+    }
+
+    protected async Task CloseAlert1()
+    {
+        await ProtectedLocalStore.SetAsync("ALERT_1", false);
+        _alert1 = false;
+        StateHasChanged();
+    }
+
+    protected async Task CloseAlert2()
+    {
+        await ProtectedLocalStore.SetAsync("ALERT_2", false);
+        _alert2 = false;
+        StateHasChanged();
+    }
+}

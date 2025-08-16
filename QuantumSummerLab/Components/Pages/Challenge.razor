@@ -6,10 +6,12 @@
 @using QuantumSummerLab.Application.Teams.Commands
 @using QuantumSummerLab.Web.Copilot
 @using QuantumSummerLab.Web.Extensions
+@using QuantumSummerLab.Web.Helpers
 
 @inject NavigationManager NavigationManager
 @inject ProtectedLocalStorage ProtectedLocalStore
 @inject IMediator Mediator
+@inject DrawerHelper DrawerHelper
 @inject ICopilotHelper CopilotHelper
 
 @page "/challenge/{ChallengeName}"
@@ -28,6 +30,8 @@ else if (IsAvailable)
 
     @if (IsLoggedIn)
     {
+        <MudFab Style="position:fixed; bottom:10px;right:10px" Color="@Color.Tertiary" StartIcon="@Icons.Material.Filled.Webhook" DropShadow="true" OnClick="@Copilot" />
+
         @if (IsSuccess)
         {
             <MudAlert Severity="Severity.Success">You have successfully solved this challenge in @NumberOfAttempts attempts!</MudAlert>
@@ -238,6 +242,11 @@ else
         FeedbackMessage = "You have not yet submitted a solution";
         VerificationFeedback = new List<VerificationFeedback>();
         StateHasChanged();
+    }
+
+    protected void Copilot()
+    {
+        DrawerHelper.Popout();
     }
 
     private async Task LoadScore()
