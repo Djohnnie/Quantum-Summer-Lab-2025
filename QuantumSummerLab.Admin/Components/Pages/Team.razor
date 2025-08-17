@@ -117,9 +117,18 @@
             {
                 @if (!string.IsNullOrWhiteSpace(sentence))
                 {
-                    <MudChatBubble Color="@(message.Role == ChatRole.Assistant ? Color.Default : Color.Info)">
-                        @sentence.Trim()
-                    </MudChatBubble>
+                    @if (message.IsDeleted)
+                    {
+                        <MudChatBubble Color="@Color.Error">
+                            @sentence.Trim()
+                        </MudChatBubble>
+                    }
+                    else
+                    {
+                        <MudChatBubble Color="@(message.Role == ChatRole.Assistant ? Color.Default : Color.Info)">
+                            @sentence.Trim()
+                        </MudChatBubble>
+                    }
                 }
             }
 
@@ -228,14 +237,14 @@
             }
         }
 
-        var chatResponse = await Mediator.Send(new GetChatsQuery { TeamName = teamResponse.TeamName });
+        var chatResponse = await Mediator.Send(new GetChatsQuery { TeamName = teamResponse.TeamName, ShouldIncludeDeleted = true });
         if (chatResponse != null)
         {
-            await RefreshChatHistory(chatResponse);
+            RefreshChatHistory(chatResponse);
         }
     }
 
-    private async Task RefreshChatHistory(GetChatsResponse response)
+    private void RefreshChatHistory(GetChatsResponse response)
     {
         _chatHistory = new ChatHistory();
         foreach (var chat in response.Messages)
@@ -243,10 +252,10 @@
             switch (chat.Role)
             {
                 case "User":
-                    _chatHistory.AddUserMessage(chat.Message, chat.TokensUsed, chat.Timestamp.AsTimeAgo(), chat.Id, chat.IsReduced);
+                    _chatHistory.AddUserMessage(chat.Message, chat.TokensUsed, chat.Timestamp.AsTimeAgo(), chat.Id, chat.IsReduced, chat.IsDeleted);
                     break;
                 case "Assistant":
-                    _chatHistory.AddAssistantMessage(chat.Message, chat.TokensUsed, chat.Timestamp.AsTimeAgo(), chat.Id, chat.IsReduced);
+                    _chatHistory.AddAssistantMessage(chat.Message, chat.TokensUsed, chat.Timestamp.AsTimeAgo(), chat.Id, chat.IsReduced, chat.IsDeleted);
                     break;
                 case "Reduced":
                     _chatHistory.AddReducedMessage(chat.Message, chat.TokensUsed, chat.Id, chat.IsReduced);

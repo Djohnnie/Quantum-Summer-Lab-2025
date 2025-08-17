@@ -26,4 +26,9 @@
 		<ProjectReference Include="..\QuantumSummerLab.Copilot\QuantumSummerLab.Copilot.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Properties\PublishProfiles\" />
+	  <Folder Include="Properties\ServiceDependencies\" />
+	</ItemGroup>
+
 </Project>

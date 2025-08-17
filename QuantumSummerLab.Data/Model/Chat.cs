@@ -10,4 +10,5 @@ public class Chat
     public DateTime Timestamp { get; set; }
     public int TokensUsed { get; set; }
     public bool IsReduced { get; set; }
+    public bool IsDeleted { get; set; }
 }

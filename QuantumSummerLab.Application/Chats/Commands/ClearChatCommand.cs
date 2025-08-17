@@ -29,7 +29,7 @@ public class ClearChatCommandHandler : IRequestHandler<ClearChatCommand, ClearCh
     {
         using var dbContext = _scopeFactory.CreateScope().ServiceProvider.GetRequiredService<QuantumSummerLabDbContext>();
 
-        await dbContext.Chats.Where(x => x.Team.Name == request.TeamName).ExecuteDeleteAsync(cancellationToken);
+        await dbContext.Chats.Where(x => x.Team.Name == request.TeamName).ExecuteUpdateAsync(x => x.SetProperty(p => p.IsDeleted, true), cancellationToken);
 
         return new ClearChatResponse();
     }

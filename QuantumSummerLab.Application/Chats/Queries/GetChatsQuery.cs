@@ -8,6 +8,7 @@ namespace QuantumSummerLab.Application.Chats.Queries;
 public class GetChatsQuery : IRequest<GetChatsResponse>
 {
     public string TeamName { get; set; }
+    public bool ShouldIncludeDeleted { get; set; }
 }
 
 public class GetChatsResponse
@@ -22,6 +23,7 @@ public class ChatMessage
     public string Role { get; set; }
     public int TokensUsed { get; set; }
     public bool IsReduced { get; set; }
+    public bool IsDeleted { get; set; }
     public DateTime Timestamp { get; set; }
 }
 
@@ -41,6 +43,7 @@ public class GetChatsQueryHandler : IRequestHandler<GetChatsQuery, GetChatsRespo
 
         var messages = await dbContext.Chats
             .Where(x => x.Team.Name == request.TeamName)
+            .Where(x => request.ShouldIncludeDeleted || !x.IsDeleted)
             .OrderBy(x => x.Timestamp)
             .Select(x => new ChatMessage
             {
@@ -49,6 +52,7 @@ public class GetChatsQueryHandler : IRequestHandler<GetChatsQuery, GetChatsRespo
                 Message = x.Message,
                 TokensUsed = x.TokensUsed,
                 IsReduced = x.IsReduced,
+                IsDeleted = x.IsDeleted,
                 Timestamp = x.Timestamp
             })
             .ToListAsync(cancellationToken);

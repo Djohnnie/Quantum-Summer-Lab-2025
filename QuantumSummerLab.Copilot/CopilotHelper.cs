@@ -288,6 +288,7 @@ public class ChatHistory
                 Role = message.Role,
                 Content = message.Content,
                 IsReduced = message.IsReduced,
+                IsDeleted = message.IsDeleted,
                 TokensUsed = message.TokensUsed
             });
         }
@@ -305,7 +306,7 @@ public class ChatHistory
         });
     }
 
-    public void AddUserMessage(string message, int tokensUsed, string header, Guid? id = null, bool isReduced = false)
+    public void AddUserMessage(string message, int tokensUsed, string header, Guid? id = null, bool isReduced = false, bool isDeleted = false)
     {
         Messages.Add(new Chat
         {
@@ -314,11 +315,12 @@ public class ChatHistory
             Content = message,
             TokensUsed = tokensUsed,
             IsReduced = isReduced,
+            IsDeleted = isDeleted,
             Header = header
         });
     }
 
-    public void AddAssistantMessage(string message, int tokensUsed, string header, Guid? id = null, bool isReduced = false)
+    public void AddAssistantMessage(string message, int tokensUsed, string header, Guid? id = null, bool isReduced = false, bool isDeleted = false)
     {
         Messages.Add(new Chat
         {
@@ -327,6 +329,7 @@ public class ChatHistory
             Content = message,
             TokensUsed = tokensUsed,
             IsReduced = isReduced,
+            IsDeleted = isDeleted,
             Header = header
         });
     }
@@ -355,6 +358,7 @@ public class Chat
     public ChatRole Role { get; set; }
     public string Content { get; set; } = string.Empty;
     public bool IsReduced { get; set; }
+    public bool IsDeleted { get; set; }
     public int TokensUsed { get; set; }
     public string Header { get; set; }
 }
