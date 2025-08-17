@@ -1,4 +1,4 @@
-﻿namespace QuantumSummerLab.Web.Extensions;
+﻿namespace QuantumSummerLab.Copilot.Extensions;
 
 public static class DateTimeExtensions
 {

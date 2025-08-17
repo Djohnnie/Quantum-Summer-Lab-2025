@@ -1,0 +1,26 @@
+﻿@using MediatR
+@using QuantumSummerLab.Application.Teams.Queries
+
+@inject IMediator Mediator
+
+<MudNavMenu>
+    <MudNavLink Class="mt-2" Href="" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Home">Home</MudNavLink>
+    <MudDivider Class="my-2" />
+    @foreach(var team in _teams)
+    {
+        <MudNavLink Class="mt-2" Href="@($"/team/{team.Id}")" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Group">
+            @team.Name
+        </MudNavLink>
+    }
+</MudNavMenu>
+
+@code
+{
+    private List<TeamDto> _teams = new List<TeamDto>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var response = await Mediator.Send(new GetTeamsQuery());
+        _teams = response.Teams;
+    }
+}

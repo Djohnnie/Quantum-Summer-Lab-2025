@@ -6,7 +6,7 @@ using QuantumSummerLab.Application.Scores.Queries;
 using System.ComponentModel;
 using System.Text;
 
-namespace QuantumSummerLab.Web.Copilot;
+namespace QuantumSummerLab.Copilot;
 
 public class CopilotFunctions
 {

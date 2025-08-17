@@ -1,24 +1,27 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net9.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="MediatR" Version="13.0.0" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.8" />
-  </ItemGroup>
+	<PropertyGroup>
+		<Authors>Johnny Hooyberghs</Authors>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\QSharp.Community.QSharpBridge\QSharp.Community.QSharpBridge.csproj" />
-    <ProjectReference Include="..\QuantumSummerLab.Data\QuantumSummerLab.Data.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="MediatR" Version="13.0.0" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.8" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Challenges\Commands\" />
-    <Folder Include="Teams\Queries\" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\QSharp.Community.QSharpBridge\QSharp.Community.QSharpBridge.csproj" />
+		<ProjectReference Include="..\QuantumSummerLab.Data\QuantumSummerLab.Data.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Folder Include="Challenges\Commands\" />
+	</ItemGroup>
 
 </Project>

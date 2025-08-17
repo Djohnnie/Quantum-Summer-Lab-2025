@@ -1,21 +1,23 @@
 ﻿using MediatR;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.Agents;
 using Microsoft.SemanticKernel.Connectors.OpenAI;
 using OpenAI.Chat;
 using QuantumSummerLab.Application.Chats.Commands;
 using QuantumSummerLab.Application.Chats.Queries;
-using QuantumSummerLab.Web.Extensions;
+using QuantumSummerLab.Copilot.Extensions;
 using System.Text;
 
-namespace QuantumSummerLab.Web.Copilot;
+namespace QuantumSummerLab.Copilot;
 
-internal interface ICopilotHelper
+public interface ICopilotHelper
 {
     Task<ChatHistory> Chat(ChatHistory chatHistory);
 }
 
-internal class CopilotHelper : ICopilotHelper
+public class CopilotHelper : ICopilotHelper
 {
     private readonly IMediator _mediator;
     private readonly Kernel _kernel;
@@ -249,7 +251,7 @@ internal class CopilotHelper : ICopilotHelper
     }
 }
 
-internal class ChatHistory
+public class ChatHistory
 {
     public List<Chat> Messages { get; private set; } = new List<Chat>();
     public string TeamName { get; set; } = string.Empty;
@@ -347,7 +349,7 @@ internal class ChatHistory
     }
 }
 
-internal class Chat
+public class Chat
 {
     public Guid? Id { get; set; }
     public ChatRole Role { get; set; }
@@ -357,7 +359,7 @@ internal class Chat
     public string Header { get; set; }
 }
 
-internal enum ChatRole
+public enum ChatRole
 {
     System,
     User,

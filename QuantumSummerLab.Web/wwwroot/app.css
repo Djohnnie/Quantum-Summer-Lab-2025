@@ -1,0 +1,63 @@
+﻿#scrollableContainer 
+{
+    overflow: auto;
+    overscroll-behavior: contain;
+}
+
+.mud-input > textarea.mud-input-root-outlined {
+    font-family: monospace !important;
+    font-weight: bold !important;
+    font-size: 0.9em !important;
+}
+
+.explore-mudblazor-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+}
+
+.explore-card {
+    transition: all .2s ease-in;
+
+    @media(hover: hover) and (pointer: fine) {
+        &:hover {
+            background-color: var(--mud-palette-primary-hover) !important;
+            cursor: pointer;
+        }
+    }
+
+    &:active
+    {
+        background-color: var(--mud-palette-primary-hover) !important;
+        cursor: pointer;
+    }
+
+}
+
+.explore-card {
+    height: 157px;
+    width: 157px;
+}
+
+.docs-line-height-normal {
+    line-height: normal;
+}
+
+.docs-no-text-transform {
+    text-transform: none;
+}
+
+.docs-gray-bg {
+    background-color: var(--mud-palette-background-gray) !important;
+}
+
+@media (max-width:600px) {
+    .explore-card {
+        height: 138px;
+        width: 138px;
+    }
+
+    .explore-mudblazor-items {
+        justify-content: center;
+    }
+}

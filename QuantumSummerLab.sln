@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.14.36310.24
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuantumSummerLab.Web", "QuantumSummerLab\QuantumSummerLab.Web.csproj", "{8B91B515-5553-3A4C-6D1F-342FD1163BFD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuantumSummerLab.Web", "QuantumSummerLab.Web\QuantumSummerLab.Web.csproj", "{8B91B515-5553-3A4C-6D1F-342FD1163BFD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuantumSummerLab.Data", "QuantumSummerLab.Data\QuantumSummerLab.Data.csproj", "{135F10D9-DE2D-4FA9-B92F-70BBD3C5BD02}"
 EndProject
@@ -22,6 +22,10 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3. Web", "3. Web", "{C9BC7190-0230-4E80-AA8B-D51F208F271C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4. Tools", "4. Tools", "{D31736AF-9999-4990-AAF3-7630991D74A6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuantumSummerLab.Admin", "QuantumSummerLab.Admin\QuantumSummerLab.Admin.csproj", "{05C18DC1-7B06-C249-878E-38DD1820C0E5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuantumSummerLab.Copilot", "QuantumSummerLab.Copilot\QuantumSummerLab.Copilot.csproj", "{7A85C853-FBB2-4278-9C93-4E13F3522721}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -49,6 +53,14 @@ Global
 		{99BCF8EC-71E0-2F14-8657-D89258A25066}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{99BCF8EC-71E0-2F14-8657-D89258A25066}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{99BCF8EC-71E0-2F14-8657-D89258A25066}.Release|Any CPU.Build.0 = Release|Any CPU
+		{05C18DC1-7B06-C249-878E-38DD1820C0E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{05C18DC1-7B06-C249-878E-38DD1820C0E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{05C18DC1-7B06-C249-878E-38DD1820C0E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{05C18DC1-7B06-C249-878E-38DD1820C0E5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A85C853-FBB2-4278-9C93-4E13F3522721}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A85C853-FBB2-4278-9C93-4E13F3522721}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A85C853-FBB2-4278-9C93-4E13F3522721}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A85C853-FBB2-4278-9C93-4E13F3522721}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -59,6 +71,8 @@ Global
 		{98206820-926C-460E-B74F-BC7F6DE53723} = {FE40D4D9-AB2C-4552-95C7-CA5C3D605EA8}
 		{C19381CB-01E2-4701-B798-00FB7D077AE8} = {D31736AF-9999-4990-AAF3-7630991D74A6}
 		{99BCF8EC-71E0-2F14-8657-D89258A25066} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{05C18DC1-7B06-C249-878E-38DD1820C0E5} = {C9BC7190-0230-4E80-AA8B-D51F208F271C}
+		{7A85C853-FBB2-4278-9C93-4E13F3522721} = {C9BC7190-0230-4E80-AA8B-D51F208F271C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B32F087F-A9DE-461C-A37A-DD50DDECCAED}

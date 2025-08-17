@@ -17,5 +17,5 @@
 		<None Condition="$([MSBuild]::IsOsPlatform('Linux'))" Include="libqsharp_bridge.so" CopyToOutputDirectory="PreserveNewest" />
 		<None Condition="$([MSBuild]::IsOsPlatform('Windows'))" Include="qsharp_bridge.dll" CopyToOutputDirectory="PreserveNewest" />
 	</ItemGroup>
-	
+
 </Project>
