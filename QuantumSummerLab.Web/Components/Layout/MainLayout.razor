@@ -30,9 +30,17 @@
     <MudDrawer id="nav-drawer" @bind-Open="_drawerOpen" ClipMode="DrawerClipMode.Always" Elevation="5">
         <NavMenu />
     </MudDrawer>
-    <MudDrawer @bind-Open="_copilotOpen" Anchor="Anchor.End" ClipMode="DrawerClipMode.Always" Variant="@DrawerVariant.Persistent" Width="40%" Elevation="5">
-        <CopilotPane @ref="_copilotPane" TeamName="@TeamName" />
-    </MudDrawer>
+    <MudHidden Breakpoint="Breakpoint.SmAndDown" HiddenChanged="@CopilotHiddenChanged">
+        <MudDrawer @bind-Open="_copilotOpen" Anchor="Anchor.End" ClipMode="DrawerClipMode.Always" Variant="@DrawerVariant.Persistent" Width="40%" Elevation="5">
+            <MudContainer Class="mb-12">
+                @if (_copilotOpen)
+                {
+                    <MudFab Style="position:fixed; bottom:10px; right:10px; z-index:666;" Color="@Color.Error" StartIcon="@Icons.Material.Filled.Close" DropShadow="true" OnClick="@CloseCopilot" />
+                }
+                <CopilotPane @ref="_copilotPane" TeamName="@TeamName" />
+            </MudContainer>
+        </MudDrawer>
+    </MudHidden>
     <MudMainContent Class="pa-4 pa-sm-8 pa-md-12 mt-12">
         @Body
     </MudMainContent>
@@ -112,6 +120,21 @@
     }
 
     private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
+    {
+        _copilotOpen = false;
+        StateHasChanged();
+    }
+
+    private void CopilotHiddenChanged(bool hidden)
+    {
+        if (hidden)
+        {
+            _copilotOpen = false;
+            StateHasChanged();
+        }
+    }
+
+    protected void CloseCopilot()
     {
         _copilotOpen = false;
         StateHasChanged();

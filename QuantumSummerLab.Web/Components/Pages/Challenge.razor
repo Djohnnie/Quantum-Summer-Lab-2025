@@ -30,7 +30,9 @@ else if (IsAvailable)
 
     @if (IsLoggedIn)
     {
-        <MudFab Style="position:fixed; bottom:10px;right:10px" Color="@Color.Tertiary" StartIcon="@Icons.Material.Filled.Webhook" DropShadow="true" OnClick="@Copilot" />
+        <MudHidden Breakpoint="Breakpoint.SmAndDown">
+            <MudFab Style="position:fixed; bottom:10px;right:10px;z-index:666;" Color="@Color.Tertiary" StartIcon="@Icons.Material.Filled.Webhook" DropShadow="true" OnClick="@Copilot" />
+        </MudHidden>
 
         @if (IsSuccess)
         {

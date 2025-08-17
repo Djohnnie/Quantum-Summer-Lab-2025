@@ -23,7 +23,9 @@
 
 @if (IsLoggedIn)
 {
-    <CopilotPane @ref="_copilotPane" TeamName="@TeamName" />
+    <MudContainer Class="pa-0 pa-md-12">
+        <CopilotPane @ref="_copilotPane" TeamName="@TeamName" ShouldAutoScroll="true" />
+    </MudContainer>
 }
 else
 {
