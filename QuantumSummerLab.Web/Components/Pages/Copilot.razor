@@ -57,7 +57,7 @@ else
         await Task.Delay(500);
         if (_copilotPane != null)
         {
-            await _copilotPane.Refresh();
+            await _copilotPane.Refresh(string.Empty);
         }
     }
 }

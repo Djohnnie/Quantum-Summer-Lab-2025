@@ -27,9 +27,13 @@
                 <MudTh>Comments</MudTh>
             </HeaderContent>
             <RowTemplate>
-                <MudTd DataLabel="Position">@context.Position</MudTd>
-                <MudTd DataLabel="Team">@context.TeamName</MudTd>
-                <MudTd DataLabel="Score">@context.TotalPoints</MudTd>
+                <MudTd DataLabel="Position">
+                    <MudChip T="string" Color="Color.Primary">@context.Position</MudChip>
+                </MudTd>
+                <MudTd DataLabel="Team"><strong>@context.TeamName</strong></MudTd>
+                <MudTd DataLabel="Score">
+                    <MudChip T="string" Color="@(context.TotalPoints > 0 ? Color.Success : Color.Warning)">@context.TotalPoints points</MudChip>
+                </MudTd>
                 <MudTd DataLabel="Comments">@context.Description</MudTd>
             </RowTemplate>
         </MudTable>

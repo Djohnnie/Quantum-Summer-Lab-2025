@@ -35,4 +35,37 @@ public static class DateTimeExtensions
             }
         };
     }
+
+    public static string AsDuration(this int duration)
+    {
+        TimeSpan timeSpan = TimeSpan.FromSeconds(duration / 1000);
+
+        return timeSpan.TotalSeconds switch
+        {
+            <= 1 => "one second",
+            <= 60 => $"{timeSpan.Seconds} seconds",
+
+            _ => timeSpan.TotalMinutes switch
+            {
+                <= 1 => "a minute",
+                < 60 => $"about {timeSpan.Minutes} minutes",
+                _ => timeSpan.TotalHours switch
+                {
+                    <= 1 => "about an hour",
+                    < 24 => $"about {timeSpan.Hours} hours",
+                    _ => timeSpan.TotalDays switch
+                    {
+                        <= 1 => "about a day",
+                        <= 30 => $"about {timeSpan.Days} days",
+
+                        <= 60 => "about a month",
+                        < 365 => $"about {timeSpan.Days / 30} months",
+
+                        <= 365 * 2 => "about a year",
+                        _ => $"about {timeSpan.Days / 365} years"
+                    }
+                }
+            }
+        };
+    }
 }

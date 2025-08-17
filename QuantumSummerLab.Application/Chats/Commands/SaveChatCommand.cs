@@ -13,6 +13,7 @@ public class SaveChatCommand : IRequest<SaveChatResponse>
     public string AssistantMessage { get; set; }
     public int TokensUsedByUser { get; set; }
     public int TokensUsedByAssistant { get; set; }
+    public int ProcessingTime { get; set; }
 }
 
 public class SaveChatResponse
@@ -42,7 +43,8 @@ public class SaveChatCommandHandler : IRequestHandler<SaveChatCommand, SaveChatR
             Message = request.UserMessage,
             TokensUsed = request.TokensUsedByUser,
             Team = team,
-            Timestamp = DateTime.UtcNow
+            Timestamp = DateTime.UtcNow,
+            ProcessingTime = 0
         });
 
         await dbContext.SaveChangesAsync(cancellationToken);
@@ -53,7 +55,8 @@ public class SaveChatCommandHandler : IRequestHandler<SaveChatCommand, SaveChatR
             Message = request.AssistantMessage,
             TokensUsed = request.TokensUsedByAssistant,
             Team = team,
-            Timestamp = DateTime.UtcNow
+            Timestamp = DateTime.UtcNow,
+            ProcessingTime = request.ProcessingTime
         });
 
         await dbContext.SaveChangesAsync(cancellationToken);

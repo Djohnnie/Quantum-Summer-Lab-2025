@@ -24,6 +24,7 @@ public class LeaderboardEntry
     public int ChallengesCompleted { get; set; }
     public string Description { get; set; }
     public long Timestamp { get; set; }
+    public int ProcessingTime { get; set; }
 }
 
 public class GetLeaderboardQueryHandler : IRequestHandler<GetLeaderboardQuery, GetLeaderboardResponse>
@@ -58,6 +59,16 @@ public class GetLeaderboardQueryHandler : IRequestHandler<GetLeaderboardQuery, G
             })
             .ToListAsync(cancellationToken);
 
+        var chats = await dbContext.Chats
+            .Include(s => s.Team)
+            .GroupBy(c => c.Team.Name)
+            .Select(g => new
+            {
+                TeamName = g.Key,
+                ProcessingTime = g.Sum(c => c.ProcessingTime),
+            })
+            .ToListAsync(cancellationToken);
+
         var entries = new List<LeaderboardEntry>();
 
         foreach (var team in teams)
@@ -77,7 +88,8 @@ public class GetLeaderboardQueryHandler : IRequestHandler<GetLeaderboardQuery, G
                             .GroupBy(x => x.ChallengeName)
                             .Select(g => g.MinBy(s => s.Timestamp)?.Timestamp.Ticks ?? 0)
                             .Sum()
-                        : 0
+                        : 0,
+                    ProcessingTime = chats.SingleOrDefault(x => x.TeamName == team.Name)?.ProcessingTime ?? 0,
                 });
             }
             else
@@ -89,7 +101,8 @@ public class GetLeaderboardQueryHandler : IRequestHandler<GetLeaderboardQuery, G
                     ChallengesTried = 0,
                     ChallengesCompleted = 0,
                     Timestamp = 0,
-                    Description = "No scores recorded yet!"
+                    Description = "No scores recorded yet!",
+                    ProcessingTime = 0
                 });
             }
         }
@@ -103,13 +116,48 @@ public class GetLeaderboardQueryHandler : IRequestHandler<GetLeaderboardQuery, G
             {
                 var challengesCompleted = entries[i].ChallengesCompleted;
                 var challengesTried = entries[i].ChallengesTried;
-                entries[i].Description = $"{(challengesCompleted > 0 ? $"{challengesCompleted}" : "No")} {(challengesCompleted == 1 ? "challenge" : "challenges")} completed in {challengesTried} {(challengesTried > 1 ? "tries" : "try")}!";
+                var processingTime = AsDuration(entries[i].ProcessingTime);
+                processingTime = $" and {processingTime} spent keeping our Copilot busy";
+                entries[i].Description = $"{(challengesCompleted > 0 ? $"{challengesCompleted}" : "No")} {(challengesCompleted == 1 ? "challenge" : "challenges")} completed in {challengesTried} {(challengesTried > 1 ? "tries" : "try")}{(string.IsNullOrEmpty(processingTime) ? "" : processingTime)}!";
             }
         }
 
         return new GetLeaderboardResponse
         {
             Entries = entries
+        };
+    }
+
+    private static string AsDuration(int duration)
+    {
+        TimeSpan timeSpan = TimeSpan.FromSeconds(duration / 1000);
+
+        return timeSpan.TotalSeconds switch
+        {
+            <= 1 => "less than one second",
+            <= 60 => $"about {timeSpan.Seconds} seconds",
+
+            _ => timeSpan.TotalMinutes switch
+            {
+                <= 1 => "a minute",
+                < 60 => $"about {timeSpan.Minutes} minutes",
+                _ => timeSpan.TotalHours switch
+                {
+                    <= 1 => "about an hour",
+                    < 24 => $"about {timeSpan.Hours} hours",
+                    _ => timeSpan.TotalDays switch
+                    {
+                        <= 1 => "about a day",
+                        <= 30 => $"about {timeSpan.Days} days",
+
+                        <= 60 => "about a month",
+                        < 365 => $"about {timeSpan.Days / 30} months",
+
+                        <= 365 * 2 => "about a year",
+                        _ => $"about {timeSpan.Days / 365} years"
+                    }
+                }
+            }
         };
     }
 }

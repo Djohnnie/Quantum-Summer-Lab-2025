@@ -2,10 +2,20 @@
 
 public class DrawerHelper
 {
-    public event EventHandler? ShouldPopout;
+    public event EventHandler<ParametrizedEventArgs>? ShouldPopout;
 
-    public void Popout()
+    public void Popout(string parameter)
     {
-        ShouldPopout?.Invoke(this, EventArgs.Empty);
+        ShouldPopout?.Invoke(this, new ParametrizedEventArgs(parameter));
+    }
+}
+
+public class ParametrizedEventArgs : EventArgs
+{
+    public string Parameter { get; }
+
+    public ParametrizedEventArgs(string parameter)
+    {
+        Parameter = parameter;
     }
 }

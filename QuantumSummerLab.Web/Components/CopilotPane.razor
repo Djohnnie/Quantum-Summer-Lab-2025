@@ -118,11 +118,11 @@
         }
     }
 
-    public async Task Refresh()
+    public async Task Refresh(string challengeName)
     {
         if (!string.IsNullOrEmpty(TeamName))
         {
-            await RefreshChatHistory();
+            await RefreshChatHistory(challengeName);
             StateHasChanged();
             await Task.Delay(1000);
             await ScrollManager.ScrollToBottomAsync("scrollableContainer", ScrollBehavior.Smooth);
@@ -150,10 +150,16 @@
         await ScrollManager.ScrollToBottomAsync("scrollableContainer", ScrollBehavior.Smooth);
     }
 
-    private async Task RefreshChatHistory()
+    private async Task RefreshChatHistory(string challengeName)
     {
         var response = await Mediator.Send(new GetChatsQuery { TeamName = TeamName });
         _chatHistory = new ChatHistory();
+
+        if (!string.IsNullOrEmpty(challengeName))
+        {
+            _chatHistory.Instructions = $"The current selected challenge is {challengeName}";
+        }
+
         foreach (var chat in response.Messages)
         {
             switch (chat.Role)

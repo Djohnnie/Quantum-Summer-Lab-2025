@@ -11,4 +11,5 @@ public class Chat
     public int TokensUsed { get; set; }
     public bool IsReduced { get; set; }
     public bool IsDeleted { get; set; }
+    public int ProcessingTime { get; set; }
 }

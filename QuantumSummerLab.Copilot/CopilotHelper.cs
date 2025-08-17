@@ -8,6 +8,7 @@ using OpenAI.Chat;
 using QuantumSummerLab.Application.Chats.Commands;
 using QuantumSummerLab.Application.Chats.Queries;
 using QuantumSummerLab.Copilot.Extensions;
+using System.Diagnostics;
 using System.Text;
 
 namespace QuantumSummerLab.Copilot;
@@ -49,6 +50,8 @@ public class CopilotHelper : ICopilotHelper
     {
         try
         {
+            var timestamp = Stopwatch.GetTimestamp();
+
             var chatHistoryCopy = chatHistory.Copy();
 
             // Build the ChatCompletionAgent
@@ -119,6 +122,8 @@ public class CopilotHelper : ICopilotHelper
 
             if (!isChatCleared)
             {
+                var elapsedMilliseconds = (Stopwatch.GetTimestamp() - timestamp) * 1000 / Stopwatch.Frequency;
+                
                 // Save the latest user and assistant message to the database.
                 await _mediator.Send(new SaveChatCommand
                 {
@@ -126,7 +131,8 @@ public class CopilotHelper : ICopilotHelper
                     UserMessage = chatHistory.LatestUserMessage,
                     TokensUsedByUser = chatHistoryCopy.InputTokenCount,
                     AssistantMessage = messageBuilder.ToString().Replace("**", ""),
-                    TokensUsedByAssistant = chatHistoryCopy.OutputTokenCount + tokensUsedForReducing
+                    TokensUsedByAssistant = chatHistoryCopy.OutputTokenCount + tokensUsedForReducing,
+                    ProcessingTime = (int)elapsedMilliseconds
                 });
             }
         }

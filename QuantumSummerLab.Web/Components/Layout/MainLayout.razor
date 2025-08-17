@@ -104,10 +104,10 @@
         NavigationManager.NavigateTo("/login");
     }
 
-    private void OnShouldPopout(object? sender, EventArgs e)
+    private void OnShouldPopout(object? sender, ParametrizedEventArgs e)
     {
         _copilotOpen = true;
-        _copilotPane.Refresh();
+        _copilotPane.Refresh(e.Parameter);
         StateHasChanged();
     }
 
