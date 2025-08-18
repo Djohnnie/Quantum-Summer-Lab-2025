@@ -42,12 +42,12 @@ public static class DateTimeExtensions
 
         return timeSpan.TotalSeconds switch
         {
-            <= 1 => "one second",
-            <= 60 => $"{timeSpan.Seconds} seconds",
+            <= 1 => "less than one second",
+            < 60 => $"about {timeSpan.Seconds} seconds",
 
             _ => timeSpan.TotalMinutes switch
             {
-                <= 1 => "a minute",
+                <= 1 => "about a minute",
                 < 60 => $"about {timeSpan.Minutes} minutes",
                 _ => timeSpan.TotalHours switch
                 {

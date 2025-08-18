@@ -66,34 +66,37 @@ else if (IsAvailable)
 
     @if (IsLoggedIn)
     {
-        <MudCard Elevation="5" Class="my-8">
-            <MudCardHeader>
-                <CardHeaderContent>
-                    <MudText Typo="Typo.h6">Submit your solution here</MudText>
-                </CardHeaderContent>
-            </MudCardHeader>
-            <MudCardContent>
-                <MudAlert Severity="@(IsValid.HasValue? IsValid.Value? Severity.Success: Severity.Error : Severity.Normal)" Class="mt-n4 mb-4">@FeedbackMessage</MudAlert>
+        @if (!IsSuccess)
+        {
+            <MudCard Elevation="5" Class="my-8">
+                <MudCardHeader>
+                    <CardHeaderContent>
+                        <MudText Typo="Typo.h6">Submit your solution here</MudText>
+                    </CardHeaderContent>
+                </MudCardHeader>
+                <MudCardContent>
+                    <MudAlert Severity="@(IsValid.HasValue? IsValid.Value? Severity.Success: Severity.Error : Severity.Normal)" Class="mt-n4 mb-4">@FeedbackMessage</MudAlert>
 
-                @if (VerificationFeedback != null)
-                {
-                    <MudContainer Class="mb-8">
-                        @foreach (var feedback in VerificationFeedback)
-                        {
-                            <div class="d-flex ml-4">
-                                <MudIcon Icon="@(feedback.Valid? Icons.Material.Filled.Check : Icons.Material.Filled.Close)" Color="@(feedback.Valid? Color.Success: Color.Error)" class="mr-3"></MudIcon>
-                                <MudText Color="@(feedback.Valid? Color.Success: Color.Error)">@feedback.Message</MudText>
-                            </div>
-                        }
-                    </MudContainer>
-                }
-                <MudTextField @bind-Value="Solution" Label="Your solution" spellcheck="false" AutoGrow Lines="5" Variant="Variant.Outlined" Class="monospace"></MudTextField>
-            </MudCardContent>
-            <MudCardActions>
-                <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Send" Color="Color.Primary" OnClick="@Submit" Class="ml-2 mb-2 mr-2">Submit your solution</MudButton>
-                <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Clear" Color="Color.Error" OnClick="@Clear" Class="ml-2 mb-2">Clear</MudButton>
-            </MudCardActions>
-        </MudCard>
+                    @if (VerificationFeedback != null)
+                    {
+                        <MudContainer Class="mb-8">
+                            @foreach (var feedback in VerificationFeedback)
+                            {
+                                <div class="d-flex ml-4">
+                                    <MudIcon Icon="@(feedback.Valid? Icons.Material.Filled.Check : Icons.Material.Filled.Close)" Color="@(feedback.Valid? Color.Success: Color.Error)" class="mr-3"></MudIcon>
+                                    <MudText Color="@(feedback.Valid? Color.Success: Color.Error)">@feedback.Message</MudText>
+                                </div>
+                            }
+                        </MudContainer>
+                    }
+                    <MudTextField @bind-Value="Solution" Label="Your solution" spellcheck="false" AutoGrow Lines="5" Variant="Variant.Outlined" Class="monospace"></MudTextField>
+                </MudCardContent>
+                <MudCardActions>
+                    <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Send" Color="Color.Primary" OnClick="@Submit" Class="ml-2 mb-2 mr-2">Submit your solution</MudButton>
+                    <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Clear" Color="Color.Error" OnClick="@Clear" Class="ml-2 mb-2">Clear</MudButton>
+                </MudCardActions>
+            </MudCard>
+        }
 
         @if (YourSubmissions != null && YourSubmissions.Any())
         {

@@ -52,7 +52,7 @@ public class CopilotFunctions
         var responseBuilder = new StringBuilder();
         foreach (var entry in leaderboard.Entries)
         {
-            responseBuilder.AppendLine($"|position: {entry.Position}|team name: {entry.TeamName}|score: {entry.TotalPoints}|comments: {entry.Description}|");
+            responseBuilder.AppendLine($"|position: {entry.Position}|team name: {entry.TeamName}|score: {entry.TotalPoints}|challenges completed: {entry.ChallengesCompleted}|total number of tries: {entry.ChallengesTried}|");
         }
         return responseBuilder.ToString();
     }
