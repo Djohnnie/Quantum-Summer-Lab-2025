@@ -17,7 +17,6 @@ public static class ServiceCollectionExtensions
         });
 
         services.AddScoped<IPasswordHashHelper, PasswordHashHelper>();
-        services.AddScoped<IQSharpHelper, QSharpHelper>();
         services.AddDataServices();
 
         return services;

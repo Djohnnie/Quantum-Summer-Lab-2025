@@ -1,11 +1,11 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using QsharpBridge;
 using QuantumSummerLab.Application.Extensions;
-using QuantumSummerLab.Application.Helpers;
 using QuantumSummerLab.Data;
 using QuantumSummerLab.Data.Model;
+using System.Net.Http.Json;
 using System.Text.Json;
 
 namespace QuantumSummerLab.Application.Scores.Commands;
@@ -31,17 +31,36 @@ public class VerificationFeedback
     public string Message { get; set; }
 }
 
+public class QSharpRequest
+{
+    public string VerificationTemplate { get; set; }
+    public string Solution { get; set; }
+    public string ExpectedOutput { get; set; }
+}
+
+public class QSharpFeedback
+{
+    public bool IsValid { get; set; }
+    public List<QSharpFeedbackMessage> Messages { get; set; } = new List<QSharpFeedbackMessage>();
+}
+
+public class QSharpFeedbackMessage
+{
+    public bool Valid { get; set; }
+    public string Message { get; set; }
+}
+
 public class VerifyChallengeSolutionCommandHandler : IRequestHandler<VerifyChallengeSolutionCommand, VerifyChallengeSolutionResponse>
 {
     private readonly IServiceScopeFactory _scopeFactory;
-    private readonly IQSharpHelper _qSharpHelper;
+    private readonly IConfiguration _configuration;
 
     public VerifyChallengeSolutionCommandHandler(
         IServiceScopeFactory scopeFactory,
-        IQSharpHelper qSharpHelper)
+        IConfiguration configuration)
     {
         _scopeFactory = scopeFactory;
-        _qSharpHelper = qSharpHelper;
+        _configuration = configuration;
     }
 
     public async Task<VerifyChallengeSolutionResponse> Handle(VerifyChallengeSolutionCommand request, CancellationToken cancellationToken)
@@ -53,103 +72,43 @@ public class VerifyChallengeSolutionCommandHandler : IRequestHandler<VerifyChall
         var team = await dbContext.Teams.SingleOrDefaultAsync(
             x => x.Name == request.TeamName, cancellationToken);
 
-        try
+        var verificationTemplate = challenge.VerificationTemplate.FromBase64String();
+        var solution = verificationTemplate.Replace("<<SOLVE>>", request.Solution);
+
+        var requestData = new QSharpRequest
         {
-            var verificationTemplate = challenge.VerificationTemplate.FromBase64String();
-            var solution = verificationTemplate.Replace("<<SOLVE>>", request.Solution);
+            VerificationTemplate = verificationTemplate.ToBase64String(),
+            Solution = request.Solution.ToBase64String(),
+            ExpectedOutput = challenge.ExpectedOutput.ToBase64String()
+        };
 
-            var feedback = _qSharpHelper.Verify(verificationTemplate, request.Solution, challenge.ExpectedOutput);
+        var qsharpHelperBaseAdderess = _configuration.GetValue<string>("QSHARP_HELPER_BASE_ADDRESS");
 
-            dbContext.Scores.Add(new Score
-            {
-                Challenge = challenge,
-                Team = team,
-                IsSuccessful = feedback.IsValid,
-                Feedback = JsonSerializer.Serialize(feedback),
-                ProposedSolution = request.Solution.ToBase64String(),
-                SubmissionTimestamp = request.Timestamp
-            });
-            await dbContext.SaveChangesAsync(cancellationToken);
+        var httpClient = new HttpClient();
+        httpClient.BaseAddress = new Uri(qsharpHelperBaseAdderess);
+        var httpResponse = await httpClient.PostAsJsonAsync("api/QSharpVerificationFunction", requestData, cancellationToken);
+        var feedback = await httpResponse.Content.ReadFromJsonAsync<QSharpFeedback>(cancellationToken);
 
-            return new VerifyChallengeSolutionResponse
-            {
-                IsValid = feedback.IsValid,
-                FeedbackMessage = $"Your submitted solution {(feedback.IsValid ? "is" : "is not")} correct.",
-                Feedback = feedback.Messages.Select(m => new VerificationFeedback
-                {
-                    Valid = m.Valid,
-                    Message = m.Message
-                }).ToList()
-            };
-        }
-        catch (QsException ex)
+        dbContext.Scores.Add(new Score
         {
-            var feedback = ex.Message switch
-            {
-                string a when a.Contains("error: Compile") => "There has been an error compiling your Q# code!",
-                string b when b.Contains("error: Eval") => "There has been an error running your Q# code!",
-                _ => "There has been an unknown error :("
-            };
+            Challenge = challenge,
+            Team = team,
+            IsSuccessful = feedback.IsValid,
+            Feedback = JsonSerializer.Serialize(feedback),
+            ProposedSolution = request.Solution.ToBase64String(),
+            SubmissionTimestamp = request.Timestamp
+        });
+        await dbContext.SaveChangesAsync(cancellationToken);
 
-            dbContext.Scores.Add(new Score
-            {
-                Challenge = challenge,
-                Team = team,
-                IsSuccessful = false,
-                Feedback = JsonSerializer.Serialize(new QSharpFeedback
-                {
-                    IsValid = false,
-                    Messages = new List<QSharpFeedbackMessage>
-                    {
-                        new QSharpFeedbackMessage
-                        {
-                            Valid = false,
-                            Message = feedback
-                        }
-                    }
-                }),
-                ProposedSolution = request.Solution.ToBase64String(),
-                SubmissionTimestamp = request.Timestamp
-            });
-            await dbContext.SaveChangesAsync(cancellationToken);
-
-            return new VerifyChallengeSolutionResponse
-            {
-                IsValid = false,
-                FeedbackMessage = feedback
-            };
-        }
-        catch
+        return new VerifyChallengeSolutionResponse
         {
-            var feedback = "There has been an unknown error :(";
-
-            dbContext.Scores.Add(new Score
+            IsValid = feedback.IsValid,
+            FeedbackMessage = $"Your submitted solution {(feedback.IsValid ? "is" : "is not")} correct.",
+            Feedback = feedback.Messages.Select(m => new VerificationFeedback
             {
-                Challenge = challenge,
-                Team = team,
-                IsSuccessful = false,
-                Feedback = JsonSerializer.Serialize(new QSharpFeedback
-                {
-                    IsValid = false,
-                    Messages = new List<QSharpFeedbackMessage>
-                    {
-                        new QSharpFeedbackMessage
-                        {
-                            Valid = false,
-                            Message = feedback
-                        }
-                    }
-                }),
-                ProposedSolution = request.Solution.ToBase64String(),
-                SubmissionTimestamp = request.Timestamp
-            });
-            await dbContext.SaveChangesAsync(cancellationToken);
-
-            return new VerifyChallengeSolutionResponse
-            {
-                IsValid = false,
-                FeedbackMessage = feedback
-            };
-        }
+                Valid = m.Valid,
+                Message = m.Message
+            }).ToList()
+        };
     }
 }

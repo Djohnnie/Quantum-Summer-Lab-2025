@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using QuantumSummerLab.Application.Extensions;
-using QuantumSummerLab.Application.Helpers;
+using QuantumSummerLab.Application.Scores.Commands;
 using QuantumSummerLab.Data;
 using System.Text.Json;
 

@@ -1,0 +1,39 @@
+﻿@using MediatR
+@using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
+@using QuantumSummerLab.Application.Scores.Queries
+@using QuantumSummerLab.Application.Teams.Commands
+
+@inject ProtectedLocalStorage ProtectedLocalStore
+@inject IMediator Mediator
+
+@page "/reference"
+
+<PageTitle>Quantum Summer Lab - Quick Reference</PageTitle>
+
+<MudText Typo="Typo.h4" Class="my-4">Quick Reference</MudText>
+<MudText Class="mt-8">Welcome to the first technical part of the Quantum Summer Lab 2025.</MudText>
+
+<MudText Typo="Typo.h5" Class="mt-8 mb-4">Prerequisites</MudText>
+<MudText>Download and install the following tool to get started with Microsoft Q#.</MudText>
+<MudLink Href="https://code.visualstudio.com/" Target="_blank">Visual Studio Code (code editor with support for Q#)</MudLink>
+<br />
+<MudLink Href="https://marketplace.visualstudio.com/items?itemName=quantum.qsharp-lang-vscode" Target="_blank">Azure Quantum Development Kit (QDK) extension</MudLink>
+
+<MudText Typo="Typo.h5" Class="mt-8 mb-4">Introduction to the quantum programming language Q#</MudText>
+<MudText>Use the following link to get a quick introduction to the Microsoft Q# programming language.</MudText>
+<MudLink Href="https://learn.microsoft.com/en-us/azure/quantum/qsharp-overview" Target="_blank">https://learn.microsoft.com/en-us/azure/quantum/qsharp-overview</MudLink>
+
+<MudText Typo="Typo.h5" Class="mt-8 mb-4">Quickstart: Create your first Q# program</MudText>
+<MudText>Use the following link to get a quickstart and create your first Q# program.</MudText>
+<MudLink Href="https://learn.microsoft.com/en-us/azure/quantum/qsharp-quickstart" Target="_blank">https://learn.microsoft.com/en-us/azure/quantum/qsharp-quickstart</MudLink>
+
+<MudText Typo="Typo.h5" Class="mt-8 mb-4">Q# standard library</MudText>
+<MudText>Use the following link to get an overview on the Q# standard library.</MudText>
+<MudLink Href="https://learn.microsoft.com/en-us/qsharp/api/qsharp-lang/" Target="_blank">https://learn.microsoft.com/en-us/qsharp/api/qsharp-lang/</MudLink>
+
+
+@code
+{
+
+    
+}
