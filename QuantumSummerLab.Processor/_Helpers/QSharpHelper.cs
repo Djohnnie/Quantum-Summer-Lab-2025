@@ -20,6 +20,7 @@ public class QSharpHelper : IQSharpHelper
             var verificationTemplate = request.VerificationTemplate.FromBase64String();
             var solution = request.Solution.FromBase64String();
             var expectedOutput = request.ExpectedOutput.FromBase64String();
+            var expectedStates = request.ExpectedStates.FromBase64String();
 
             if (solution.Contains("while"))
             {
@@ -29,6 +30,8 @@ public class QSharpHelper : IQSharpHelper
                     Messages = [new QSharpFeedbackMessage { Valid = false, Message = "This challenge does not need a while-loop" }]
                 };
             }
+
+            var expectedDeserializedStates = string.IsNullOrEmpty(expectedStates) ? new List<QSharpState>() : JsonSerializer.Deserialize<List<QSharpState>>(expectedStates, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
             var qsharpSource = verificationTemplate.Replace("<<SOLVE>>", solution);
 
@@ -41,7 +44,10 @@ public class QSharpHelper : IQSharpHelper
 
             for (var i = 0; i < _shots; i++)
             {
-                isValid = resultShots[i].result == expectedOutput ? isValid : false;
+                var actualOutput = resultShots[i].result;
+
+                isValid = actualOutput == expectedOutput ? isValid : false;
+
                 if (resultShots[i].messages != null)
                 {
                     foreach (var message in resultShots[i].messages)
@@ -51,6 +57,39 @@ public class QSharpHelper : IQSharpHelper
                         {
                             isValid = isValid && feedbackMessage.Valid;
                             feedbackMessages.Add(feedbackMessage);
+                        }
+                    }
+                }
+
+                if (resultShots[i].states != null)
+                {
+                    var actualStates = resultShots[i].states;
+
+                    foreach (var expectedState in expectedDeserializedStates)
+                    {
+                        var actualState = actualStates.FirstOrDefault(s => s.id == expectedState.Id);
+                        if (actualState != null)
+                        {
+                            var isAmplitudeValid = Math.Abs(actualState.amplitudeReal - expectedState.AmplitudeReal) < 0.00001 &&
+                                                   Math.Abs(actualState.amplitudeImaginary - expectedState.AmplitudeImaginary) < 0.00001;
+                            if (!isAmplitudeValid)
+                            {
+                                isValid = false;
+                                feedbackMessages.Add(new QSharpFeedbackMessage
+                                {
+                                    Valid = false,
+                                    Message = $"State {expectedState.Id} has incorrect amplitudes: Expected ({expectedState.AmplitudeReal}, {expectedState.AmplitudeImaginary}), Actual ({actualState.amplitudeReal}, {actualState.amplitudeImaginary})"
+                                });
+                            }
+                        }
+                        else
+                        {
+                            isValid = false;
+                            feedbackMessages.Add(new QSharpFeedbackMessage
+                            {
+                                Valid = false,
+                                Message = $"Expected state {expectedState.Id} not found in actual states."
+                            });
                         }
                     }
                 }
@@ -91,6 +130,7 @@ public class QSharpRequest
     public string VerificationTemplate { get; set; }
     public string Solution { get; set; }
     public string ExpectedOutput { get; set; }
+    public string ExpectedStates { get; set; }
 }
 
 public class QSharpFeedback
@@ -103,4 +143,11 @@ public class QSharpFeedbackMessage
 {
     public bool Valid { get; set; }
     public string Message { get; set; }
+}
+
+public class QSharpState
+{
+    public string Id { get; set; }
+    public double AmplitudeReal { get; set; }
+    public double AmplitudeImaginary { get; set; }
 }

@@ -90,6 +90,7 @@ static async Task ProcessChallenge(QuantumSummerLabDbContext dbContext, Challeng
                    .SetProperty(p => p.ExampleCode, challenge.ExampleCode)
                    .SetProperty(p => p.VerificationTemplate, challenge.VerificationTemplate)
                    .SetProperty(p => p.ExpectedOutput, challenge.ExpectedOutput)
+                   .SetProperty(p => p.ExpectedStates, challenge.ExpectedStates)
                    .SetProperty(p => p.Level, challenge.Level)
         );
     }

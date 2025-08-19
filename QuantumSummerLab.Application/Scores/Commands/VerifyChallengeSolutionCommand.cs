@@ -36,6 +36,7 @@ public class QSharpRequest
     public string VerificationTemplate { get; set; }
     public string Solution { get; set; }
     public string ExpectedOutput { get; set; }
+    public string ExpectedStates { get; set; }
 }
 
 public class QSharpFeedback
@@ -79,7 +80,8 @@ public class VerifyChallengeSolutionCommandHandler : IRequestHandler<VerifyChall
         {
             VerificationTemplate = verificationTemplate.ToBase64String(),
             Solution = request.Solution.ToBase64String(),
-            ExpectedOutput = challenge.ExpectedOutput.ToBase64String()
+            ExpectedOutput = challenge.ExpectedOutput.ToBase64String(),
+            ExpectedStates = challenge.ExpectedStates
         };
 
         var qsharpHelperBaseAdderess = _configuration.GetValue<string>("QSHARP_HELPER_BASE_ADDRESS");
