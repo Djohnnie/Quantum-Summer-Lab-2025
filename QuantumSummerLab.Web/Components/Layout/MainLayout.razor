@@ -115,7 +115,7 @@
     private void OnShouldPopout(object? sender, ParametrizedEventArgs e)
     {
         _copilotOpen = true;
-        _copilotPane.Refresh(e.Parameter);
+        _copilotPane.Refresh(e.Parameter1, e.Parameter2);
         StateHasChanged();
     }
 

@@ -5,23 +5,11 @@ import Std.Math.*;
 import Std.Measurement.*;
 
 operation Main() : Bool
-{
-    mutable resultCounter = 0;
-
-    for i in 1..8
-    {
-        let result = CheckOperationsAreEqual(i, Solve, Expected);
-        set resultCounter += result ? 1 | 0;
-    }
-
-    LogMessage(resultCounter == 8, "You have successfully generated the GHZ state", "You have failed to generate the GHZ state");
-
-    use qs = Qubit[8];
-    Solve(qs);
-    DumpRegister(qs);
-    ResetAll(qs);
-
-    return resultCounter == 8;
+{    
+    let result = CheckOperationsAreEqual(8, Solve, Expected);
+    LogMessage(result, "You have successfully generated the GHZ state", "You have failed to generate the GHZ state");
+    
+    return result;
 }
 
 function LogMessage(isValid: Bool, validMessage: String, invalidMessage: String) : ()

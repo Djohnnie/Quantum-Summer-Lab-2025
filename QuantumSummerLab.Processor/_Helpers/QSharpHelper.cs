@@ -70,15 +70,32 @@ public class QSharpHelper : IQSharpHelper
                         var actualState = actualStates.FirstOrDefault(s => s.id == expectedState.Id);
                         if (actualState != null)
                         {
-                            var isAmplitudeValid = Math.Abs(actualState.amplitudeReal - expectedState.AmplitudeReal) < 0.00001 &&
-                                                   Math.Abs(actualState.amplitudeImaginary - expectedState.AmplitudeImaginary) < 0.00001;
+                            var actualAmplitudeReal = Math.Round(actualState.amplitudeReal, 4);
+                            var expectedAmplitudeReal = Math.Round(expectedState.AmplitudeReal, 4);
+                            var actualAmplitudeImaginary = Math.Round(actualState.amplitudeImaginary, 4);
+                            var expectedAmplitudeImaginary = Math.Round(expectedState.AmplitudeImaginary, 4);
+
+                            var isAmplitudeValid = actualAmplitudeReal == expectedAmplitudeReal &&
+                                                   actualAmplitudeImaginary == expectedAmplitudeImaginary;
+                            
+                            var expectedAmplitudes = $"{expectedAmplitudeReal:F4} {(expectedAmplitudeImaginary >= 0 ? "+" : "-")} {Math.Abs(expectedAmplitudeImaginary):F4}𝑖";
+                            var actualAmplitudes = $"{actualAmplitudeReal:F4} {(actualAmplitudeImaginary >= 0 ? "+" : "-")} {Math.Abs(actualAmplitudeImaginary):F4}𝑖";
+
                             if (!isAmplitudeValid)
                             {
-                                isValid = false;
+                                isValid = false;                                
                                 feedbackMessages.Add(new QSharpFeedbackMessage
                                 {
                                     Valid = false,
-                                    Message = $"State {expectedState.Id} has incorrect amplitudes: Expected ({expectedState.AmplitudeReal}, {expectedState.AmplitudeImaginary}), Actual ({actualState.amplitudeReal}, {actualState.amplitudeImaginary})"
+                                    Message = $"Simulated quantum state {expectedState.Id} has an incorrect amplitude: Expected: {expectedAmplitudes}, Actual: {actualAmplitudes}"
+                                });
+                            }
+                            else
+                            {
+                                feedbackMessages.Add(new QSharpFeedbackMessage
+                                {
+                                    Valid = true,
+                                    Message = $"Expected simulated quantum state {expectedState.Id} was successfully encountered with amplitude {actualAmplitudes}"
                                 });
                             }
                         }
@@ -88,7 +105,7 @@ public class QSharpHelper : IQSharpHelper
                             feedbackMessages.Add(new QSharpFeedbackMessage
                             {
                                 Valid = false,
-                                Message = $"Expected state {expectedState.Id} not found in actual states."
+                                Message = $"Expected simulated quantum state {expectedState.Id} was not encountered."
                             });
                         }
                     }

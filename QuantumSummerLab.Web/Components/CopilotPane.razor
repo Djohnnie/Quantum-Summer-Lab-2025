@@ -87,7 +87,7 @@
 
     <MudContainer MaxWidth="MaxWidth.Medium" Class="d-flex flex-column justify-center gap-4 my-8">
         <MudTextField T="string" Label="Your question" spellcheck="false" Variant="Variant.Outlined" @bind-Value="Chat" OnKeyUp="@OnKeyUp" TextUpdateSuppression="false"
-                        Adornment="Adornment.End" AdornmentColor="Color.Primary" AdornmentIcon="@Icons.Material.Filled.Send" OnAdornmentClick="@AskQuestion" />
+                      Adornment="Adornment.End" AdornmentColor="Color.Primary" AdornmentIcon="@Icons.Material.Filled.Send" OnAdornmentClick="@AskQuestion" />
     </MudContainer>
 </MudContainer>
 
@@ -119,11 +119,11 @@
         }
     }
 
-    public async Task Refresh(string challengeName)
+    public async Task Refresh(string challengeName, string instructions)
     {
         if (!string.IsNullOrEmpty(TeamName))
         {
-            await RefreshChatHistory(challengeName);
+            await RefreshChatHistory(challengeName, instructions);
             StateHasChanged();
 
             if (ShouldAutoScroll)
@@ -159,14 +159,14 @@
         }
     }
 
-    private async Task RefreshChatHistory(string challengeName)
+    private async Task RefreshChatHistory(string challengeName, string instructions)
     {
         var response = await Mediator.Send(new GetChatsQuery { TeamName = TeamName });
         _chatHistory = new ChatHistory();
 
         if (!string.IsNullOrEmpty(challengeName))
         {
-            _chatHistory.Instructions = $"The current selected challenge is {challengeName}";
+            _chatHistory.Instructions = $"The current selected challenge is {challengeName} and your explicit instructions are: {instructions}";
         }
 
         foreach (var chat in response.Messages)

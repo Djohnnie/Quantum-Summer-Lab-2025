@@ -92,7 +92,14 @@ else if (IsAvailable)
                     <MudTextField @bind-Value="Solution" Label="Your solution" spellcheck="false" AutoGrow Lines="5" Variant="Variant.Outlined" Class="monospace"></MudTextField>
                 </MudCardContent>
                 <MudCardActions>
-                    <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Send" Color="Color.Primary" OnClick="@Submit" Class="ml-2 mb-2 mr-2">Submit your solution</MudButton>
+                    @if (IsSubmitting)
+                    {
+                        <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="true" Class="ml-2 mb-2 mr-2"><MudProgressCircular Class="ml-n2 mr-2" Indeterminate="true" Size="Size.Small" Color="Color.Default" />Submit your solution</MudButton>
+                    }
+                    else
+                    {
+                        <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Send" Color="Color.Primary" OnClick="@Submit" Class="ml-2 mb-2 mr-2">Submit your solution</MudButton>
+                    }
                     <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Clear" Color="Color.Error" OnClick="@Clear" Class="ml-2 mb-2">Clear</MudButton>
                 </MudCardActions>
             </MudCard>
@@ -170,6 +177,7 @@ else
     private string TeamName { get; set; }
     private bool IsLoading { get; set; }
     private bool IsAvailable { get; set; }
+    private bool IsSubmitting { get; set; }
     private List<YourSubmission> YourSubmissions { get; set; }
     private List<VerificationFeedback> VerificationFeedback { get; set; } = new List<VerificationFeedback>();
 
@@ -178,6 +186,7 @@ else
     private string SolutionTemplate { get; set; }
     private string[] ExampleDescription { get; set; }
     private string ExampleCode { get; set; }
+    private string CopilotInstructions { get; set; }
     private string FeedbackMessage { get; set; }
     private bool? IsValid { get; set; }
 
@@ -200,6 +209,7 @@ else
             ExampleCode = $"```js{Environment.NewLine}{challenge.ExampleCode}{Environment.NewLine}```";
             FeedbackMessage = "You have not yet submitted a solution";
             VerificationFeedback = new List<VerificationFeedback>();
+            CopilotInstructions = challenge.CopilotInstructions;
             Clear();
             await LoadScore();
         }
@@ -224,6 +234,9 @@ else
 
     protected async Task Submit()
     {
+        IsSubmitting = true;
+        StateHasChanged();
+
         var response = await Mediator.Send(new VerifyChallengeSolutionCommand
         {
             ChallengeName = ChallengeName,
@@ -237,6 +250,8 @@ else
         VerificationFeedback = response.Feedback;
 
         await LoadScore();
+
+        IsSubmitting = false;
         StateHasChanged();
     }
 
@@ -251,7 +266,7 @@ else
 
     protected void Copilot()
     {
-        DrawerHelper.Popout(ChallengeName);
+        DrawerHelper.Popout(ChallengeName, CopilotInstructions);
     }
 
     private async Task LoadScore()

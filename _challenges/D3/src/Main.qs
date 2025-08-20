@@ -6,19 +6,18 @@ import Std.Measurement.*;
 
 operation Main() : Bool
 {    
-    //let result = CheckOperationsAreEqual(2, Solve, Expected);
+    let result = CheckOperationsAreEqual(2, Solve, Expected);
     //LogMessage(result, "You have successfully generated the GHZ state", "You have failed to generate the GHZ state");
     
-    //DumpOperation(2,Solve);
-    //DumpOperation(2,Expected);
+    DumpOperation(2,Solve);
+    DumpOperation(2,Expected);
 
     use qs = Qubit[2];
     Solve(qs);
     DumpRegister(qs);
-    DumpRegister(qs);
     ResetAll(qs);
 
-    return false;
+    return result;
 }
 
 function LogMessage(isValid: Bool, validMessage: String, invalidMessage: String) : ()
@@ -65,7 +64,7 @@ operation Solve (qs : Qubit[]) : Unit
 // public static Challenge CHALLENGE_C3 = new Challenge
 // {
 //     Name = "C3",
-//     Title = "Generate state |00⟩ + |01⟩ + |10⟩.",
+//     Title = "",
 //     Description = "",
 //     SolutionTemplate = "",
 //     ExampleDescription = "",
