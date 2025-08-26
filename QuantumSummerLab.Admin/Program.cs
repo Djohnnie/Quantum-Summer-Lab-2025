@@ -1,6 +1,7 @@
 ﻿using MudBlazor;
 using MudBlazor.Services;
 using QuantumSummerLab.Admin.Components;
+using QuantumSummerLab.Admin.Helpers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddMudServices();
 builder.Services.AddMudMarkdownServices();
 builder.Services.AddApplicationServices(builder.Configuration);
+builder.Services.AddScoped<NavigationHelper>();
 
 // Add services to the container.
 builder.Services.AddRazorComponents()

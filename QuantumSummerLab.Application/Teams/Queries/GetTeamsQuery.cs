@@ -18,6 +18,7 @@ public class TeamDto
 {
     public Guid Id { get; set; }
     public string Name { get; set; }
+    public bool IsArchived { get; set; }
 }
 
 public class GetTeamsQueryHandler : IRequestHandler<GetTeamsQuery, GetTeamsResponse>
@@ -35,11 +36,13 @@ public class GetTeamsQueryHandler : IRequestHandler<GetTeamsQuery, GetTeamsRespo
         using var dbContext = _scopeFactory.CreateScope().ServiceProvider.GetRequiredService<QuantumSummerLabDbContext>();
 
         var teams = await dbContext.Teams
-            .OrderBy(t => t.Name)
+            .OrderByDescending(t => t.IsArchived)
+            .ThenBy(t => t.Name)
             .Select(x => new TeamDto
             {
                 Id = x.Id,
-                Name = x.Name
+                Name = x.Name,
+                IsArchived = x.IsArchived
             })
             .ToListAsync(cancellationToken);
 

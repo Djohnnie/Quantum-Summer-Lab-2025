@@ -12,6 +12,7 @@ builder.Services.AddMudMarkdownServices();
 builder.Services.AddApplicationServices(builder.Configuration);
 
 builder.Services.AddScoped<DrawerHelper>();
+builder.Services.AddScoped<NavigationHelper>();
 builder.Services.AddCopilotServices();
 
 // Add services to the container.

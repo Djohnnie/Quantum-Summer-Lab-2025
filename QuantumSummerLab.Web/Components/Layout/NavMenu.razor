@@ -1,27 +1,107 @@
-﻿<MudNavMenu>
+﻿@using MediatR
+@using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
+@using QuantumSummerLab.Application.Scores.Queries
+@using QuantumSummerLab.Application.Teams.Commands
+@using QuantumSummerLab.Web.Helpers
+
+@inject ProtectedLocalStorage ProtectedLocalStore
+@inject NavigationHelper NavigationHelper
+@inject IMediator Mediator
+
+<MudNavMenu>
     <MudNavLink Class="mt-2" Href="" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Home">Home</MudNavLink>
     <MudDivider Class="my-2" />
     <MudNavLink Href="reference" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.School">Quick Reference</MudNavLink>
     <MudDivider Class="my-2" />
-    <MudNavLink Href="challenge/0" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.MenuBook">Example Challenge</MudNavLink>
-    <MudDivider Class="my-2" />
-    <MudNavLink Href="challenge/A1" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.LooksOne">Challenge A1</MudNavLink>
-    <MudNavLink Href="challenge/A2" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.LooksTwo">Challenge A2</MudNavLink>
-    <MudNavLink Href="challenge/A3" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Looks3">Challenge A3</MudNavLink>
-    <MudDivider Class="my-2" />
-    <MudNavLink Href="challenge/B1" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.LooksOne">Challenge B1</MudNavLink>
-    <MudNavLink Href="challenge/B2" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.LooksTwo">Challenge B2</MudNavLink>
-    <MudNavLink Href="challenge/B3" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Looks3">Challenge B3</MudNavLink>
-    <MudDivider Class="my-2" />
-    <MudNavLink Href="challenge/C1" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.LooksOne">Challenge C1</MudNavLink>
-    <MudNavLink Href="challenge/C2" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.LooksTwo">Challenge C2</MudNavLink>
-    <MudNavLink Href="challenge/C3" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Looks3">Challenge C3</MudNavLink>
-    <MudDivider Class="my-2" />
-    <MudNavLink Href="challenge/D1" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.LooksOne">Challenge D1</MudNavLink>
-    <MudNavLink Href="challenge/D2" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.LooksTwo">Challenge D2</MudNavLink>
-    <MudNavLink Href="challenge/D3" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Looks3">Challenge D3</MudNavLink>
+    <MudNavGroup Title="Example challenges" Icon="@Icons.Material.Filled.Extension">
+        <MudNavLink Href="challenge/0" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.MenuBook" IconColor="@(IsLoggedIn? IsChallenge0Completed ? Color.Success : Color.Error : Color.Default)">Example Challenge</MudNavLink>
+    </MudNavGroup>
+    <MudNavGroup Title="Extra challenges" Icon="@Icons.Material.Filled.Extension">
+        <MudNavLink Href="challenge/A1" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.LooksOne" IconColor="@(IsLoggedIn? IsChallengeA1Completed ? Color.Success : Color.Error : Color.Default)">Challenge A1</MudNavLink>
+        <MudNavLink Href="challenge/A2" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.LooksTwo" IconColor="@(IsLoggedIn? IsChallengeA2Completed ? Color.Success : Color.Error : Color.Default)">Challenge A2</MudNavLink>
+        <MudNavLink Href="challenge/A3" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Looks3" IconColor="@(IsLoggedIn? IsChallengeA3Completed ? Color.Success : Color.Error : Color.Default)">Challenge A3</MudNavLink>
+    </MudNavGroup>
+    <MudNavGroup Title="Moderate challenges" Icon="@Icons.Material.Filled.Extension">
+        <MudNavLink Href="challenge/B1" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.LooksOne" IconColor="@(IsLoggedIn? IsChallengeB1Completed ? Color.Success : Color.Error : Color.Default)">Challenge B1</MudNavLink>
+        <MudNavLink Href="challenge/B2" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.LooksTwo" IconColor="@(IsLoggedIn? IsChallengeB2Completed ? Color.Success : Color.Error : Color.Default)">Challenge B2</MudNavLink>
+        <MudNavLink Href="challenge/B3" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Looks3" IconColor="@(IsLoggedIn? IsChallengeB3Completed ? Color.Success : Color.Error : Color.Default)">Challenge B3</MudNavLink>
+    </MudNavGroup>
+    <MudNavGroup Title="Hard challenges" Icon="@Icons.Material.Filled.Extension">
+        <MudNavLink Href="challenge/C1" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.LooksOne" IconColor="@(IsLoggedIn? IsChallengeC1Completed ? Color.Success : Color.Error : Color.Default)">Challenge C1</MudNavLink>
+        <MudNavLink Href="challenge/C2" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.LooksTwo" IconColor="@(IsLoggedIn? IsChallengeC2Completed ? Color.Success : Color.Error : Color.Default)">Challenge C2</MudNavLink>
+        <MudNavLink Href="challenge/C3" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Looks3" IconColor="@(IsLoggedIn? IsChallengeC3Completed ? Color.Success : Color.Error : Color.Default)">Challenge C3</MudNavLink>
+    </MudNavGroup>
+    <MudNavGroup Title="Extra challenges" Icon="@Icons.Material.Filled.Extension">
+        <MudNavLink Href="challenge/D1" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.LooksOne" IconColor="@(IsLoggedIn? IsChallengeD1Completed ? Color.Success : Color.Error : Color.Default)">Challenge D1</MudNavLink>
+        <MudNavLink Href="challenge/D2" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.LooksTwo" IconColor="@(IsLoggedIn? IsChallengeD2Completed ? Color.Success : Color.Error : Color.Default)">Challenge D2</MudNavLink>
+        <MudNavLink Href="challenge/D3" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Looks3" IconColor="@(IsLoggedIn? IsChallengeD3Completed ? Color.Success : Color.Error : Color.Default)">Challenge D3</MudNavLink>
+    </MudNavGroup>
     <MudDivider Class="my-2" />
     <MudNavLink Href="leaderboard" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Leaderboard">Leaderboard</MudNavLink>
     <MudDivider Class="my-2" />
     <MudNavLink Href="copilot" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Chat">Copilot</MudNavLink>
 </MudNavMenu>
+
+@code
+{
+    private bool IsLoggedIn { get; set; }
+    private bool IsChallenge0Completed { get; set; }
+    private bool IsChallengeA1Completed { get; set; }
+    private bool IsChallengeA2Completed { get; set; }
+    private bool IsChallengeA3Completed { get; set; }
+    private bool IsChallengeB1Completed { get; set; }
+    private bool IsChallengeB2Completed { get; set; }
+    private bool IsChallengeB3Completed { get; set; }
+    private bool IsChallengeC1Completed { get; set; }
+    private bool IsChallengeC2Completed { get; set; }
+    private bool IsChallengeC3Completed { get; set; }
+    private bool IsChallengeD1Completed { get; set; }
+    private bool IsChallengeD2Completed { get; set; }
+    private bool IsChallengeD3Completed { get; set; }
+
+    protected override void OnInitialized()
+    {
+        NavigationHelper.ShouldUpdate += OnShouldUpdate;
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await RefreshNavigation();
+        }
+    }
+
+    private void OnShouldUpdate(object? sender, EventArgs e)
+    {
+        _ = RefreshNavigation();
+    }
+
+    private async Task RefreshNavigation()
+    {
+        var authToken = await ProtectedLocalStore.GetAsync<AuthenticationToken>("authToken");
+
+        IsLoggedIn = authToken.Success;
+
+        if (IsLoggedIn)
+        {
+            var teamName = authToken.Value.TeamName;
+            var result = await Mediator.Send(new GetYourScoresQuery { TeamName = teamName });
+            IsChallenge0Completed = result.Scores.SingleOrDefault(x => x.ChallengeName == "0")?.IsSuccess ?? false;
+            IsChallengeA1Completed = result.Scores.SingleOrDefault(x => x.ChallengeName == "A1")?.IsSuccess ?? false;
+            IsChallengeA2Completed = result.Scores.SingleOrDefault(x => x.ChallengeName == "A2")?.IsSuccess ?? false;
+            IsChallengeA3Completed = result.Scores.SingleOrDefault(x => x.ChallengeName == "A3")?.IsSuccess ?? false;
+            IsChallengeB1Completed = result.Scores.SingleOrDefault(x => x.ChallengeName == "B1")?.IsSuccess ?? false;
+            IsChallengeB2Completed = result.Scores.SingleOrDefault(x => x.ChallengeName == "B2")?.IsSuccess ?? false;
+            IsChallengeB3Completed = result.Scores.SingleOrDefault(x => x.ChallengeName == "B3")?.IsSuccess ?? false;
+            IsChallengeC1Completed = result.Scores.SingleOrDefault(x => x.ChallengeName == "C1")?.IsSuccess ?? false;
+            IsChallengeC2Completed = result.Scores.SingleOrDefault(x => x.ChallengeName == "C2")?.IsSuccess ?? false;
+            IsChallengeC3Completed = result.Scores.SingleOrDefault(x => x.ChallengeName == "C3")?.IsSuccess ?? false;
+            IsChallengeD1Completed = result.Scores.SingleOrDefault(x => x.ChallengeName == "D1")?.IsSuccess ?? false;
+            IsChallengeD2Completed = result.Scores.SingleOrDefault(x => x.ChallengeName == "D2")?.IsSuccess ?? false;
+            IsChallengeD3Completed = result.Scores.SingleOrDefault(x => x.ChallengeName == "D3")?.IsSuccess ?? false;
+        }
+
+        StateHasChanged();
+    }
+}

@@ -40,9 +40,10 @@ public class GetLeaderboardQueryHandler : IRequestHandler<GetLeaderboardQuery, G
     {
         using var dbContext = _scopeFactory.CreateScope().ServiceProvider.GetRequiredService<QuantumSummerLabDbContext>();
 
-        var teams = await dbContext.Teams.ToListAsync(cancellationToken);
+        var teams = await dbContext.Teams.Where(x => !x.IsArchived).ToListAsync(cancellationToken);
 
         var scores = await dbContext.Scores
+            .Where(x => !x.Team.IsArchived)
             .Include(s => s.Team)
             .GroupBy(s => s.Team)
             .Select(g => new

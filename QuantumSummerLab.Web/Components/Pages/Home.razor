@@ -1,8 +1,9 @@
-﻿@page "/"
-@using MediatR
+﻿@using MediatR
 @using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
 @using QuantumSummerLab.Application.Scores.Queries
 @using QuantumSummerLab.Application.Teams.Commands
+
+@page "/"
 
 @inject ProtectedLocalStorage ProtectedLocalStore
 @inject IMediator Mediator
@@ -33,91 +34,91 @@
     <MudItem xs="12" md="8" Class="mt-16">
         <div class="explore-mudblazor-items">
             <ExploreCard Title="Example Challenge" Link="/challenge/0">
-                <MudIcon Icon="@Icons.Material.Filled.MenuBook" Size="Size.Large" Color="@(IsLoggedIn? IsChallenge0Completed ? Color.Tertiary : Color.Secondary : Color.Primary)" Style="font-size:64px;" />
-            </ExploreCard>
-        </div>
-    </MudItem>
-    <MudItem xs="12" md="4" Class="mt-16">
-        <div class="docs-sticky-info explore-text">
-            <MudText Typo="Typo.h5">Introductory challenges</MudText>
-            <MudText Typo="Typo.subtitle1">These challenges are created to teach you about the basics on quantum logic, gates and circuits.</MudText>
-        </div>
-    </MudItem>
-    <MudItem xs="12" md="8" Class="mt-16">
-        <div class="explore-mudblazor-items">
-            <ExploreCard Title="Challenge A1" Link="/challenge/A1">
-                <MudIcon Icon="@Icons.Material.Filled.LooksOne" Color="@(IsLoggedIn? IsChallengeA1Completed ? Color.Tertiary : Color.Secondary : Color.Primary)" Style="font-size:64px;" />
-            </ExploreCard>
-
-            <ExploreCard Title="Challenge A2" Link="/challenge/A2">
-                <MudIcon Icon="@Icons.Material.Filled.LooksTwo" Color="@(IsLoggedIn? IsChallengeA2Completed ? Color.Tertiary : Color.Secondary : Color.Primary)" Style="font-size:64px;" />
-            </ExploreCard>
-
-            <ExploreCard Title="Challenge A3" Link="/challenge/A3">
-                <MudIcon Icon="@Icons.Material.Filled.Looks3" Color="@(IsLoggedIn? IsChallengeA3Completed ? Color.Tertiary : Color.Secondary : Color.Primary)" Style="font-size:64px;" />
+                <MudIcon Icon="@Icons.Material.Filled.MenuBook" Size="Size.Large" Color="@(IsLoggedIn? IsChallenge0Completed ? Color.Success : Color.Error : Color.Primary)" Style="font-size:64px;" />
             </ExploreCard>
         </div>
     </MudItem>
     <MudItem xs="12" md="4" Class="mt-16">
         <div class="docs-sticky-info explore-text">
             <MudText Typo="Typo.h5">Easy challenges</MudText>
-            <MudText Typo="Typo.subtitle1">These challenges build on the introductory challenges and provide you with a slightly greater challenge.</MudText>
+            <MudText Typo="Typo.subtitle1">These challenges are created to teach you about the basics on quantum logic, gates and circuits.</MudText>
         </div>
     </MudItem>
     <MudItem xs="12" md="8" Class="mt-16">
         <div class="explore-mudblazor-items">
-            <ExploreCard Title="Challenge B1" Link="/challenge/B1">
-                <MudIcon Icon="@Icons.Material.Filled.LooksOne" Color="@(IsLoggedIn? IsChallengeB1Completed ? Color.Tertiary : Color.Secondary : Color.Primary)" Style="font-size:64px;" />
+            <ExploreCard Title="Challenge A1" Link="/challenge/A1">
+                <MudIcon Icon="@Icons.Material.Filled.LooksOne" Color="@(IsLoggedIn? IsChallengeA1Completed ? Color.Success : Color.Error : Color.Primary)" Style="font-size:64px;" />
             </ExploreCard>
 
-            <ExploreCard Title="Challenge B2" Link="/challenge/B2">
-                <MudIcon Icon="@Icons.Material.Filled.LooksTwo" Color="@(IsLoggedIn? IsChallengeB2Completed ? Color.Tertiary : Color.Secondary : Color.Primary)" Style="font-size:64px;" />
+            <ExploreCard Title="Challenge A2" Link="/challenge/A2">
+                <MudIcon Icon="@Icons.Material.Filled.LooksTwo" Color="@(IsLoggedIn? IsChallengeA2Completed ? Color.Success : Color.Error : Color.Primary)" Style="font-size:64px;" />
             </ExploreCard>
 
-            <ExploreCard Title="Challenge B3" Link="/challenge/B3">
-                <MudIcon Icon="@Icons.Material.Filled.Looks3" Color="@(IsLoggedIn? IsChallengeB3Completed ? Color.Tertiary : Color.Secondary : Color.Primary)" Style="font-size:64px;" />
+            <ExploreCard Title="Challenge A3" Link="/challenge/A3">
+                <MudIcon Icon="@Icons.Material.Filled.Looks3" Color="@(IsLoggedIn? IsChallengeA3Completed ? Color.Success : Color.Error : Color.Primary)" Style="font-size:64px;" />
             </ExploreCard>
         </div>
     </MudItem>
     <MudItem xs="12" md="4" Class="mt-16">
         <div class="docs-sticky-info explore-text">
             <MudText Typo="Typo.h5">Moderate challenges</MudText>
+            <MudText Typo="Typo.subtitle1">These challenges build on the introductory challenges and provide you with a slightly greater challenge.</MudText>
+        </div>
+    </MudItem>
+    <MudItem xs="12" md="8" Class="mt-16">
+        <div class="explore-mudblazor-items">
+            <ExploreCard Title="Challenge B1" Link="/challenge/B1">
+                <MudIcon Icon="@Icons.Material.Filled.LooksOne" Color="@(IsLoggedIn? IsChallengeB1Completed ? Color.Success : Color.Error : Color.Primary)" Style="font-size:64px;" />
+            </ExploreCard>
+
+            <ExploreCard Title="Challenge B2" Link="/challenge/B2">
+                <MudIcon Icon="@Icons.Material.Filled.LooksTwo" Color="@(IsLoggedIn? IsChallengeB2Completed ? Color.Success : Color.Error : Color.Primary)" Style="font-size:64px;" />
+            </ExploreCard>
+
+            <ExploreCard Title="Challenge B3" Link="/challenge/B3">
+                <MudIcon Icon="@Icons.Material.Filled.Looks3" Color="@(IsLoggedIn? IsChallengeB3Completed ? Color.Success : Color.Error : Color.Primary)" Style="font-size:64px;" />
+            </ExploreCard>
+        </div>
+    </MudItem>
+    <MudItem xs="12" md="4" Class="mt-16">
+        <div class="docs-sticky-info explore-text">
+            <MudText Typo="Typo.h5">Hard challenges</MudText>
             <MudText Typo="Typo.subtitle1">These challenges ask for some more quantum insight.</MudText>
         </div>
     </MudItem>
     <MudItem xs="12" md="8" Class="mt-16">
         <div class="explore-mudblazor-items">
             <ExploreCard Title="Challenge C1" Link="/challenge/C1">
-                <MudIcon Icon="@Icons.Material.Filled.LooksOne" Color="@(IsLoggedIn? IsChallengeC1Completed ? Color.Tertiary : Color.Secondary : Color.Primary)" Style="font-size:64px;" />
+                <MudIcon Icon="@Icons.Material.Filled.LooksOne" Color="@(IsLoggedIn? IsChallengeC1Completed ? Color.Success : Color.Error : Color.Primary)" Style="font-size:64px;" />
             </ExploreCard>
 
             <ExploreCard Title="Challenge C2" Link="/challenge/C2">
-                <MudIcon Icon="@Icons.Material.Filled.LooksTwo" Color="@(IsLoggedIn? IsChallengeC2Completed ? Color.Tertiary : Color.Secondary : Color.Primary)" Style="font-size:64px;" />
+                <MudIcon Icon="@Icons.Material.Filled.LooksTwo" Color="@(IsLoggedIn? IsChallengeC2Completed ? Color.Success : Color.Error : Color.Primary)" Style="font-size:64px;" />
             </ExploreCard>
 
             <ExploreCard Title="Challenge C3" Link="/challenge/C3">
-                <MudIcon Icon="@Icons.Material.Filled.Looks3" Color="@(IsLoggedIn? IsChallengeC3Completed ? Color.Tertiary : Color.Secondary : Color.Primary)" Style="font-size:64px;" />
+                <MudIcon Icon="@Icons.Material.Filled.Looks3" Color="@(IsLoggedIn? IsChallengeC3Completed ? Color.Success : Color.Error : Color.Primary)" Style="font-size:64px;" />
             </ExploreCard>
         </div>
     </MudItem>
     <MudItem xs="12" md="4" Class="mt-16">
         <div class="docs-sticky-info explore-text">
-            <MudText Typo="Typo.h5">Difficult challenges</MudText>
+            <MudText Typo="Typo.h5">Extra challenges</MudText>
             <MudText Typo="Typo.subtitle1">These challenges are there for you if you need some more thinking.</MudText>
         </div>
     </MudItem>
     <MudItem xs="12" md="8" Class="mt-16">
         <div class="explore-mudblazor-items">
             <ExploreCard Title="Challenge D1" Link="/challenge/D1">
-                <MudIcon Icon="@Icons.Material.Filled.LooksOne" Color="@(IsLoggedIn? IsChallengeD1Completed ? Color.Tertiary : Color.Secondary : Color.Primary)" Style="font-size:64px;" />
+                <MudIcon Icon="@Icons.Material.Filled.LooksOne" Color="@(IsLoggedIn? IsChallengeD1Completed ? Color.Success : Color.Error : Color.Primary)" Style="font-size:64px;" />
             </ExploreCard>
 
             <ExploreCard Title="Challenge D2" Link="/challenge/D2">
-                <MudIcon Icon="@Icons.Material.Filled.LooksTwo" Color="@(IsLoggedIn? IsChallengeD2Completed ? Color.Tertiary : Color.Secondary : Color.Primary)" Style="font-size:64px;" />
+                <MudIcon Icon="@Icons.Material.Filled.LooksTwo" Color="@(IsLoggedIn? IsChallengeD2Completed ? Color.Success : Color.Error : Color.Primary)" Style="font-size:64px;" />
             </ExploreCard>
 
             <ExploreCard Title="Challenge D3" Link="/challenge/D3">
-                <MudIcon Icon="@Icons.Material.Filled.Looks3" Color="@(IsLoggedIn? IsChallengeD3Completed ? Color.Tertiary : Color.Secondary : Color.Primary)" Style="font-size:64px;" />
+                <MudIcon Icon="@Icons.Material.Filled.Looks3" Color="@(IsLoggedIn? IsChallengeD3Completed ? Color.Success : Color.Error : Color.Primary)" Style="font-size:64px;" />
             </ExploreCard>
         </div>
     </MudItem>

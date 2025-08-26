@@ -9,6 +9,7 @@
 @using QuantumSummerLab.Web.Helpers
 
 @inject NavigationManager NavigationManager
+@inject NavigationHelper NavigationHelper
 @inject ProtectedLocalStorage ProtectedLocalStore
 @inject IMediator Mediator
 @inject DrawerHelper DrawerHelper
@@ -18,7 +19,7 @@
 
 <PageTitle>Quantum Summer Lab - Challenge</PageTitle>
 
-<MudText Typo="Typo.h4" Class="my-4">Challenge @ChallengeName</MudText>
+<MudText Typo="Typo.h4" Class="my-4">@(ChallengeName == "0" ? "Example Challenge" : $"Challenge {ChallengeName}")</MudText>
 
 @if (IsLoading)
 {
@@ -45,7 +46,7 @@ else if (IsAvailable)
     }
     else
     {
-        <MudAlert Severity="Severity.Info" Class="my-4">You should <MudLink Href="/login">login</MudLink> to be able to submit solutions!</MudAlert>
+        <MudAlert Severity="Severity.Info" Class="my-4">You need to <MudLink Href="/login">login</MudLink> to be able to submit solutions!</MudAlert>
     }
 
     @foreach (var line in Description)
@@ -252,6 +253,8 @@ else
         await LoadScore();
 
         IsSubmitting = false;
+
+        NavigationHelper.Update();
         StateHasChanged();
     }
 

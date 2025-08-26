@@ -1,15 +1,24 @@
 ﻿@using MediatR
+@using QuantumSummerLab.Admin.Helpers
 @using QuantumSummerLab.Application.Teams.Queries
 
+@inject NavigationHelper NavigationHelper
 @inject IMediator Mediator
 
 <MudNavMenu>
     <MudNavLink Class="mt-2" Href="" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Home">Home</MudNavLink>
     <MudDivider Class="my-2" />
-    @foreach(var team in _teams)
+    @foreach (var team in _teams)
     {
-        <MudNavLink Class="mt-2" Href="@($"/team/{team.Id}")" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Group">
+        <MudNavLink Class="mt-2" Href="@($"/team/{team.Id}")" Match="NavLinkMatch.Prefix" IconColor="Color.Success" Icon="@Icons.Material.Filled.Group">
             @team.Name
+        </MudNavLink>
+    }
+    <MudDivider Class="my-2" />
+    @foreach (var team in _archivedTeams)
+    {
+        <MudNavLink Class="mt-2" Href="@($"/team/{team.Id}")" Match="NavLinkMatch.Prefix" IconColor="Color.Warning" Icon="@Icons.Material.Filled.GroupOff">
+            @team.Name (archived)
         </MudNavLink>
     }
 </MudNavMenu>
@@ -17,10 +26,25 @@
 @code
 {
     private List<TeamDto> _teams = new List<TeamDto>();
+    private List<TeamDto> _archivedTeams = new List<TeamDto>();
 
     protected override async Task OnInitializedAsync()
     {
+        NavigationHelper.NavigationShouldRefresh += OnNavigationShouldRefresh;
+
+        await RefreshTeams();
+    }
+
+    private void OnNavigationShouldRefresh(object? sender, EventArgs e)
+    {
+        _ = RefreshTeams();
+    }
+
+    private async Task RefreshTeams()
+    {
         var response = await Mediator.Send(new GetTeamsQuery());
-        _teams = response.Teams;
+        _teams = response.Teams.Where(x => !x.IsArchived).ToList();
+        _archivedTeams = response.Teams.Where(x => x.IsArchived).ToList();
+        StateHasChanged();
     }
 }

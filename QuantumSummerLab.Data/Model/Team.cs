@@ -7,4 +7,5 @@ public class Team
     public string Name { get; set; }
     public string PasswordSalt { get; set; }
     public string PasswordHash { get; set; }
+    public bool IsArchived { get; set; }
 }

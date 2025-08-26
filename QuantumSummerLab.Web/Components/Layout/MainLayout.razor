@@ -20,15 +20,13 @@
         <MudSpacer />
         <MudIconButton Icon="@(DarkLightModeButtonIcon)" Color="Color.Inherit" OnClick="@DarkModeToggle" />
         <MudTooltip Text="@(string.IsNullOrEmpty(TeamName) ? "Login" : "Logout")">
-            <MudIconButton Icon="@Icons.Material.Filled.AccountBox" Color="Color.Inherit" Edge="Edge.End" OnClick="@Login" />
+            <MudFab StartIcon="@Icons.Material.Filled.AccountBox" Color="Color.Inherit" Size="Size.Medium" DropShadow="false" Label="@(string.IsNullOrEmpty(TeamName) ? "" : TeamName)" OnClick="@Login" />
         </MudTooltip>
-        @if (!string.IsNullOrEmpty(TeamName))
-        {
-            <MudText Edge="Edge.End" Class="ml-3">@TeamName</MudText>
-        }
     </MudAppBar>
     <MudDrawer id="nav-drawer" @bind-Open="_drawerOpen" ClipMode="DrawerClipMode.Always" Elevation="5">
         <NavMenu />
+        <MudSpacer />
+        <MudText Typo="Typo.body2" Class="ml-2 mb-2 mt-4">v0.1 - powered by .NET 10</MudText>
     </MudDrawer>
     <MudHidden Breakpoint="Breakpoint.SmAndDown" HiddenChanged="@CopilotHiddenChanged">
         <MudDrawer @bind-Open="_copilotOpen" Anchor="Anchor.End" ClipMode="DrawerClipMode.Always" Variant="@DrawerVariant.Persistent" Width="40%" Elevation="5">

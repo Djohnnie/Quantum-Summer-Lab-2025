@@ -1,5 +1,6 @@
 ﻿@using MediatR
 @using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
+@using QuantumSummerLab.Admin.Helpers
 @using QuantumSummerLab.Copilot
 @using QuantumSummerLab.Copilot.Extensions
 @using QuantumSummerLab.Application.Challenges.Queries
@@ -9,6 +10,7 @@
 @using QuantumSummerLab.Application.Teams.Queries
 
 @inject NavigationManager NavigationManager
+@inject NavigationHelper NavigationHelper
 @inject ProtectedLocalStorage ProtectedLocalStore
 @inject IMediator Mediator
 
@@ -17,6 +19,8 @@
 <PageTitle>Quantum Summer Lab - Team</PageTitle>
 
 <MudText Typo="Typo.h3" Class="mt-4 mb-4">Challenge report</MudText>
+
+<MudButton StartIcon="@Icons.Material.Filled.GroupRemove" Variant="Variant.Filled" Color="Color.Error" OnClick="@ArchiveTeam">Archive this team</MudButton>
 
 @foreach (var group in _challenges)
 {
@@ -165,7 +169,7 @@
             },
             new ChallengeGroup
             {
-                Title = "Medium challenges",
+                Title = "Moderate challenges",
                 Challenges = [
                     new ChallengeItem { Name = "B1" },
                     new ChallengeItem { Name = "B2" },
@@ -265,6 +269,13 @@
                     break;
             }
         }
+    }
+
+    private async Task ArchiveTeam()
+    {
+        await Mediator.Send(new ArchiveTeamCommand { TeamId = Guid.Parse(TeamId) });
+        NavigationHelper.RefreshNavigation();
+        NavigationManager.NavigateTo("/");
     }
 
     class ChallengeGroup
