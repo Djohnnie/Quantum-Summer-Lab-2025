@@ -1,5 +1,4 @@
-﻿#scrollableContainer 
-{
+﻿#scrollableContainer {
     overflow: auto;
     overscroll-behavior: contain;
 }
@@ -27,10 +26,11 @@
     }
 
     &:active
-    {
-        background-color: var(--mud-palette-primary-hover) !important;
-        cursor: pointer;
-    }
+
+{
+    background-color: var(--mud-palette-primary-hover) !important;
+    cursor: pointer;
+}
 
 }
 
@@ -60,4 +60,10 @@
     .explore-mudblazor-items {
         justify-content: center;
     }
+}
+
+.nav-border {
+    border-inline-start-style: solid !important;
+    border-inline-start-width: 2px !important;
+    border-inline-start-color: #808080 !important;
 }

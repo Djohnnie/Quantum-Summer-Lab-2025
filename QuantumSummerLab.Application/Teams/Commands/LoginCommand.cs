@@ -51,7 +51,7 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, LoginResponse>
 
         using var dbContext = _scopeFactory.CreateScope().ServiceProvider.GetRequiredService<QuantumSummerLabDbContext>();
         var existingTeam = await dbContext.Teams
-            .FirstOrDefaultAsync(t => t.Name == request.TeamName, cancellationToken);
+            .FirstOrDefaultAsync(t => !t.IsArchived && t.Name == request.TeamName, cancellationToken);
 
         if (existingTeam == null)
         {

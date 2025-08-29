@@ -13,7 +13,7 @@
 <MudDialogProvider />
 <MudSnackbarProvider />
 <MudLayout>
-    <MudAppBar Elevation="1">
+    <MudAppBar Elevation="1" Fixed="true">
         <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
         <MudIcon Icon="@Icons.Material.Filled.Webhook" Class="ml-3" />
         <MudLink Href="/" Typo="Typo.h6" Class="ml-3" Color="Color.Default" Style="text-decoration: none;">Quantum Summer Lab</MudLink>
@@ -26,19 +26,22 @@
     <MudDrawer id="nav-drawer" @bind-Open="_drawerOpen" ClipMode="DrawerClipMode.Always" Elevation="5">
         <NavMenu />
         <MudSpacer />
-        <MudText Typo="Typo.body2" Class="ml-2 mb-2 mt-4">v0.1 - powered by .NET 10</MudText>
+        <MudText Typo="Typo.body2" Class="ml-2 mb-2 mt-4">v0.1 - powered by .NET 9</MudText>
     </MudDrawer>
-    <MudHidden Breakpoint="Breakpoint.SmAndDown" HiddenChanged="@CopilotHiddenChanged">
-        <MudDrawer @bind-Open="_copilotOpen" Anchor="Anchor.End" ClipMode="DrawerClipMode.Always" Variant="@DrawerVariant.Persistent" Width="40%" Elevation="5">
-            <MudContainer Class="mb-12">
-                @if (_copilotOpen)
-                {
-                    <MudFab Style="position:fixed; bottom:10px; right:10px; z-index:666;" Color="@Color.Error" StartIcon="@Icons.Material.Filled.Close" DropShadow="true" OnClick="@CloseCopilot" />
-                }
-                <CopilotPane @ref="_copilotPane" TeamName="@TeamName" />
-            </MudContainer>
-        </MudDrawer>
-    </MudHidden>
+    @if (_copilotEnabled)
+    {
+        <MudHidden Breakpoint="Breakpoint.SmAndDown" HiddenChanged="@CopilotHiddenChanged">
+            <MudDrawer @bind-Open="_copilotOpen" Anchor="Anchor.End" ClipMode="DrawerClipMode.Always" Variant="@DrawerVariant.Persistent" Width="40%" Elevation="5">
+                <MudContainer Class="mb-12">
+                    @if (_copilotOpen)
+                    {
+                        <MudFab Style="position:fixed; bottom:10px; right:10px; z-index:666;" Color="@Color.Error" StartIcon="@Icons.Material.Filled.Close" DropShadow="true" OnClick="@CloseCopilot" />
+                    }
+                    <CopilotPane @ref="_copilotPane" TeamName="@TeamName" />
+                </MudContainer>
+            </MudDrawer>
+        </MudHidden>
+    }
     <MudMainContent Class="pa-4 pa-sm-8 pa-md-12 mt-12">
         @Body
     </MudMainContent>
@@ -54,6 +57,7 @@
 {
     private MudThemeProvider _mudThemeProvider;
     private bool _drawerOpen = true;
+    private bool _copilotEnabled = false;
     private bool _copilotOpen = false;
     private bool _isDarkMode = true;
     private MudTheme? _theme = null;
@@ -113,13 +117,15 @@
     private void OnShouldPopout(object? sender, ParametrizedEventArgs e)
     {
         _copilotOpen = true;
-        _copilotPane.Refresh(e.Parameter1, e.Parameter2);
+        _ = _copilotPane.Refresh(e.Parameter1, e.Parameter2);
         StateHasChanged();
     }
 
     private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
     {
+        _copilotEnabled = !e.Location.Contains("reference");
         _copilotOpen = false;
+
         StateHasChanged();
     }
 
