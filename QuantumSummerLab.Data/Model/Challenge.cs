@@ -7,6 +7,7 @@ public class Challenge
     public string Name { get; set; }
     public string Title { get; set; }
     public string Description { get; set; }
+    public string Tldr { get; set; }
     public int Level { get; set; }
     public string ExampleCode { get; set; }
     public string ExampleDescription { get; set; }

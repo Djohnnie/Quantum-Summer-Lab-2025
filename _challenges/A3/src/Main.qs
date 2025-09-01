@@ -54,7 +54,8 @@ operation Solve (q : Qubit) : Unit
 // {
 //     Name = "A3",
 //     Title = "Use only the Z and H gates to bitflip a qubit.",
-//     Description = "You can bitflip a qubit by applying the X gate, but in this challenge you are only allowed to use the Z and H gates.[BR]You have to implement an operation which takes a single qubit as input and has no output.[BR]The "output" of your solution is the state in which it left the input qubit.","
+//     Description = "You can bitflip a qubit by applying the X gate, but in this challenge you are only allowed to use the Z and H gates.[BR]You have to implement an operation which takes a single qubit as input and has no output.[BR]The "output" of your solution is the state in which it left the input qubit.",
+//     Tldr = "You should implement the empty Solve operation below and bitflip the provided qubit using only the Z and H gates and without using the X gate.",
 //     SolutionTemplate = "b3BlcmF0aW9uIFNvbHZlIChxIDogUXViaXQpIDogVW5pdAp7CiAgICAvLyBZb3VyIHNvbHV0aW9uIGxvZ2ljIGdvZXMgaGVyZS4KfQ==",
 //     ExampleDescription = "",
 //     ExampleCode = "",

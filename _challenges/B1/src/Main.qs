@@ -39,7 +39,7 @@ operation Expected (q : Qubit, sign : Int) : Unit is Adj
 
 // Generate |+⟩ state or |-⟩ state.
 // You have to implement an operation which takes a qubit that has been prepared in the |0⟩ state and an integer that specifies the desired sign: +1 for the |+⟩ state and -1 for |-⟩ state.
-// You should implement the following Solve method to make that happen and keep the signature of the method exactly like it is.
+// You should implement the following Solve operation to make that happen and keep the signature of the operation exactly like it is.
 
 operation Solve (q : Qubit, sign : Int) : Unit
 {
@@ -55,7 +55,8 @@ operation Solve (q : Qubit, sign : Int) : Unit
 // {
 //     Name = "B1",
 //     Title = "Generate |+⟩ state or |-⟩ state",
-//     Description = "You have to implement an operation which takes a qubit that has been prepared in the |0⟩ state and an integer that specifies the desired sign: +1 for the |+⟩ state and -1 for |-⟩ state.[BR]You should implement the following Solve method to make that happen and keep the signature of the method exactly like it is.",
+//     Description = "You have to implement an operation which takes a qubit that has been prepared in the |0⟩ state and an integer that specifies the desired sign: +1 for the |+⟩ state and -1 for |-⟩ state.[BR]You should implement the following Solve operation to make that happen and keep the signature of the operation exactly like it is.",
+//     Tldr = "You should implement the empty Solve operation below and prepare a |+⟩ or |-⟩ quantum state depending on the provided sign value.",
 //     SolutionTemplate = "b3BlcmF0aW9uIFNvbHZlIChxIDogUXViaXQsIHNpZ24gOiBJbnQpIDogVW5pdAp7CiAgICAvLyBZb3VyIHNvbHV0aW9uIGxvZ2ljIGdvZXMgaGVyZS4KfQ==",
 //     ExampleDescription = "",
 //     ExampleCode = "",

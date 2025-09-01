@@ -18,6 +18,7 @@ public class GetChallengeByNameResponse
     public int Level { get; set; }
     public string Title { get; set; }
     public string Description { get; set; }
+    public string Tldr { get; set; }
     public string SolutionTemplate { get; set; }
     public string ExampleDescription { get; set; }
     public string ExampleCode { get; set; }
@@ -52,6 +53,7 @@ public class GetChallengeByNameQueryHandler : IRequestHandler<GetChallengeByName
             Level = challenge.Level,
             Title = challenge.Title,
             Description = challenge.Description,
+            Tldr = challenge.Tldr,
             SolutionTemplate = challenge.SolutionTemplate.FromBase64String(),
             ExampleDescription = challenge.ExampleDescription,
             ExampleCode = challenge.ExampleCode.FromBase64String(),

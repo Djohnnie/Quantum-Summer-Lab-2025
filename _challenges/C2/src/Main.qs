@@ -108,6 +108,7 @@ operation Solve (unitary : (Qubit[] => Unit)) : Int
 //     Name = "C2",
 //     Title = "Distinguish I, CNOTs and SWAP",
 //     Description = "You are given an operation that implements a two-qubit unitary transformation: either the identity (I ⊗ I gate), the CNOT gate (either with the first qubit as control and the second qubit as target or vice versa) or the SWAP gate.[BR]Your task is to perform necessary operations and measurements to figure out which unitary it was and to return:[BR]0 if it was the I ⊗ I gate,[BR]1 if it was the CNOT12 gate,[BR]2 if it was the CNOT21 gate,[BR]3 if it was the SWAP gate.[BR]You are allowed to apply the given operation exactly twice.[BR]You have to implement an operation which takes a two-qubit operation unitary as an input and returns an integer. The operation unitary will accept an array of qubits as input, but it will fail if the array is empty or has one or more than two qubits. Your code should have the following signature:",
+//     Tldr = "You should implement the empty Solve operation below and identify if the provided unitary is the I ⊗ I gate (return 0), the CNOT12 gate (return 1), the CNOT21 gate (return 2), or the SWAP gate (return 3).",
 //     SolutionTemplate = "b3BlcmF0aW9uIFNvbHZlICh1bml0YXJ5IDogKFF1Yml0W10gPT4gVW5pdCkpIDogSW50CnsKICAgIC8vIFlvdXIgc29sdXRpb24gbG9naWMgZ29lcyBoZXJlLgp9",
 //     ExampleDescription = "",
 //     ExampleCode = "",

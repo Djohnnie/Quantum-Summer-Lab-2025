@@ -8,7 +8,8 @@ public static class Challenges
     {
         Name = "0",
         Title = "Example Challenge: Prepare |0⟩ or |1⟩",
-        Description = "You are given a single qubit, prepared in the |0⟩ state, and a Result with a possible Zero or One value.[BR]Make sure to change the qubit state and leave it in a |0⟩ or |1⟩ state that corresponds with the provided Result value.[BR]You should implement the following Solve method to make that happen and keep the signature of the method exactly like it is.[BR]Go ahead and copy/paste the following template in your Q# project in Visual Studio Code to start working on the solution.",
+        Description = "You are given a single qubit, prepared in the |0⟩ state, and a Result with a possible Zero or One value.[BR]Make sure to change the qubit state and leave it in a |0⟩ or |1⟩ state that corresponds with the provided Result value.[BR]You should implement the following Solve operation to make that happen and keep the signature of the operation exactly like it is.[BR]Go ahead and copy/paste the following template in your Q# project in Visual Studio Code to start working on the solution.",
+        Tldr = "You should implement the empty Solve operation below and prepare a |0⟩ or |1⟩ quantum state depending on the provided expectedResult value.",
         SolutionTemplate = "b3BlcmF0aW9uIFNvbHZlIChxIDogUXViaXQsIGV4cGVjdGVkUmVzdWx0IDogUmVzdWx0KSA6IFVuaXQKewogICAgLy8gWW91ciBzb2x1dGlvbiBsb2dpYyBnb2VzIGhlcmUuCn0=",
         ExampleDescription = "Below, you can find a possible solution and additionally, just for reference, the code that will be executed internally to validate the submitted solution.[BR]You should only submit the Solve operation with your implemented solution, or in this example case, a copy from the provided solution below.",
         ExampleCode = "b3BlcmF0aW9uIE1haW4oKSA6IEJvb2wKeyAgICAKICAgIHVzZSBxID0gUXViaXQoKTsKCiAgICBTb2x2ZShxLCBaZXJvKTsKICAgIGxldCBiMSA9IE0ocSk7CiAgICBSZXNldChxKTsKCiAgICBTb2x2ZShxLCBPbmUpOwogICAgbGV0IGIyID0gTShxKTsKICAgIFJlc2V0KHEpOwoKICAgIHJldHVybiBiMSA9PSBaZXJvIGFuZCBiMiA9PSBPbmU7Cn0KCm9wZXJhdGlvbiBTb2x2ZSAocSA6IFF1Yml0LCBleHBlY3RlZFJlc3VsdCA6IFJlc3VsdCkgOiBVbml0CnsKICAgIGlmKGV4cGVjdGVkUmVzdWx0ID09IE9uZSkgewogICAgICAgIFgocSk7CiAgICB9Cn0=",
@@ -22,8 +23,9 @@ public static class Challenges
     public static Challenge CHALLENGE_A1 = new Challenge
     {
         Name = "A1",
-        Title = "Generate superposition of all basis states",
-        Description = "You are given n qubits (1 ≤ n ≤ 8), prepared in the |0..0⟩ state, and you have to implement an operation which generates an equal superposition of all basis states on these qubits.[BR]The \"output\" of your solution is the state in which it left the input qubits.[BR]You should implement the following Solve operation to make that happen and keep the signature of the method exactly like it is.",
+        Title = "Generate superposition of all basis states.",
+        Description = "You are given n qubits (1 ≤ n ≤ 8), prepared in the |0..0⟩ state, and you have to implement an operation which generates an equal superposition of all basis states on these qubits.[BR]The \"output\" of your solution is the state in which it left the input qubits.[BR]You should implement the following Solve operation to make that happen and keep the signature of the operation exactly like it is.",
+        Tldr = "You should implement the empty Solve operation below and prepare an equal superposition state of all basis states on the provided qubits.",
         SolutionTemplate = "b3BlcmF0aW9uIFNvbHZlIChxcyA6IFF1Yml0W10pIDogVW5pdCAKewogICAgLy8gWW91ciBzb2x1dGlvbiBsb2dpYyBnb2VzIGhlcmUuCn0=",
         ExampleDescription = "",
         ExampleCode = "",
@@ -39,6 +41,7 @@ public static class Challenges
         Name = "A2",
         Title = "Distinguish I from X",
         Description = "You are given an operation that implements a single-qubit unitary transformation: either the identity gate (I gate) or the bit-flip gate (X gate).[BR]Your task is to perform necessary operations and/or measurements to figure out which unitary it was and to return 0 if it was the I gate or 1 if it was the X gate.[BR]You are allowed to apply the given operation exactly once.[BR]You have to implement an operation which takes a single-qubit operation as an input and returns an integer. The operation should have the following signature:",
+        Tldr = "You should implement the empty Solve operation below and identify if the provided unitary is the I gate (return 0) or the X gate (return 1).",
         SolutionTemplate = "b3BlcmF0aW9uIFNvbHZlICh1bml0YXJ5IDogKFF1Yml0ID0+IFVuaXQpKSA6IEludAp7CiAgICAvLyBZb3VyIHNvbHV0aW9uIGxvZ2ljIGdvZXMgaGVyZS4KfQ==",
         ExampleDescription = "",
         ExampleCode = "",
@@ -50,25 +53,27 @@ public static class Challenges
     };
 
     public static Challenge CHALLENGE_A3 = new Challenge
-     {
-         Name = "A3",
-         Title = "Use only the Z and H gates to bitflip a qubit",
-         Description = "You can bitflip a qubit by applying the X gate, but in this challenge you are only allowed to use the Z and H gates.[BR]You have to implement an operation which takes a single qubit as input and has no output.[BR]The \"output\" of your solution is the state in which it left the input qubit.",
-         SolutionTemplate = "b3BlcmF0aW9uIFNvbHZlIChxIDogUXViaXQpIDogVW5pdAp7CiAgICAvLyBZb3VyIHNvbHV0aW9uIGxvZ2ljIGdvZXMgaGVyZS4KfQ==",
-         ExampleDescription = "",
-         ExampleCode = "",
-         VerificationTemplate = "aW1wb3J0IFN0ZC5Bcml0aG1ldGljLio7CmltcG9ydCBTdGQuQ2Fub24uKjsKaW1wb3J0IFN0ZC5EaWFnbm9zdGljcy4qOwppbXBvcnQgU3RkLk1hdGguKjsKaW1wb3J0IFN0ZC5NZWFzdXJlbWVudC4qOwoKb3BlcmF0aW9uIE1haW4oKSA6IEJvb2wKeyAgCiAgICBsZXQgcmVzdWx0ID0gQ2hlY2tPcGVyYXRpb25zQXJlRXF1YWwoMSwgeCA9PiBTb2x2ZSh4WzBdKSwgeCA9PiBFeHBlY3RlZCh4WzBdKSk7CiAgICBMb2dNZXNzYWdlKHJlc3VsdCwgIllvdSBoYXZlIHN1Y2Nlc3NmdWxseSBiaXRmbGlwcGVkIHRoZSBxdWJpdCIsICJZb3UgaGF2ZSBmYWlsZWQgdG8gYml0ZmxpcCB0aGUgcXViaXQiKTsKICAgIAogICAgU3RhcnRDb3VudGluZ09wZXJhdGlvbihYKTsKICAgIFN0YXJ0Q291bnRpbmdPcGVyYXRpb24oSCk7CiAgICBTdGFydENvdW50aW5nT3BlcmF0aW9uKFopOwogICAgdXNlIHEgPSBRdWJpdCgpOwogICAgU29sdmUocSk7CiAgICBSZXNldChxKTsKICAgIGxldCByZXN1bHRYID0gU3RvcENvdW50aW5nT3BlcmF0aW9uKFgpOwogICAgTG9nTWVzc2FnZShyZXN1bHRYID09IDAsICJZb3UgaGF2ZSBub3QgdXNlZCB0aGUgWCBnYXRlIiwgJCJUaGUgWCBnYXRlIHdhcyB1c2VkIHtyZXN1bHRYfSB0aW1lcyIpOwogICAgbGV0IHJlc3VsdEggPSBTdG9wQ291bnRpbmdPcGVyYXRpb24oSCk7CiAgICBMb2dNZXNzYWdlKHJlc3VsdEggPT0gMiwgIllvdSBoYXZlIHN1Y2Nlc3NmdWxseSB1c2VkIHRoZSBIIGdhdGUgdHdpY2UiLCAkIllvdSBoYXZlIGZhaWxlZCB0byB1c2UgdGhlIEggZ2F0ZSB0aGUgY29ycmVjdCBudW1iZXIgb2YgdGltZXMgYW5kIHVzZWQgaXQge3Jlc3VsdEh9IHRpbWVzIik7CiAgICBsZXQgcmVzdWx0WiA9IFN0b3BDb3VudGluZ09wZXJhdGlvbihaKTsKICAgIExvZ01lc3NhZ2UocmVzdWx0WiA9PSAxLCAiWW91IGhhdmUgc3VjY2Vzc2Z1bGx5IHVzZWQgdGhlIFogZ2F0ZSBvbmNlIiwgJCJZb3UgaGF2ZSBmYWlsZWQgdG8gdXNlIHRoZSBaIGdhdGUgdGhlIGNvcnJlY3QgbnVtYmVyIG9mIHRpbWVzIGFuZCB1c2VkIGl0IHtyZXN1bHRafSB0aW1lcyIpOwoKICAgIHJldHVybiByZXN1bHQgYW5kIHJlc3VsdFggPT0gMCBhbmQgcmVzdWx0SCA9PSAyIGFuZCByZXN1bHRaID09IDE7Cn0KCmZ1bmN0aW9uIExvZ01lc3NhZ2UoaXNWYWxpZDogQm9vbCwgdmFsaWRNZXNzYWdlOiBTdHJpbmcsIGludmFsaWRNZXNzYWdlOiBTdHJpbmcpIDogKCkKewogICAgbGV0IG1lc3NhZ2UgPSAie1widmFsaWRcIjogIiArIChpc1ZhbGlkID8gInRydWUiIHwgImZhbHNlIikgKyAiLCBcIm1lc3NhZ2VcIjogXCIiICsgKGlzVmFsaWQgPyB2YWxpZE1lc3NhZ2UgfCBpbnZhbGlkTWVzc2FnZSkgKyAiXCJ9IjsKICAgIE1lc3NhZ2UobWVzc2FnZSk7Cn0KCm9wZXJhdGlvbiBFeHBlY3RlZCAocSA6IFF1Yml0KSA6IFVuaXQgaXMgQWRqCnsKICAgIEgocSk7CiAgICBaKHEpOwogICAgSChxKTsKfQoKPDxTT0xWRT4+",
-         ExpectedOutput = "true",
-         ExpectedStates = "",
-         CopilotInstructions = "You should never mention HZH to the user since this would be the solution. Only give them hints.",
-         Level = 1
-     };
+    {
+        Name = "A3",
+        Title = "Use only the Z and H gates to bitflip a qubit.",
+        Description = "You can bitflip a qubit by applying the X gate, but in this challenge you are only allowed to use the Z and H gates.[BR]You have to implement an operation which takes a single qubit as input and has no output.[BR]The \"output\" of your solution is the state in which it left the input qubit.",
+        Tldr = "You should implement the empty Solve operation below and bitflip the provided qubit using only the Z and H gates and without using the X gate.",
+        SolutionTemplate = "b3BlcmF0aW9uIFNvbHZlIChxIDogUXViaXQpIDogVW5pdAp7CiAgICAvLyBZb3VyIHNvbHV0aW9uIGxvZ2ljIGdvZXMgaGVyZS4KfQ==",
+        ExampleDescription = "",
+        ExampleCode = "",
+        VerificationTemplate = "aW1wb3J0IFN0ZC5Bcml0aG1ldGljLio7CmltcG9ydCBTdGQuQ2Fub24uKjsKaW1wb3J0IFN0ZC5EaWFnbm9zdGljcy4qOwppbXBvcnQgU3RkLk1hdGguKjsKaW1wb3J0IFN0ZC5NZWFzdXJlbWVudC4qOwoKb3BlcmF0aW9uIE1haW4oKSA6IEJvb2wKeyAgCiAgICBsZXQgcmVzdWx0ID0gQ2hlY2tPcGVyYXRpb25zQXJlRXF1YWwoMSwgeCA9PiBTb2x2ZSh4WzBdKSwgeCA9PiBFeHBlY3RlZCh4WzBdKSk7CiAgICBMb2dNZXNzYWdlKHJlc3VsdCwgIllvdSBoYXZlIHN1Y2Nlc3NmdWxseSBiaXRmbGlwcGVkIHRoZSBxdWJpdCIsICJZb3UgaGF2ZSBmYWlsZWQgdG8gYml0ZmxpcCB0aGUgcXViaXQiKTsKICAgIAogICAgU3RhcnRDb3VudGluZ09wZXJhdGlvbihYKTsKICAgIFN0YXJ0Q291bnRpbmdPcGVyYXRpb24oSCk7CiAgICBTdGFydENvdW50aW5nT3BlcmF0aW9uKFopOwogICAgdXNlIHEgPSBRdWJpdCgpOwogICAgU29sdmUocSk7CiAgICBSZXNldChxKTsKICAgIGxldCByZXN1bHRYID0gU3RvcENvdW50aW5nT3BlcmF0aW9uKFgpOwogICAgTG9nTWVzc2FnZShyZXN1bHRYID09IDAsICJZb3UgaGF2ZSBub3QgdXNlZCB0aGUgWCBnYXRlIiwgJCJUaGUgWCBnYXRlIHdhcyB1c2VkIHtyZXN1bHRYfSB0aW1lcyIpOwogICAgbGV0IHJlc3VsdEggPSBTdG9wQ291bnRpbmdPcGVyYXRpb24oSCk7CiAgICBMb2dNZXNzYWdlKHJlc3VsdEggPT0gMiwgIllvdSBoYXZlIHN1Y2Nlc3NmdWxseSB1c2VkIHRoZSBIIGdhdGUgdHdpY2UiLCAkIllvdSBoYXZlIGZhaWxlZCB0byB1c2UgdGhlIEggZ2F0ZSB0aGUgY29ycmVjdCBudW1iZXIgb2YgdGltZXMgYW5kIHVzZWQgaXQge3Jlc3VsdEh9IHRpbWVzIik7CiAgICBsZXQgcmVzdWx0WiA9IFN0b3BDb3VudGluZ09wZXJhdGlvbihaKTsKICAgIExvZ01lc3NhZ2UocmVzdWx0WiA9PSAxLCAiWW91IGhhdmUgc3VjY2Vzc2Z1bGx5IHVzZWQgdGhlIFogZ2F0ZSBvbmNlIiwgJCJZb3UgaGF2ZSBmYWlsZWQgdG8gdXNlIHRoZSBaIGdhdGUgdGhlIGNvcnJlY3QgbnVtYmVyIG9mIHRpbWVzIGFuZCB1c2VkIGl0IHtyZXN1bHRafSB0aW1lcyIpOwoKICAgIHJldHVybiByZXN1bHQgYW5kIHJlc3VsdFggPT0gMCBhbmQgcmVzdWx0SCA9PSAyIGFuZCByZXN1bHRaID09IDE7Cn0KCmZ1bmN0aW9uIExvZ01lc3NhZ2UoaXNWYWxpZDogQm9vbCwgdmFsaWRNZXNzYWdlOiBTdHJpbmcsIGludmFsaWRNZXNzYWdlOiBTdHJpbmcpIDogKCkKewogICAgbGV0IG1lc3NhZ2UgPSAie1widmFsaWRcIjogIiArIChpc1ZhbGlkID8gInRydWUiIHwgImZhbHNlIikgKyAiLCBcIm1lc3NhZ2VcIjogXCIiICsgKGlzVmFsaWQgPyB2YWxpZE1lc3NhZ2UgfCBpbnZhbGlkTWVzc2FnZSkgKyAiXCJ9IjsKICAgIE1lc3NhZ2UobWVzc2FnZSk7Cn0KCm9wZXJhdGlvbiBFeHBlY3RlZCAocSA6IFF1Yml0KSA6IFVuaXQgaXMgQWRqCnsKICAgIEgocSk7CiAgICBaKHEpOwogICAgSChxKTsKfQoKPDxTT0xWRT4+",
+        ExpectedOutput = "true",
+        ExpectedStates = "",
+        CopilotInstructions = "You should never mention HZH to the user since this would be the solution. Only give them hints.",
+        Level = 1
+    };
 
     public static Challenge CHALLENGE_B1 = new Challenge
     {
         Name = "B1",
         Title = "Generate |+⟩ state or |-⟩ state",
-        Description = "You have to implement an operation which takes a qubit that has been prepared in the |0⟩ state and an integer that specifies the desired sign: +1 for the |+⟩ state and -1 for |-⟩ state.[BR]You should implement the following Solve method to make that happen and keep the signature of the method exactly like it is.",
+        Description = "You have to implement an operation which takes a qubit that has been prepared in the |0⟩ state and an integer that specifies the desired sign: +1 for the |+⟩ state and -1 for |-⟩ state.[BR]You should implement the following Solve operation to make that happen and keep the signature of the operation exactly like it is.",
+        Tldr = "You should implement the empty Solve operation below and prepare a |+⟩ or |-⟩ quantum state depending on the provided sign value.",
         SolutionTemplate = "b3BlcmF0aW9uIFNvbHZlIChxIDogUXViaXQsIHNpZ24gOiBJbnQpIDogVW5pdAp7CiAgICAvLyBZb3VyIHNvbHV0aW9uIGxvZ2ljIGdvZXMgaGVyZS4KfQ==",
         ExampleDescription = "",
         ExampleCode = "",
@@ -84,6 +89,7 @@ public static class Challenges
         Name = "B2",
         Title = "Distinguish H from X",
         Description = "You are given an operation that implements a single-qubit unitary transformation: either the Hadamard gate (H gate) or the bit-flip gate (X gate).[BR]Your task is to perform necessary operations and measurements to figure out which unitary it was and to return 0 if it was the H gate or 1 if it was the X gate.[BR]You are allowed to apply the given operation exactly twice.[BR]You have to implement an operation which takes a single-qubit operation as an input and returns an integer. The operation should have the following signature:",
+        Tldr = "You should implement the empty Solve operation below and identify if the provided unitary is the H gate (return 0) or the X gate (return 1).",
         SolutionTemplate = "b3BlcmF0aW9uIFNvbHZlICh1bml0YXJ5IDogKFF1Yml0ID0+IFVuaXQpKSA6IEludAp7CiAgICAvLyBZb3VyIHNvbHV0aW9uIGxvZ2ljIGdvZXMgaGVyZS4KfQ==",
         ExampleDescription = "",
         ExampleCode = "",
@@ -99,6 +105,7 @@ public static class Challenges
         Name = "B3",
         Title = "Generate Bell state",
         Description = "You are given two qubits in state |00⟩ and an integer index. Your task is to create one of the Bell states on them according to the index:[BR]0: |B0⟩ = 1/√2 (|00⟩ + |11⟩)[BR]1: |B1⟩ = 1/√2 (|00⟩ - |11⟩)[BR]2: |B2⟩ = 1/√2 (|01⟩ + |10⟩)[BR]3: |B3⟩ = 1/√2 (|01⟩ - |10⟩)[BR]You have to implement the Solve operation to make the correct Bell state according to the given index. The operation should have the following signature:",
+        Tldr = "You should implement the empty Solve operation below and prepare one of the four Bell states depending on the provided index value.",
         SolutionTemplate = "b3BlcmF0aW9uIFNvbHZlIChxcyA6IFF1Yml0W10sIGluZGV4IDogSW50KSA6IFVuaXQKewogICAgLy8gWW91ciBzb2x1dGlvbiBsb2dpYyBnb2VzIGhlcmUuCn0=",
         ExampleDescription = "",
         ExampleCode = "",
@@ -114,6 +121,7 @@ public static class Challenges
         Name = "C1",
         Title = "Generate GHZ state",
         Description = "Your task is to create Greenberger–Horne–Zeilinger (GHZ) state on N qubits (1 ≤ N ≤ 8) in zero |0..0⟩ state.[BR]The GHZ state is defined as |GHZ⟩ = 1/√2 (|0..0⟩ + |1..1⟩).[BR]You have to implement an operation which takes an array of N qubits and you need to create the GHZ state on them. The operation should have the following signature:",
+        Tldr = "You should implement the empty Solve operation below and prepare the Greenberger–Horne–Zeilinger (GHZ) on the provided qubits.",
         SolutionTemplate = "b3BlcmF0aW9uIFNvbHZlIChxcyA6IFF1Yml0W10pIDogVW5pdAp7CiAgICAvLyBZb3VyIHNvbHV0aW9uIGxvZ2ljIGdvZXMgaGVyZS4KfQ==",
         ExampleDescription = "",
         ExampleCode = "",
@@ -129,6 +137,7 @@ public static class Challenges
         Name = "C2",
         Title = "Distinguish I, CNOTs and SWAP",
         Description = "You are given an operation that implements a two-qubit unitary transformation: either the identity (I ⊗ I gate), the CNOT gate (either with the first qubit as control and the second qubit as target or vice versa) or the SWAP gate.[BR]Your task is to perform necessary operations and measurements to figure out which unitary it was and to return:[BR]0 if it was the I ⊗ I gate,[BR]1 if it was the CNOT12 gate,[BR]2 if it was the CNOT21 gate,[BR]3 if it was the SWAP gate.[BR]You are allowed to apply the given operation exactly twice.[BR]You have to implement an operation which takes a two-qubit operation unitary as an input and returns an integer. The operation unitary will accept an array of qubits as input, but it will fail if the array is empty or has one or more than two qubits. Your code should have the following signature:",
+        Tldr = "You should implement the empty Solve operation below and identify if the provided unitary is the I ⊗ I gate (return 0), the CNOT12 gate (return 1), the CNOT21 gate (return 2), or the SWAP gate (return 3).",
         SolutionTemplate = "b3BlcmF0aW9uIFNvbHZlICh1bml0YXJ5IDogKFF1Yml0W10gPT4gVW5pdCkpIDogSW50CnsKICAgIC8vIFlvdXIgc29sdXRpb24gbG9naWMgZ29lcyBoZXJlLgp9",
         ExampleDescription = "",
         ExampleCode = "",
@@ -144,6 +153,7 @@ public static class Challenges
         Name = "C3",
         Title = "Increment",
         Description = "Implement an operation on a register of n qubits that increments the number written in the register modulo 2^n.[BR]Your operation should take an array of qubits that encodes an unsigned integer in little-endian format, with the least significant bit written first (corresponding to the array element with index 0).[BR]The Solve operation should take the input register and change it without measuring it in order to keep the quantum state, but increment the values its state represents.[BR]For example:[BR]1/2(|0001⟩ + |0010⟩ + |0100⟩ + |1000⟩) should be incremented to 1/2(|1001⟩ + |1010⟩ + |1100⟩ + |0100)[BR]The solve operation should have the following signature:",
+        Tldr = "You should implement the empty Solve operation below and increment the number encoded (in little-endian format) in the provided register of n qubits modulo 2^n.",
         SolutionTemplate = "b3BlcmF0aW9uIFNvbHZlIChyZWdpc3RlciA6IFF1Yml0W10pIDogVW5pdCBpcyBBZGogKyBDdGwKewogICAgLy8gWW91ciBzb2x1dGlvbiBsb2dpYyBnb2VzIGhlcmUuCn0=",
         ExampleDescription = "",
         ExampleCode = "",
@@ -159,6 +169,7 @@ public static class Challenges
         Name = "D1",
         Title = "Generate 1/√3 (|01⟩ + |10⟩ + |11⟩)",
         Description = "Your task is to prepare the following state on two qubits in state |00⟩:[BR]1/√3 (|01⟩ + |10⟩ + |11⟩)[BR]You have to implement the Solve operation which takes an array of qubits and you need to create the above state on them.[BR]The operation should have the following signature:",
+        Tldr = "You should implement the empty Solve operation below and prepare the 1/√3 (|01⟩ + |10⟩ + |11⟩) state on the provided two qubits.",
         SolutionTemplate = "b3BlcmF0aW9uIFNvbHZlIChxcyA6IFF1Yml0W10pIDogVW5pdAp7CiAgICAvLyBZb3VyIHNvbHV0aW9uIGxvZ2ljIGdvZXMgaGVyZS4KfQ==",
         ExampleDescription = "",
         ExampleCode = "",
@@ -174,6 +185,7 @@ public static class Challenges
         Name = "D2",
         Title = "Generate generalized W-state",
         Description = "Your task is to create Greenberger–Horne–Zeilinger (W) state on n qubits where n = 2^k (1 ≤ k ≤ 4) from zero |0..0⟩ state.[BR]The W-state is defined as |W⟩ = 1/√3 (|100⟩ + |010⟩ + |001⟩) for n = 3.[BR]The generalized W-state is defined as |W⟩ = 1/√n (|10..0⟩ + |01..0⟩ + ... + |00..1⟩) for n > 3 where n = 2^k (1 ≤ k ≤ 4).[BR]You have to implement the Solve operation which takes an array of n qubits in state |0..0⟩ and you need to create the W-state on them.[BR]The operation should have the following signature:",
+        Tldr = "You should implement the empty Solve operation below and prepare a generalized W-state on the provided 2^k (1 ≤ k ≤ 4) qubits.",
         SolutionTemplate = "b3BlcmF0aW9uIFNvbHZlIChxcyA6IFF1Yml0W10pIDogVW5pdAp7CiAgICAvLyBZb3VyIHNvbHV0aW9uIGxvZ2ljIGdvZXMgaGVyZS4KfQ==",
         ExampleDescription = "",
         ExampleCode = "",
@@ -187,8 +199,9 @@ public static class Challenges
     public static Challenge CHALLENGE_D3 = new Challenge
     {
         Name = "D3",
-        Title = "Deutch-Jozsa algorithm",
+        Title = "Deutch-Jozsa algorithm.",
         Description = "You have to implement the Deutsch-Jozsa algorithm which determines whether a given oracle function is constant or balanced:[BR]If the oracle function is constant it returns 0 or 1 on all inputs.[BR]If the oracle function is balanced it returns 0 on half of the inputs and 1 on the other half.[BR]The oracle function is assumed to always be constant or balanced.[BR]Implement the Solve operation where n is the number of bits in the input register and oracle provides you with the oracle function that takes an input register and and output bit.[BR]The solve operation should return true if the oracle function is constant and false if it is balanced.",
+        Tldr = "You should implement the Deutch-Jozsa algorithm in the empty Solve operation below and identify if the oracle function is constant or balanced.",
         SolutionTemplate = "b3BlcmF0aW9uIFNvbHZlIChuIDogSW50LCBvcmFjbGUgOiAoUXViaXRbXSwgUXViaXQpID0+IFVuaXQpIDogQm9vbAp7CiAgICAvLyBZb3VyIHNvbHV0aW9uIGxvZ2ljIGdvZXMgaGVyZS4KfQ==",
         ExampleDescription = "",
         ExampleCode = "",

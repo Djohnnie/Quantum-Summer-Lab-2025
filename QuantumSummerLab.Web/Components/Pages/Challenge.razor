@@ -41,7 +41,12 @@ else if (IsAvailable)
         }
         else
         {
-            <MudAlert Severity="Severity.Info">@(NumberOfAttempts == 0 ? "You have not started this challenge!" : $"You have attempted {NumberOfAttempts} times to solve this challenge!")</MudAlert>
+            <MudAlert Severity="Severity.Normal">@(NumberOfAttempts == 0 ? "You have not started this challenge!" : $"You have attempted {NumberOfAttempts} times to solve this challenge!")</MudAlert>
+        }
+
+        @if(!string.IsNullOrEmpty(Tldr))
+        {
+            <MudAlert Severity="Severity.Info" Class="mt-2"><strong>TLDR:</strong> @Tldr</MudAlert>
         }
     }
     else
@@ -142,15 +147,15 @@ else if (IsAvailable)
                                     </div>
                                 </TitleContent>
                                 <ChildContent>
-                                    <MudContainer Class="mb-4">
-                                        @foreach (var feedback in submission.Feedback)
-                                        {
-                                            <div class="d-flex ml-4">
-                                                <MudIcon Icon="@(feedback.Valid? Icons.Material.Filled.Check : Icons.Material.Filled.Close)" Color="@(feedback.Valid? Color.Success: Color.Error)" class="mr-3"></MudIcon>
-                                                <MudText Color="@(feedback.Valid? Color.Success: Color.Error)">@feedback.Message</MudText>
-                                            </div>
-                                        }
-                                    </MudContainer>
+                                        <div class="mb-4">
+                                            @foreach (var feedback in submission.Feedback)
+                                            {
+                                                <div class="d-flex ml-8">
+                                                    <MudIcon Icon="@(feedback.Valid? Icons.Material.Filled.Check : Icons.Material.Filled.Close)" Color="@(feedback.Valid? Color.Success: Color.Error)" class="mr-3"></MudIcon>
+                                                    <MudText Color="@(feedback.Valid? Color.Success: Color.Error)">@feedback.Message</MudText>
+                                                </div>
+                                            }
+                                    </div>
                                     <MudMarkdown Value="@submission.ProposedSolution" />
                                 </ChildContent>
                             </MudExpansionPanel>
@@ -184,6 +189,7 @@ else
 
     private string Title { get; set; }
     private string[] Description { get; set; }
+    private string Tldr { get; set; }
     private string SolutionTemplate { get; set; }
     private string[] ExampleDescription { get; set; }
     private string ExampleCode { get; set; }
@@ -205,6 +211,7 @@ else
         {
             Title = challenge.Title;
             Description = challenge.Description.Split("[BR]");
+            Tldr = challenge.Tldr;
             SolutionTemplate = $"```js{Environment.NewLine}{challenge.SolutionTemplate}{Environment.NewLine}```";
             ExampleDescription = challenge.ExampleDescription.Split("[BR]", StringSplitOptions.RemoveEmptyEntries).Select(x => x.Trim()).ToArray();
             ExampleCode = $"```js{Environment.NewLine}{challenge.ExampleCode}{Environment.NewLine}```";

@@ -85,6 +85,7 @@ static async Task ProcessChallenge(QuantumSummerLabDbContext dbContext, Challeng
         await dbContext.Challenges.Where(x => x.Name == challenge.Name).ExecuteUpdateAsync(setters =>
             setters.SetProperty(p => p.Title, challenge.Title)
                    .SetProperty(p => p.Description, challenge.Description)
+                   .SetProperty(p => p.Tldr, challenge.Tldr)
                    .SetProperty(p => p.SolutionTemplate, challenge.SolutionTemplate)
                    .SetProperty(p => p.ExampleDescription, challenge.ExampleDescription)
                    .SetProperty(p => p.ExampleCode, challenge.ExampleCode)

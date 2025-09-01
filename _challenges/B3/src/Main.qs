@@ -78,6 +78,7 @@ operation Solve (qs : Qubit[], index : Int) : Unit
 //     Name = "B3",
 //     Title = "Generate Bell state",
 //     Description = "You are given two qubits in state |00⟩ and an integer index. Your task is to create one of the Bell states on them according to the index:[BR]0: |B0⟩ = 1/√2 (|00⟩ + |11⟩)[BR]1: |B1⟩ = 1/√2 (|00⟩ - |11⟩)[BR]2: |B2⟩ = 1/√2 (|01⟩ + |10⟩)[BR]3: |B3⟩ = 1/√2 (|01⟩ - |10⟩)[BR]You have to implement the Solve operation to make the correct Bell state according to the given index. The operation should have the following signature:",
+//     Tldr = "You should implement the empty Solve operation below and prepare one of the four Bell states depending on the provided index value.",
 //     SolutionTemplate = "b3BlcmF0aW9uIFNvbHZlIChxcyA6IFF1Yml0W10sIGluZGV4IDogSW50KSA6IFVuaXQKewogICAgLy8gWW91ciBzb2x1dGlvbiBsb2dpYyBnb2VzIGhlcmUuCn0=",
 //     ExampleDescription = "",
 //     ExampleCode = "",

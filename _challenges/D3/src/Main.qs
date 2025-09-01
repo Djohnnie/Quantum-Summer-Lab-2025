@@ -96,6 +96,7 @@ operation Solve (n : Int, oracle : (Qubit[], Qubit) => Unit) : Bool
 //     Name = "D3",
 //     Title = "Deutch-Jozsa algorithm.",
 //     Description = "You have to implement the Deutsch-Jozsa algorithm which determines whether a given oracle function is constant or balanced:[BR]If the oracle function is constant it returns 0 or 1 on all inputs.[BR]If the oracle function is balanced it returns 0 on half of the inputs and 1 on the other half.[BR]The oracle function is assumed to always be constant or balanced.[BR]Implement the Solve operation where n is the number of bits in the input register and oracle provides you with the oracle function that takes an input register and and output bit.[BR]The solve operation should return true if the oracle function is constant and false if it is balanced.",
+//     Tldr = "You should implement the Deutch-Jozsa algorithm in the empty Solve operation below and identify if the oracle function is constant or balanced.",
 //     SolutionTemplate = "b3BlcmF0aW9uIFNvbHZlIChuIDogSW50LCBvcmFjbGUgOiAoUXViaXRbXSwgUXViaXQpID0+IFVuaXQpIDogQm9vbAp7CiAgICAvLyBZb3VyIHNvbHV0aW9uIGxvZ2ljIGdvZXMgaGVyZS4KfQ==",
 //     ExampleDescription = "",
 //     ExampleCode = "",

@@ -64,6 +64,7 @@ operation Solve (unitary : (Qubit => Unit)) : Int
 //     Name = "B2",
 //     Title = "Distinguish H from X",
 //     Description = "You are given an operation that implements a single-qubit unitary transformation: either the Hadamard gate (H gate) or the bit-flip gate (X gate).[BR]Your task is to perform necessary operations and measurements to figure out which unitary it was and to return 0 if it was the H gate or 1 if it was the X gate.[BR]You are allowed to apply the given operation exactly twice.[BR]You have to implement an operation which takes a single-qubit operation as an input and returns an integer. The operation should have the following signature:",
+//     Tldr = "You should implement the empty Solve operation below and identify if the provided unitary is the H gate (return 0) or the X gate (return 1).",
 //     SolutionTemplate = "b3BlcmF0aW9uIFNvbHZlICh1bml0YXJ5IDogKFF1Yml0ID0+IFVuaXQpKSA6IEludAp7CiAgICAvLyBZb3VyIHNvbHV0aW9uIGxvZ2ljIGdvZXMgaGVyZS4KfQ==",
 //     ExampleDescription = "",
 //     ExampleCode = "",

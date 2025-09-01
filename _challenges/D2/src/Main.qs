@@ -52,6 +52,7 @@ operation Solve (qs : Qubit[]) : Unit
 //     Name = "D2",
 //     Title = "Generate generalized W-state",
 //     Description = "Your task is to create Greenberger–Horne–Zeilinger (W) state on n qubits where n = 2^k (1 ≤ k ≤ 4) from zero |0..0⟩ state.[BR]The W-state is defined as |W⟩ = 1/√3 (|100⟩ + |010⟩ + |001⟩) for n = 3.[BR]The generalized W-state is defined as |W⟩ = 1/√n (|10..0⟩ + |01..0⟩ + ... + |00..1⟩) for n > 3 where n = 2^k (1 ≤ k ≤ 4).[BR]You have to implement the Solve operation which takes an array of n qubits in state |0..0⟩ and you need to create the W-state on them.[BR]The operation should have the following signature:",
+//     Tldr = "You should implement the empty Solve operation below and prepare a generalized W-state on the provided 2^k (1 ≤ k ≤ 4) qubits.",
 //     SolutionTemplate = "b3BlcmF0aW9uIFNvbHZlIChxcyA6IFF1Yml0W10pIDogVW5pdAp7CiAgICAvLyBZb3VyIHNvbHV0aW9uIGxvZ2ljIGdvZXMgaGVyZS4KfQ==",
 //     ExampleDescription = "",
 //     ExampleCode = "",

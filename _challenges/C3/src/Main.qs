@@ -103,6 +103,7 @@ operation Solve (register : Qubit[]) : Unit is Adj + Ctl
 //     Name = "C3",
 //     Title = "Increment",
 //     Description = "Implement an operation on a register of n qubits that increments the number written in the register modulo 2^n.[BR]Your operation should take an array of qubits that encodes an unsigned integer in little-endian format, with the least significant bit written first (corresponding to the array element with index 0).[BR]The Solve operation should take the input register and change it without measuring it in order to keep the quantum state, but increment the values its state represents.[BR]For example:[BR]1/2(|0001⟩ + |0010⟩ + |0100⟩ + |1000⟩) should be incremented to 1/2(|1001⟩ + |1010⟩ + |1100⟩ + |0100)[BR]The solve operation should have the following signature:",
+//     Tldr = "You should implement the empty Solve operation below and increment the number encoded (in little-endian format) in the provided register of n qubits modulo 2^n.",
 //     SolutionTemplate = "b3BlcmF0aW9uIFNvbHZlIChyZWdpc3RlciA6IFF1Yml0W10pIDogVW5pdCBpcyBBZGogKyBDdGwKewogICAgLy8gWW91ciBzb2x1dGlvbiBsb2dpYyBnb2VzIGhlcmUuCn0=",
 //     ExampleDescription = "",
 //     ExampleCode = "",

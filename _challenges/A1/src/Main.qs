@@ -40,7 +40,7 @@ operation Expected (qs : Qubit[]) : Unit is Adj
 // Generate superposition of all basis states.
 // You are given n qubits (1 ≤ n ≤ 8), prepared in the |0..0⟩ state, and you have to implement an operation which generates an equal superposition of all basis states on these qubits.
 // The "output" of your solution is the state in which it left the input qubits.
-// You should implement the following Solve operation to make that happen and keep the signature of the method exactly like it is.
+// You should implement the following Solve operation to make that happen and keep the signature of the operation exactly like it is.
 
 operation Solve (qs : Qubit[]) : Unit 
 {
@@ -51,7 +51,8 @@ operation Solve (qs : Qubit[]) : Unit
 // {
 //     Name = "A1",
 //     Title = "Generate superposition of all basis states.",
-//     Description = "You are given n qubits (1 ≤ n ≤ 8), prepared in the |0..0⟩ state, and you have to implement an operation which generates an equal superposition of all basis states on these qubits.[BR]The \"output\" of your solution is the state in which it left the input qubits.[BR]You should implement the following Solve operation to make that happen and keep the signature of the method exactly like it is.",
+//     Description = "You are given n qubits (1 ≤ n ≤ 8), prepared in the |0..0⟩ state, and you have to implement an operation which generates an equal superposition of all basis states on these qubits.[BR]The \"output\" of your solution is the state in which it left the input qubits.[BR]You should implement the following Solve operation to make that happen and keep the signature of the operation exactly like it is.",
+//     Tldr = "You should implement the empty Solve operation below and prepare an equal superposition state of all basis states on the provided qubits.",
 //     SolutionTemplate = "b3BlcmF0aW9uIFNvbHZlIChxcyA6IFF1Yml0W10pIDogVW5pdCAKewogICAgLy8gWW91ciBzb2x1dGlvbiBsb2dpYyBnb2VzIGhlcmUuCn0=",
 //     ExampleDescription = "",
 //     ExampleCode = "",

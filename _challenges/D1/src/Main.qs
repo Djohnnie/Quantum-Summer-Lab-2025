@@ -10,6 +10,10 @@ operation Main() : Bool
 
     mutable resultCount = 0;
 
+    StartCountingOperation(Rx);
+    StartCountingOperation(Ry);
+    StartCountingOperation(Rz);
+
     for i in 1..100
     {
         Solve(qs);
@@ -21,6 +25,13 @@ operation Main() : Bool
     }
 
     LogMessage(resultCount == 100, "You have successfully prepared the 1/√3(|01⟩ + |10⟩ + |11⟩) state consequently.", "You have failed to prepare the 1/√3(|01⟩ + |10⟩ + |11⟩) state consequently.");
+
+    mutable illegalOperationCount = 0;
+    set illegalOperationCount += StopCountingOperation(Rx);
+    set illegalOperationCount += StopCountingOperation(Ry);
+    set illegalOperationCount += StopCountingOperation(Rz);
+
+    LogMessage(illegalOperationCount == 0, "You have not used any illegal operations to solve this challenge.", "You have used illegal operations to solve this challenge.");
 
     Solve(qs);
     DumpRegister(qs);
@@ -39,6 +50,7 @@ function LogMessage(isValid: Bool, validMessage: String, invalidMessage: String)
 // Your task is to prepare the following state on two given qubits in state |00⟩:
 // 1/√3 (|01⟩ + |10⟩ + |11⟩)
 // You have to implement the Solve operation which takes an array of qubits and you need to create the above state on them.
+// You are only allowed to use the H-gate, the Pauli X, Y or Z gates and the controlled variants of them.
 // The operation should have the following signature:
 operation Solve (qs : Qubit[]) : Unit
 {
@@ -77,6 +89,7 @@ operation Solve (qs : Qubit[]) : Unit
 //     Name = "D1",
 //     Title = "Generate 1/√3 (|01⟩ + |10⟩ + |11⟩)",
 //     Description = "Your task is to prepare the following state on two qubits in state |00⟩:[BR]1/√3 (|01⟩ + |10⟩ + |11⟩)[BR]You have to implement the Solve operation which takes an array of qubits and you need to create the above state on them.[BR]The operation should have the following signature:",
+//     Tldr = "You should implement the empty Solve operation below and prepare the 1/√3 (|01⟩ + |10⟩ + |11⟩) state on the provided two qubits.",
 //     SolutionTemplate = "b3BlcmF0aW9uIFNvbHZlIChxcyA6IFF1Yml0W10pIDogVW5pdAp7CiAgICAvLyBZb3VyIHNvbHV0aW9uIGxvZ2ljIGdvZXMgaGVyZS4KfQ==",
 //     ExampleDescription = "",
 //     ExampleCode = "",
