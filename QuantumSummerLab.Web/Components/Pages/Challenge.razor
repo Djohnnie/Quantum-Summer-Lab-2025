@@ -126,7 +126,7 @@ else if (IsAvailable)
                     <MudExpansionPanels Outlined="false" Elevation="0">
                         @foreach (var submission in YourSubmissions)
                         {
-                            <MudExpansionPanel>
+                            <MudExpansionPanel Expanded="@submission.IsSuccessful">
                                 <TitleContent>
                                     <div class="d-flex">
                                         @if (submission.IsSuccessful)

@@ -22,7 +22,7 @@ public static class Challenges
     public static Challenge CHALLENGE_A1 = new Challenge
     {
         Name = "A1",
-        Title = "Generate superposition of all basis states.",
+        Title = "Generate superposition of all basis states",
         Description = "You are given n qubits (1 ≤ n ≤ 8), prepared in the |0..0⟩ state, and you have to implement an operation which generates an equal superposition of all basis states on these qubits.[BR]The \"output\" of your solution is the state in which it left the input qubits.[BR]You should implement the following Solve operation to make that happen and keep the signature of the method exactly like it is.",
         SolutionTemplate = "b3BlcmF0aW9uIFNvbHZlIChxcyA6IFF1Yml0W10pIDogVW5pdCAKewogICAgLy8gWW91ciBzb2x1dGlvbiBsb2dpYyBnb2VzIGhlcmUuCn0=",
         ExampleDescription = "",
@@ -142,44 +142,44 @@ public static class Challenges
     public static Challenge CHALLENGE_C3 = new Challenge
     {
         Name = "C3",
-        Title = "Generate 1/√3 (|01⟩ + |10⟩ + |11⟩)",
-        Description = "Your task is to prepare the following state on two qubits in state |00⟩:[BR]1/√3 (|01⟩ + |10⟩ + |11⟩)[BR]You have to implement the Solve operation which takes an array of qubits and you need to create the above state on them.[BR]The operation should have the following signature:",
-        SolutionTemplate = "b3BlcmF0aW9uIFNvbHZlIChxcyA6IFF1Yml0W10pIDogVW5pdAp7CiAgICAvLyBZb3VyIHNvbHV0aW9uIGxvZ2ljIGdvZXMgaGVyZS4KfQ==",
+        Title = "Increment",
+        Description = "Implement an operation on a register of n qubits that increments the number written in the register modulo 2^n.[BR]Your operation should take an array of qubits that encodes an unsigned integer in little-endian format, with the least significant bit written first (corresponding to the array element with index 0).[BR]The Solve operation should take the input register and change it without measuring it in order to keep the quantum state, but increment the values its state represents.[BR]For example:[BR]1/2(|0001⟩ + |0010⟩ + |0100⟩ + |1000⟩) should be incremented to 1/2(|1001⟩ + |1010⟩ + |1100⟩ + |0100)[BR]The solve operation should have the following signature:",
+        SolutionTemplate = "b3BlcmF0aW9uIFNvbHZlIChyZWdpc3RlciA6IFF1Yml0W10pIDogVW5pdCBpcyBBZGogKyBDdGwKewogICAgLy8gWW91ciBzb2x1dGlvbiBsb2dpYyBnb2VzIGhlcmUuCn0=",
         ExampleDescription = "",
         ExampleCode = "",
-        VerificationTemplate = "aW1wb3J0IFN0ZC5Bcml0aG1ldGljLio7CmltcG9ydCBTdGQuQ2Fub24uKjsKaW1wb3J0IFN0ZC5EaWFnbm9zdGljcy4qOwppbXBvcnQgU3RkLk1hdGguKjsKaW1wb3J0IFN0ZC5NZWFzdXJlbWVudC4qOwoKb3BlcmF0aW9uIE1haW4oKSA6IEJvb2wKewogICAgdXNlIHFzID0gUXViaXRbMl07CgogICAgbXV0YWJsZSByZXN1bHRDb3VudCA9IDA7CgogICAgZm9yIGkgaW4gMS4uMTAwCiAgICB7CiAgICAgICAgU29sdmUocXMpOwoKICAgICAgICBsZXQgYjEgPSBNUmVzZXRaKHFzWzBdKTsKICAgICAgICBsZXQgYjIgPSBNUmVzZXRaKHFzWzFdKTsKCiAgICAgICAgc2V0IHJlc3VsdENvdW50ICs9IChiMSA9PSBaZXJvIGFuZCBiMiA9PSBaZXJvID8gMCB8IDEpOwogICAgfQoKICAgIExvZ01lc3NhZ2UocmVzdWx0Q291bnQgPT0gMTAwLCAiWW91IGhhdmUgc3VjY2Vzc2Z1bGx5IHByZXBhcmVkIHRoZSAxL+KImjMofDAw4p+pICsgfDAx4p+pICsgfDEw4p+pKSBzdGF0ZSBjb25zZXF1ZW50bHkuIiwgIllvdSBoYXZlIGZhaWxlZCB0byBwcmVwYXJlIHRoZSAxL+KImjMofDAw4p+pICsgfDAx4p+pICsgfDEw4p+pKSBzdGF0ZSBjb25zZXF1ZW50bHkuIik7CgogICAgU29sdmUocXMpOwogICAgRHVtcFJlZ2lzdGVyKHFzKTsKICAgIE1SZXNldEVhY2haKHFzKTsKCiAgICByZXR1cm4gcmVzdWx0Q291bnQgPT0gMTAwOwp9CgpmdW5jdGlvbiBMb2dNZXNzYWdlKGlzVmFsaWQ6IEJvb2wsIHZhbGlkTWVzc2FnZTogU3RyaW5nLCBpbnZhbGlkTWVzc2FnZTogU3RyaW5nKSA6ICgpCnsKICAgIGxldCBtZXNzYWdlID0gIntcInZhbGlkXCI6ICIgKyAoaXNWYWxpZCA/ICJ0cnVlIiB8ICJmYWxzZSIpICsgIiwgXCJtZXNzYWdlXCI6IFwiIiArIChpc1ZhbGlkID8gdmFsaWRNZXNzYWdlIHwgaW52YWxpZE1lc3NhZ2UpICsgIlwifSI7CiAgICBNZXNzYWdlKG1lc3NhZ2UpOwp9Cgo8PFNPTFZFPj4=",
+        VerificationTemplate = "aW1wb3J0IFN0ZC5Bcml0aG1ldGljLio7CmltcG9ydCBTdGQuQ2Fub24uKjsKaW1wb3J0IFN0ZC5EaWFnbm9zdGljcy4qOwppbXBvcnQgU3RkLk1hdGguKjsKaW1wb3J0IFN0ZC5NZWFzdXJlbWVudC4qOwoKb3BlcmF0aW9uIE1haW4oKSA6IEJvb2wKewogICAgbXV0YWJsZSByZXN1bHRDb3VudGVyID0gMDsKCiAgICBmb3IgaSBpbiAxIC4uIDgKICAgIHsKICAgICAgICBsZXQgcmVzdWx0ID0gQ2hlY2tPcGVyYXRpb25zQXJlRXF1YWwoaSwgU29sdmUsIEV4cGVjdGVkKTsKICAgICAgICBzZXQgcmVzdWx0Q291bnRlciArPSByZXN1bHQgPyAxIHwgMDsKICAgIH0KCiAgICBMb2dNZXNzYWdlKHJlc3VsdENvdW50ZXIgPT0gOCwgIllvdSBoYXZlIGltcGxlbWVudGVkIGFuIGluY3JlbWVudCBvcGVyYXRpb24gc3VjY2Vzc2Z1bGx5IiwgIllvdSBoYXZlIGZhaWxlZCB0byBpbXBsZW1lbnQgYW4gaW5jcmVtZW50IG9wZXJhdGlvbiIpOwoKICAgIC8vIFByZXBhcmUgYSBnZW5lcmFsaXplZCBXLXN0YXRlIG9uIDQgcXViaXRzLgogICAgdXNlIHFzID0gUXViaXRbNF07CiAgICBQcmVwYXJlSW5pdGlhbFN0YXRlKHFzKTsKCiAgICAvLyBDYWxsIHRoZSBTb2x2ZSBvcGVyYXRpb24gdG8gaW5jcmVtZW50IHRoZSBudW1iZXIgaW4gdGhlIHJlZ2lzdGVyIG1vZHVsbyAyXm4uCiAgICBTb2x2ZShxcyk7CgogICAgLy8gRHVtcCB0aGUgcmVnaXN0ZXIgdG8gZXZhbHVhdGUgdGhlIHJlc3VsdHMuCiAgICBEdW1wUmVnaXN0ZXIocXMpOwoKICAgIC8vIFJlc2V0IHRoZSBxdWJpdHMgdG8gdGhlaXIgaW5pdGlhbCBzdGF0ZS4KICAgIE1SZXNldEVhY2haKHFzKTsKCiAgICByZXR1cm4gcmVzdWx0Q291bnRlciA9PSA4Owp9CgpvcGVyYXRpb24gUHJlcGFyZUluaXRpYWxTdGF0ZSAocXMgOiBRdWJpdFtdKSA6IFVuaXQKewogICAgbGV0IG4gPSBMZW5ndGgocXMpOwoKICAgIGlmKCBuID09IDEgKQogICAgewogICAgICAgIFgocXNbMF0pOwogICAgfQogICAgZWxzZQogICAgewogICAgICAgIGxldCBrID0gbiAvIDI7CgogICAgICAgIFByZXBhcmVJbml0aWFsU3RhdGUocXNbMC4uay0xXSk7CgogICAgICAgIHVzZSBhID0gUXViaXQoKTsKICAgICAgICBIKGEpOwoKICAgICAgICBmb3IgaSBpbiAwIC4uIGsgLSAxCiAgICAgICAgewogICAgICAgICAgICBDb250cm9sbGVkIFNXQVAoW2FdLCAocXNbaV0sIHFzW2kra10pKTsKICAgICAgICB9CgogICAgICAgIGZvciBpIGluIGsgLi4gbiAtIDEKICAgICAgICB7CiAgICAgICAgICAgIENOT1QocXNbaV0sIGEpOwogICAgICAgIH0KICAgIH0KfQoKZnVuY3Rpb24gTG9nTWVzc2FnZShpc1ZhbGlkOiBCb29sLCB2YWxpZE1lc3NhZ2U6IFN0cmluZywgaW52YWxpZE1lc3NhZ2U6IFN0cmluZykgOiAoKQp7CiAgICBsZXQgbWVzc2FnZSA9ICJ7XCJ2YWxpZFwiOiAiICsgKGlzVmFsaWQgPyAidHJ1ZSIgfCAiZmFsc2UiKSArICIsIFwibWVzc2FnZVwiOiBcIiIgKyAoaXNWYWxpZCA/IHZhbGlkTWVzc2FnZSB8IGludmFsaWRNZXNzYWdlKSArICJcIn0iOwogICAgTWVzc2FnZShtZXNzYWdlKTsKfQoKb3BlcmF0aW9uIEV4cGVjdGVkIChyZWdpc3RlciA6IFF1Yml0W10pIDogVW5pdCBpcyBBZGogKyBDdGwKewogICAgaWYgKExlbmd0aChyZWdpc3RlcikgPiAxKQogICAgewogICAgICAgIChDb250cm9sbGVkIEV4cGVjdGVkKShbcmVnaXN0ZXJbMF1dLCByZWdpc3RlclsxLi4uXSk7CiAgICB9CgogICAgWChyZWdpc3RlclswXSk7Cn0KCjw8U09MVkU+Pg==",
         ExpectedOutput = "true",
-        ExpectedStates = "WwogIHsKICAgICJpZCI6ICJ8MDHin6kiLAogICAgImFtcGxpdHVkZVJlYWwiOiAwLjU3NzQsCiAgICAiYW1wbGl0dWRlSW1hZ2luYXJ5IjogMAogIH0sCiAgewogICAgImlkIjogInwxMOKfqSIsCiAgICAiYW1wbGl0dWRlUmVhbCI6IDAuNTc3NCwKICAgICJhbXBsaXR1ZGVJbWFnaW5hcnkiOiAwCiAgfSwKICB7CiAgICAiaWQiOiAifDEx4p+pIiwKICAgICJhbXBsaXR1ZGVSZWFsIjogMC41Nzc0LAogICAgImFtcGxpdHVkZUltYWdpbmFyeSI6IDAKICB9Cl0=",
-        CopilotInstructions = "You may hint the user to use the repeat-until-fixup conditional loop.",
+        ExpectedStates = "WwogIHsKICAgICJpZCI6ICJ8MTAwMeKfqSIsCiAgICAiYW1wbGl0dWRlUmVhbCI6IDAuNSwKICAgICJhbXBsaXR1ZGVJbWFnaW5hcnkiOiAwCiAgfSwKICB7CiAgICAiaWQiOiAifDEwMTDin6kiLAogICAgImFtcGxpdHVkZVJlYWwiOiAwLjUsCiAgICAiYW1wbGl0dWRlSW1hZ2luYXJ5IjogMAogIH0sCiAgewogICAgImlkIjogInwxMTAw4p+pIiwKICAgICJhbXBsaXR1ZGVSZWFsIjogMC41LAogICAgImFtcGxpdHVkZUltYWdpbmFyeSI6IDAKICB9LAogIHsKICAgICJpZCI6ICJ8MDEwMOKfqSIsCiAgICAiYW1wbGl0dWRlUmVhbCI6IDAuNSwKICAgICJhbXBsaXR1ZGVJbWFnaW5hcnkiOiAwCiAgfQpd",
+        CopilotInstructions = "",
         Level = 3
     };
 
     public static Challenge CHALLENGE_D1 = new Challenge
     {
         Name = "D1",
-        Title = "",
-        Description = "",
-        SolutionTemplate = "",
+        Title = "Generate 1/√3 (|01⟩ + |10⟩ + |11⟩)",
+        Description = "Your task is to prepare the following state on two qubits in state |00⟩:[BR]1/√3 (|01⟩ + |10⟩ + |11⟩)[BR]You have to implement the Solve operation which takes an array of qubits and you need to create the above state on them.[BR]The operation should have the following signature:",
+        SolutionTemplate = "b3BlcmF0aW9uIFNvbHZlIChxcyA6IFF1Yml0W10pIDogVW5pdAp7CiAgICAvLyBZb3VyIHNvbHV0aW9uIGxvZ2ljIGdvZXMgaGVyZS4KfQ==",
         ExampleDescription = "",
         ExampleCode = "",
-        VerificationTemplate = "",
-        ExpectedOutput = "",
-        ExpectedStates = "",
-        CopilotInstructions = "",
-        Level = 4
+        VerificationTemplate = "aW1wb3J0IFN0ZC5Bcml0aG1ldGljLio7CmltcG9ydCBTdGQuQ2Fub24uKjsKaW1wb3J0IFN0ZC5EaWFnbm9zdGljcy4qOwppbXBvcnQgU3RkLk1hdGguKjsKaW1wb3J0IFN0ZC5NZWFzdXJlbWVudC4qOwoKb3BlcmF0aW9uIE1haW4oKSA6IEJvb2wKewogICAgdXNlIHFzID0gUXViaXRbMl07CgogICAgbXV0YWJsZSByZXN1bHRDb3VudCA9IDA7CgogICAgZm9yIGkgaW4gMS4uMTAwCiAgICB7CiAgICAgICAgU29sdmUocXMpOwoKICAgICAgICBsZXQgYjEgPSBNUmVzZXRaKHFzWzBdKTsKICAgICAgICBsZXQgYjIgPSBNUmVzZXRaKHFzWzFdKTsKCiAgICAgICAgc2V0IHJlc3VsdENvdW50ICs9IChiMSA9PSBaZXJvIGFuZCBiMiA9PSBaZXJvID8gMCB8IDEpOwogICAgfQoKICAgIExvZ01lc3NhZ2UocmVzdWx0Q291bnQgPT0gMTAwLCAiWW91IGhhdmUgc3VjY2Vzc2Z1bGx5IHByZXBhcmVkIHRoZSAxL+KImjMofDAx4p+pICsgfDEw4p+pICsgfDEx4p+pKSBzdGF0ZSBjb25zZXF1ZW50bHkuIiwgIllvdSBoYXZlIGZhaWxlZCB0byBwcmVwYXJlIHRoZSAxL+KImjMofDAx4p+pICsgfDEw4p+pICsgfDEx4p+pKSBzdGF0ZSBjb25zZXF1ZW50bHkuIik7CgogICAgU29sdmUocXMpOwogICAgRHVtcFJlZ2lzdGVyKHFzKTsKICAgIFJlc2V0QWxsKHFzKTsKCiAgICByZXR1cm4gcmVzdWx0Q291bnQgPT0gMTAwOwp9CgpmdW5jdGlvbiBMb2dNZXNzYWdlKGlzVmFsaWQ6IEJvb2wsIHZhbGlkTWVzc2FnZTogU3RyaW5nLCBpbnZhbGlkTWVzc2FnZTogU3RyaW5nKSA6ICgpCnsKICAgIGxldCBtZXNzYWdlID0gIntcInZhbGlkXCI6ICIgKyAoaXNWYWxpZCA/ICJ0cnVlIiB8ICJmYWxzZSIpICsgIiwgXCJtZXNzYWdlXCI6IFwiIiArIChpc1ZhbGlkID8gdmFsaWRNZXNzYWdlIHwgaW52YWxpZE1lc3NhZ2UpICsgIlwifSI7CiAgICBNZXNzYWdlKG1lc3NhZ2UpOwp9Cgo8PFNPTFZFPj4=",
+        ExpectedOutput = "true",
+        ExpectedStates = "WwogIHsKICAgICJpZCI6ICJ8MDHin6kiLAogICAgImFtcGxpdHVkZVJlYWwiOiAwLjU3NzQsCiAgICAiYW1wbGl0dWRlSW1hZ2luYXJ5IjogMAogIH0sCiAgewogICAgImlkIjogInwxMOKfqSIsCiAgICAiYW1wbGl0dWRlUmVhbCI6IDAuNTc3NCwKICAgICJhbXBsaXR1ZGVJbWFnaW5hcnkiOiAwCiAgfSwKICB7CiAgICAiaWQiOiAifDEx4p+pIiwKICAgICJhbXBsaXR1ZGVSZWFsIjogMC41Nzc0LAogICAgImFtcGxpdHVkZUltYWdpbmFyeSI6IDAKICB9Cl0=",
+        CopilotInstructions = "You may hint the user to use the repeat-until-fixup conditional loop and hint that it is easiest to first generate the 1/√3 (|00⟩ + |01⟩ + |10⟩) state and then go from there in a second step.",
+        Level = 3
     };
 
     public static Challenge CHALLENGE_D2 = new Challenge
     {
         Name = "D2",
-        Title = "",
-        Description = "",
-        SolutionTemplate = "",
+        Title = "Generate generalized W-state",
+        Description = "Your task is to create Greenberger–Horne–Zeilinger (W) state on n qubits where n = 2^k (1 ≤ k ≤ 4) from zero |0..0⟩ state.[BR]The W-state is defined as |W⟩ = 1/√3 (|100⟩ + |010⟩ + |001⟩) for n = 3.[BR]The generalized W-state is defined as |W⟩ = 1/√n (|10..0⟩ + |01..0⟩ + ... + |00..1⟩) for n > 3 where n = 2^k (1 ≤ k ≤ 4).[BR]You have to implement the Solve operation which takes an array of n qubits in state |0..0⟩ and you need to create the W-state on them.[BR]The operation should have the following signature:",
+        SolutionTemplate = "b3BlcmF0aW9uIFNvbHZlIChxcyA6IFF1Yml0W10pIDogVW5pdAp7CiAgICAvLyBZb3VyIHNvbHV0aW9uIGxvZ2ljIGdvZXMgaGVyZS4KfQ==",
         ExampleDescription = "",
         ExampleCode = "",
-        VerificationTemplate = "",
+        VerificationTemplate = "aW1wb3J0IFN0ZC5Bcml0aG1ldGljLio7CmltcG9ydCBTdGQuQ2Fub24uKjsKaW1wb3J0IFN0ZC5EaWFnbm9zdGljcy4qOwppbXBvcnQgU3RkLk1hdGguKjsKaW1wb3J0IFN0ZC5NZWFzdXJlbWVudC4qOwoKb3BlcmF0aW9uIE1haW4oKSA6IFVuaXQKewogICAgdXNlIHFzID0gUXViaXRbNF07CiAgICBTb2x2ZShxcyk7CiAgICBEdW1wUmVnaXN0ZXIocXMpOwogICAgUmVzZXRBbGwocXMpOwp9Cgo8PFNPTFZFPj4=",
         ExpectedOutput = "",
-        ExpectedStates = "",
+        ExpectedStates = "WwogIHsKICAgICJpZCI6ICJ8MDAwMeKfqSIsCiAgICAiYW1wbGl0dWRlUmVhbCI6IDAuNSwKICAgICJhbXBsaXR1ZGVJbWFnaW5hcnkiOiAwCiAgfSwKICB7CiAgICAiaWQiOiAifDAwMTDin6kiLAogICAgImFtcGxpdHVkZVJlYWwiOiAwLjUsCiAgICAiYW1wbGl0dWRlSW1hZ2luYXJ5IjogMAogIH0sCiAgewogICAgImlkIjogInwwMTAw4p+pIiwKICAgICJhbXBsaXR1ZGVSZWFsIjogMC41LAogICAgImFtcGxpdHVkZUltYWdpbmFyeSI6IDAKICB9LAogIHsKICAgICJpZCI6ICJ8MTAwMOKfqSIsCiAgICAiYW1wbGl0dWRlUmVhbCI6IDAuNSwKICAgICJhbXBsaXR1ZGVJbWFnaW5hcnkiOiAwCiAgfQpd",
         CopilotInstructions = "",
         Level = 4
     };
@@ -187,13 +187,13 @@ public static class Challenges
     public static Challenge CHALLENGE_D3 = new Challenge
     {
         Name = "D3",
-        Title = "",
-        Description = "",
-        SolutionTemplate = "",
+        Title = "Deutch-Jozsa algorithm",
+        Description = "You have to implement the Deutsch-Jozsa algorithm which determines whether a given oracle function is constant or balanced:[BR]If the oracle function is constant it returns 0 or 1 on all inputs.[BR]If the oracle function is balanced it returns 0 on half of the inputs and 1 on the other half.[BR]The oracle function is assumed to always be constant or balanced.[BR]Implement the Solve operation where n is the number of bits in the input register and oracle provides you with the oracle function that takes an input register and and output bit.[BR]The solve operation should return true if the oracle function is constant and false if it is balanced.",
+        SolutionTemplate = "b3BlcmF0aW9uIFNvbHZlIChuIDogSW50LCBvcmFjbGUgOiAoUXViaXRbXSwgUXViaXQpID0+IFVuaXQpIDogQm9vbAp7CiAgICAvLyBZb3VyIHNvbHV0aW9uIGxvZ2ljIGdvZXMgaGVyZS4KfQ==",
         ExampleDescription = "",
         ExampleCode = "",
-        VerificationTemplate = "",
-        ExpectedOutput = "",
+        VerificationTemplate = "aW1wb3J0IFN0ZC5Bcml0aG1ldGljLio7CmltcG9ydCBTdGQuQ2Fub24uKjsKaW1wb3J0IFN0ZC5EaWFnbm9zdGljcy4qOwppbXBvcnQgU3RkLk1hdGguKjsKaW1wb3J0IFN0ZC5NZWFzdXJlbWVudC4qOwoKb3BlcmF0aW9uIE1haW4oKSA6IEJvb2wKewogICAgbGV0IG1hcmtlZEVsZW1lbnRzID0gW107CiAgICBtdXRhYmxlIHJlc3VsdDFDb3VudCA9IDA7CiAgICBmb3IgaSBpbiAxLi4xMAogICAgewogICAgICAgIHNldCByZXN1bHQxQ291bnQgKz0gU29sdmUoMiwgKHJlZ2lzdGVyLCB0YXJnZXQpID0+IEFwcGx5T3JhY2xlKDIsIG1hcmtlZEVsZW1lbnRzLCByZWdpc3RlciwgdGFyZ2V0KSkgPyAxIHwgMDsKICAgIH0KICAgIExvZ01lc3NhZ2UocmVzdWx0MUNvdW50ID09IDEwLCAiWW91IGhhdmUgc3VjY2Vzc2Z1bGx5IGlkZW50aWZpZWQgYSBjb25zdGFudCBvcmFjbGUgZnVuY3Rpb24gdGhhdCBtYXJrZWQgYWxsIGJpdHMgYXMgemVybyIsICJZb3UgaGF2ZSBmYWlsZWQgdG8gaWRlbnRpZnkgYSBjb25zdGFudCBvcmFjbGUgZnVuY3Rpb24gdGhhdCBtYXJrZWQgYWxsIGJpdHMgYXMgemVybyIpOwoKICAgIGxldCBtYXJrZWRFbGVtZW50cyA9IFswLDEsMiwzXTsKICAgIG11dGFibGUgcmVzdWx0MkNvdW50ID0gMDsKICAgIGZvciBpIGluIDEuLjEwCiAgICB7CiAgICAgICAgc2V0IHJlc3VsdDJDb3VudCArPSBTb2x2ZSgyLCAocmVnaXN0ZXIsIHRhcmdldCkgPT4gQXBwbHlPcmFjbGUoMiwgbWFya2VkRWxlbWVudHMsIHJlZ2lzdGVyLCB0YXJnZXQpKSA/IDEgfCAwOwogICAgfQogICAgTG9nTWVzc2FnZShyZXN1bHQyQ291bnQgPT0gMTAsICJZb3UgaGF2ZSBzdWNjZXNzZnVsbHkgaWRlbnRpZmllZCBhIGNvbnN0YW50IG9yYWNsZSBmdW5jdGlvbiB0aGF0IG1hcmtlZCBhbGwgYml0cyBhcyBvbmUiLCAiWW91IGhhdmUgZmFpbGVkIHRvIGlkZW50aWZ5IGEgY29uc3RhbnQgb3JhY2xlIGZ1bmN0aW9uIHRoYXQgbWFya2VkIGFsbCBiaXRzIGFzIG9uZSIpOwoKICAgIGxldCBtYXJrZWRFbGVtZW50cyA9IFswLCAyXTsKICAgIG11dGFibGUgcmVzdWx0M0NvdW50ID0gMDsKICAgIGZvciBpIGluIDEuLjEwCiAgICB7CiAgICAgICAgc2V0IHJlc3VsdDNDb3VudCArPSBTb2x2ZSgyLCAocmVnaXN0ZXIsIHRhcmdldCkgPT4gQXBwbHlPcmFjbGUoMiwgbWFya2VkRWxlbWVudHMsIHJlZ2lzdGVyLCB0YXJnZXQpKSA/IDAgfCAxOwogICAgfQogICAgTG9nTWVzc2FnZShyZXN1bHQzQ291bnQgPT0gMTAsICJZb3UgaGF2ZSBzdWNjZXNzZnVsbHkgaWRlbnRpZmllZCBhIGJhbGFuY2VkIG9yYWNsZSBmdW5jdGlvbiB0aGF0IG1hcmtlZCB0d28gb3V0IG9mIGZvdXIgYml0cyBhcyBvbmUiLCAiWW91IGhhdmUgZmFpbGVkIHRvIGlkZW50aWZ5IGEgYmFsYW5jZWQgb3JhY2xlIGZ1bmN0aW9uIHRoYXQgbWFya2VkIHR3byBvdXQgb2YgZm91ciBiaXRzIGFzIG9uZSIpOwoKICAgIGxldCBtYXJrZWRFbGVtZW50cyA9IFsxLCAzXTsKICAgIG11dGFibGUgcmVzdWx0NENvdW50ID0gMDsKICAgIGZvciBpIGluIDEuLjEwCiAgICB7CiAgICAgICAgc2V0IHJlc3VsdDRDb3VudCArPSBTb2x2ZSgyLCAocmVnaXN0ZXIsIHRhcmdldCkgPT4gQXBwbHlPcmFjbGUoMiwgbWFya2VkRWxlbWVudHMsIHJlZ2lzdGVyLCB0YXJnZXQpKSA/IDAgfCAxOwogICAgfQogICAgTG9nTWVzc2FnZShyZXN1bHQ0Q291bnQgPT0gMTAsICJZb3UgaGF2ZSBzdWNjZXNzZnVsbHkgaWRlbnRpZmllZCBhIGJhbGFuY2VkIG9yYWNsZSBmdW5jdGlvbiB0aGF0IG1hcmtlZCB0d28gb3RoZXIgb3V0IG9mIGZvdXIgYml0cyBhcyBvbmUiLCAiWW91IGhhdmUgZmFpbGVkIHRvIGlkZW50aWZ5IGEgYmFsYW5jZWQgb3JhY2xlIGZ1bmN0aW9uIHRoYXQgbWFya2VkIHR3byBvdGhlciBvdXQgb2YgZm91ciBiaXRzIGFzIG9uZSIpOwoKICAgIHJldHVybiByZXN1bHQxQ291bnQgPT0gMTAgYW5kIHJlc3VsdDJDb3VudCA9PSAxMCBhbmQgcmVzdWx0M0NvdW50ID09IDEwIGFuZCByZXN1bHQ0Q291bnQgPT0gMTA7Cn0KCmZ1bmN0aW9uIExvZ01lc3NhZ2UoaXNWYWxpZDogQm9vbCwgdmFsaWRNZXNzYWdlOiBTdHJpbmcsIGludmFsaWRNZXNzYWdlOiBTdHJpbmcpIDogKCkKewogICAgbGV0IG1lc3NhZ2UgPSAie1widmFsaWRcIjogIiArIChpc1ZhbGlkID8gInRydWUiIHwgImZhbHNlIikgKyAiLCBcIm1lc3NhZ2VcIjogXCIiICsgKGlzVmFsaWQgPyB2YWxpZE1lc3NhZ2UgfCBpbnZhbGlkTWVzc2FnZSkgKyAiXCJ9IjsKICAgIE1lc3NhZ2UobWVzc2FnZSk7Cn0KCm9wZXJhdGlvbiBBcHBseU9yYWNsZShuIDogSW50LCBtYXJrZWRFbGVtZW50cyA6IEludFtdLCBxdWVyeSA6IFF1Yml0W10sIHRhcmdldCA6IFF1Yml0KSA6IFVuaXQgCnsKICAgIGZvciBtYXJrZWRFbGVtZW50IGluIG1hcmtlZEVsZW1lbnRzIAogICAgewogICAgICAgIEFwcGx5Q29udHJvbGxlZE9uSW50KG1hcmtlZEVsZW1lbnQsIChyZWdpc3RlcikgPT4gQXBwbHlUb0VhY2hDQShYLCByZWdpc3RlciksIHF1ZXJ5LCBbdGFyZ2V0XSk7CiAgICB9Cn0KCjw8U09MVkU+Pg==",
+        ExpectedOutput = "true",
         ExpectedStates = "",
         CopilotInstructions = "",
         Level = 4

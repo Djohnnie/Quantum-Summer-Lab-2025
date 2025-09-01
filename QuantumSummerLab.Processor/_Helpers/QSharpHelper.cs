@@ -44,9 +44,11 @@ public class QSharpHelper : IQSharpHelper
 
             for (var i = 0; i < _shots; i++)
             {
-                var actualOutput = resultShots[i].result;
-
-                isValid = actualOutput == expectedOutput ? isValid : false;
+                if (!string.IsNullOrEmpty(expectedOutput))
+                {
+                    var actualOutput = resultShots[i].result;
+                    isValid = actualOutput == expectedOutput ? isValid : false;
+                }
 
                 if (resultShots[i].messages != null)
                 {
@@ -77,13 +79,13 @@ public class QSharpHelper : IQSharpHelper
 
                             var isAmplitudeValid = actualAmplitudeReal == expectedAmplitudeReal &&
                                                    actualAmplitudeImaginary == expectedAmplitudeImaginary;
-                            
+
                             var expectedAmplitudes = $"{expectedAmplitudeReal:F4} {(expectedAmplitudeImaginary >= 0 ? "+" : "-")} {Math.Abs(expectedAmplitudeImaginary):F4}𝑖";
                             var actualAmplitudes = $"{actualAmplitudeReal:F4} {(actualAmplitudeImaginary >= 0 ? "+" : "-")} {Math.Abs(actualAmplitudeImaginary):F4}𝑖";
 
                             if (!isAmplitudeValid)
                             {
-                                isValid = false;                                
+                                isValid = false;
                                 feedbackMessages.Add(new QSharpFeedbackMessage
                                 {
                                     Valid = false,
