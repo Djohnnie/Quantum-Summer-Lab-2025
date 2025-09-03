@@ -36,7 +36,7 @@ public class GetYourScoreQueryHandler : IRequestHandler<GetYourScoreQuery, GetYo
             .Select(x => new
             {
                 x.IsSuccessful,
-                Score = x.Challenge.Level * (x.IsSuccessful ? 1 : 0),
+                Score = x.IsSuccessful ? x.Challenge.Level * 100 : -1,
             })
             .ToListAsync(cancellationToken);
 
