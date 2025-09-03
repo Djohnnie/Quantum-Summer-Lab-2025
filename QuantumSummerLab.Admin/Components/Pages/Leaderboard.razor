@@ -31,7 +31,7 @@
                 <MudTd DataLabel="Position">
                     <MudChip T="string" Color="Color.Primary">@context.Position</MudChip>
                 </MudTd>
-                <MudTd DataLabel="Team"><strong>@context.TeamName</strong></MudTd>
+                <MudTd DataLabel="Team"><MudLink Href="@($"/team/{context.TeamId}")"><strong>@context.TeamName</strong></MudLink></MudTd>
                 <MudTd DataLabel="Score">
                     <MudChip T="string" Color="@(context.TotalPoints > 0 ? Color.Success : Color.Warning)">@(context.TotalPoints > 0 ? $"{context.TotalPoints}" : "no") points</MudChip>
                 </MudTd>

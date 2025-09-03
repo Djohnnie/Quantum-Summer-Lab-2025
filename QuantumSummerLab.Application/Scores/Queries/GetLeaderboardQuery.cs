@@ -19,6 +19,7 @@ public class LeaderboardEntry
 {
     public int Position { get; set; }
     public string TeamName { get; set; }
+    public string TeamId { get; set; }
     public int TotalPoints { get; set; }
     public int ChallengesTried { get; set; }
     public int ChallengesCompleted { get; set; }
@@ -79,6 +80,7 @@ public class GetLeaderboardQueryHandler : IRequestHandler<GetLeaderboardQuery, G
                 entries.Add(new LeaderboardEntry
                 {
                     TeamName = scoresForTeam.TeamName,
+                    TeamId = teams.Single(x => x.Name == team.Name).Id.ToString(),
                     TotalPoints = 100 + scoresForTeam.Scores.Sum(x => x.Score),
                     ChallengesTried = scoresForTeam.Scores.Count(),
                     ChallengesCompleted = scoresForTeam.Scores.GroupBy(x => x.ChallengeName).Count(x => x.Any(a => a.IsSuccessful)),
@@ -97,6 +99,7 @@ public class GetLeaderboardQueryHandler : IRequestHandler<GetLeaderboardQuery, G
                 entries.Add(new LeaderboardEntry
                 {
                     TeamName = team.Name,
+                    TeamId = teams.Single(x => x.Name == team.Name).Id.ToString(),
                     TotalPoints = 0,
                     ChallengesTried = 0,
                     ChallengesCompleted = 0,
