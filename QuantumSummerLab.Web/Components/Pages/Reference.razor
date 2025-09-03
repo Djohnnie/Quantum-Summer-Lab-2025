@@ -14,113 +14,320 @@
 
 <MudHidden Breakpoint="Breakpoint.SmAndDown">
     <MudDrawer Open="true" Anchor="Anchor.End" ClipMode="DrawerClipMode.Always" Variant="DrawerVariant.Persistent" Width="25%" Elevation="0">
-        <MudText Class="mt-12 mb-2" Typo="Typo.button">Contents</MudText>
-        <MudNavMenu Class="nav-border" Bordered="true" Color="Color.Default">
+        <MudText Class="mt-4 mb-2" Typo="Typo.button">Contents</MudText>
+        <MudNavMenu Class="nav-border" Bordered="true" Dense="true" Color="Color.Default">
+            <MudNavLink OnClick="@((e) => OnNavigateToHeading("#platform"))">About this platform</MudNavLink>
+            <MudNavLink OnClick="@((e) => OnNavigateToHeading("#home"))">&nbsp;&nbsp;&nbsp;&nbsp;Home</MudNavLink>
+            <MudNavLink OnClick="@((e) => OnNavigateToHeading("#reference"))">&nbsp;&nbsp;&nbsp;&nbsp;Quick Reference</MudNavLink>
+            <MudNavLink OnClick="@((e) => OnNavigateToHeading("#challenge"))">&nbsp;&nbsp;&nbsp;&nbsp;Challenge</MudNavLink>
+            <MudNavLink OnClick="@((e) => OnNavigateToHeading("#leaderboard"))">&nbsp;&nbsp;&nbsp;&nbsp;Leaderboard</MudNavLink>
+            <MudNavLink OnClick="@((e) => OnNavigateToHeading("#copilot"))">&nbsp;&nbsp;&nbsp;&nbsp;Copilot</MudNavLink>
             <MudNavLink OnClick="@((e) => OnNavigateToHeading("#prerequisites"))">Prerequisites</MudNavLink>
-            <MudNavLink OnClick="@((e) => OnNavigateToHeading("#introduction"))">Introduction to the quantum programming language Q#</MudNavLink>
-            <MudNavLink OnClick="@((e) => OnNavigateToHeading("#quickstart"))">Quickstart: Create your first Q# program</MudNavLink>
-            <MudNavLink OnClick="@((e) => OnNavigateToHeading("#library"))">Q# standard library</MudNavLink>
+            <MudNavLink OnClick="@((e) => OnNavigateToHeading("#logic"))">Quantum logic</MudNavLink>
+            <MudNavLink OnClick="@((e) => OnNavigateToHeading("#hgate"))">&nbsp;&nbsp;&nbsp;&nbsp;H-gate</MudNavLink>
+            <MudNavLink OnClick="@((e) => OnNavigateToHeading("#xgate"))">&nbsp;&nbsp;&nbsp;&nbsp;X-gate</MudNavLink>
+            <MudNavLink OnClick="@((e) => OnNavigateToHeading("#ygate"))">&nbsp;&nbsp;&nbsp;&nbsp;Y-gate</MudNavLink>
+            <MudNavLink OnClick="@((e) => OnNavigateToHeading("#zgate"))">&nbsp;&nbsp;&nbsp;&nbsp;Z-gate</MudNavLink>
+            <MudNavLink OnClick="@((e) => OnNavigateToHeading("#mgate"))">&nbsp;&nbsp;&nbsp;&nbsp;Measurement</MudNavLink>
+            <MudNavLink OnClick="@((e) => OnNavigateToHeading("#cnotgate"))">&nbsp;&nbsp;&nbsp;&nbsp;CNOT-gate</MudNavLink>
+            <MudNavLink OnClick="@((e) => OnNavigateToHeading("#entanglement"))">&nbsp;&nbsp;&nbsp;&nbsp;Entanglement</MudNavLink>
+            <MudNavLink OnClick="@((e) => OnNavigateToHeading("#teleportation"))">&nbsp;&nbsp;&nbsp;&nbsp;Teleportation</MudNavLink>
+            <MudNavLink OnClick="@((e) => OnNavigateToHeading("#qsharp"))">Q# in 15-minutes</MudNavLink>
+            <MudNavLink OnClick="@((e) => OnNavigateToHeading("#operations"))">&nbsp;&nbsp;&nbsp;&nbsp;Quantum operations</MudNavLink>
+            <MudNavLink OnClick="@((e) => OnNavigateToHeading("#qubits"))">&nbsp;&nbsp;&nbsp;&nbsp;Working with qubits</MudNavLink>
+            <MudNavLink OnClick="@((e) => OnNavigateToHeading("#gates"))">&nbsp;&nbsp;&nbsp;&nbsp;Gate logic</MudNavLink>
+            <MudNavLink OnClick="@((e) => OnNavigateToHeading("#variables"))">&nbsp;&nbsp;&nbsp;&nbsp;Working with variables</MudNavLink>
+            <MudNavLink OnClick="@((e) => OnNavigateToHeading("#debugging"))">&nbsp;&nbsp;&nbsp;&nbsp;Debugging</MudNavLink>
         </MudNavMenu>
     </MudDrawer>
 </MudHidden>
 
 <MudText Typo="Typo.h4" Class="my-4">Quick Reference</MudText>
-<MudText Class="mt-8">Welcome to the first technical part of the Quantum Summer Lab 2025.</MudText>
+<MudText Class="mt-8"><strong>Welcome</strong> to the second part of the <strong>Quantum Summer Lab 2025</strong>.</MudText>
+<MudText Class="mt-4">Using this web application, you can <strong>learn and practice</strong> your <strong>Q# quantum programming</strong> skills and your <strong>quantum logic</strong> knowledge by solving multiple <strong>challenges ranging from easy to more difficult</strong>.</MudText>
+<MudText Class="mt-4">This page provides you with a <strong>quick reference</strong> to some of the basics regarding quantum logic and Q# syntax.</MudText>
+<MudText Class="mt-4">Use the <strong>table of contents</strong> on the right hand side to navigate the different topics.</MudText>
+
+<MudText Typo="Typo.h5" Class="pt-20 mb-4" id="platform">About this platform</MudText>
+<MudText>This platform makes it easier for you to learn and challenge yourself by experimenting with quantum logic and Q# in an interactive way.</MudText>
+<MudText Class="mt-4">The web application that you are using to navigate this platform contains the following features:</MudText>
+<MudText Typo="Typo.h6" Class="pt-20 mt-4" id="home">Home page</MudText>
+<MudText Class="mt-4">The home page is a welcome page including the logo's of the organizers of this Quantum Summer Lab 2025 with links to their website.</MudText>
+<MudText Class="mt-4">It also contains a visual overview of all the challenges, categorized on difficulty, colored in green or red depending on whether you have solved it.</MudText>
+<MudText Typo="Typo.h6" Class="pt-20 mt-4" id="reference">Quick reference</MudText>
+<MudText Class="mt-4">The quick reference page is the page you are viewing right now. It contains information about this Quantum Summer Lab challenge platform, quantum logic, gates and circuits, and the Q# programming language.</MudText>
+<MudText Typo="Typo.h6" Class="pt-20 mt-4" id="challenge">Challenge</MudText>
+<MudText Class="mt-4">The challenge page contains the title, description and solution template for each challenge.</MudText>
+<MudText Class="mt-4">Please read the full challenge description before attempting to solve the challenge as it contains all of the requirements to successfully solve the challenge.</MudText>
+<MudText Class="mt-4">The solution template using Q# syntax always contains the exact signature of the operation you need to submit as a solution to the challenge. Your task is always to implement the operation by writing the necessary code without changing the signature of the operation.</MudText>
+<MudText Class="mt-4">Each challenge page contains a 'Submit your solution' box with a text field that takes your solution and buttons to submit that solution or clear the text field.</MudText>
+<MudText Class="mt-4">Submitting your proposed solution starts the evaluation on our Quantum Summer Lab challenge platform servers and if all our internal tests are successful, your proposed solution will be accepted and the challenge will be closed for you. If there are issues with your proposed solution, you will get some feedback, based on the challenge, and can try again as many times as you want.</MudText>
+<MudText Class="mt-4">Below the 'Submit your solution' box is a list of your attempts to solve the challenge. We will keep all of your attempts, including the proposed Q# code and the feedback you received for future reference.</MudText>
+<MudText Class="mt-4">From the challenge page, you are able to summon the Quantum Summer Lab Copilot chat and ask it for help with the current challenge.</MudText>
+<MudText Typo="Typo.h6" Class="pt-20 mt-4" id="leaderboard">Leaderboard</MudText>
+<MudText Class="mt-4">The leaderboard page contains a list of all participating teams and their position (1st, 2nd, 3rd, ...) based on score and solving speed.</MudText>
+<MudText Class="mt-4">Points are calculated from a base score of 100 points, adding 100, 200, 300 or 400 points for each successfully solved challenge (based on its difficulty level), subtracting 1 point for each failed attempt to solve a challenge.</MudText>
+<MudText Class="mt-4">The Quantum Summer Lab 2025 is not a competition, but this leaderboard just gives you that little incentive to try your best solving challenges 😀</MudText>
+<MudText Typo="Typo.h6" Class="pt-20 mt-4" id="copilot">Copilot</MudText>
+<MudText Class="mt-4">The copilot page contains a custom LLM-based copilot chat that is grounded with information about the Quantum Summer Lab and the challenges on this challenge platform.</MudText>
+<MudText Class="mt-4">You can use it to ask for assistance using Q#, quantum logic and with whatever challenge you need help with.</MudText>
+<MudText Class="mt-4">The Quantum Summer Lab copilot will keep the chat history for your team so it should be aware of the context of your conversation.</MudText>
+<MudText Class="mt-4">You can also summon the Quantum Summer Lab Copilot from the challenge page itself by clicking the dedicated button on the bottom-right.</MudText>
+<MudText Class="mt-4">The Quantum Summer Lab copilot can help you with the following things:</MudText>
+<MudList Class="mt-4" T="string" Dense="true" Width="100%">
+    <MudListItem Icon="@Icons.Material.Filled.CheckCircle">Guidance on quantum logic, gates and circuits.</MudListItem>
+    <MudListItem Icon="@Icons.Material.Filled.CheckCircle">Guidance on the Q# programming language.</MudListItem>
+    <MudListItem Icon="@Icons.Material.Filled.CheckCircle">Information and guidance on the current challenge you are working on. Use it on the challenge page, or tell it the challenge code (A1..D3) you are working on.</MudListItem>
+    <MudListItem Icon="@Icons.Material.Filled.CheckCircle">Information and guidance on your last attempt for a specific challenge.</MudListItem>
+    <MudListItem Icon="@Icons.Material.Filled.CheckCircle">Information about the leaderboard.</MudListItem>
+</MudList>
+<MudAlert Class="mt-4" Severity="Severity.Warning">Your chat history is stored in plain text in our internal database for your convenience. Please keep this in mind while chatting and don't share anything personal, sensitive or inappropriate.</MudAlert>
+
 
 <MudText Typo="Typo.h5" Class="pt-20 mb-4" id="prerequisites">Prerequisites</MudText>
-<MudText>Download and install the following tool to get started with Microsoft Q#.</MudText>
+<MudText>You will have a much richer experience writing Q# code by using the Visual Studio Code IDE. You can start here and test your solutions locally before copying them to this platform and submit as your solution.</MudText>
+<MudText Class="mt-4">Download and install Visual Studio Code and its Q# extension from the following website(s) to get started with Microsoft Q#.</MudText>
 <MudLink Href="https://code.visualstudio.com/" Target="_blank">Visual Studio Code (code editor with support for Q#)</MudLink>
 <br />
 <MudLink Href="https://marketplace.visualstudio.com/items?itemName=quantum.qsharp-lang-vscode" Target="_blank">Azure Quantum Development Kit (QDK) extension</MudLink>
 
-<MudText Typo="Typo.h5" Class="pt-20 mb-4" id="introduction">Introduction to the quantum programming language Q#</MudText>
-<MudText>Use the following link to get a quick introduction to the Microsoft Q# programming language.</MudText>
+<MudText Class="mt-4">Use the following link to get a quick introduction to the Microsoft Q# programming language.</MudText>
 <MudLink Href="https://learn.microsoft.com/en-us/azure/quantum/qsharp-overview" Target="_blank">https://learn.microsoft.com/en-us/azure/quantum/qsharp-overview</MudLink>
 
-<MudText Typo="Typo.h5" Class="pt-20 mb-4" id="quickstart">Quickstart: Create your first Q# program</MudText>
-<MudText>Use the following link to get a quickstart and create your first Q# program.</MudText>
+<MudText Class="mt-4">Use the following link to get a quickstart and create your first Q# program.</MudText>
 <MudLink Href="https://learn.microsoft.com/en-us/azure/quantum/qsharp-quickstart" Target="_blank">https://learn.microsoft.com/en-us/azure/quantum/qsharp-quickstart</MudLink>
 
-<MudText Typo="Typo.h5" Class="pt-20 mb-4" id="library">Q# standard library</MudText>
-<MudText>Use the following link to get an overview on the Q# standard library.</MudText>
+<MudText Class="mt-4">Use the following link to get an overview on the Q# standard library.</MudText>
 <MudLink Href="https://learn.microsoft.com/en-us/qsharp/api/qsharp-lang/" Target="_blank">https://learn.microsoft.com/en-us/qsharp/api/qsharp-lang/</MudLink>
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eu sollicitudin justo, in pretium metus. Morbi consequat, dolor quis laoreet mollis, lectus magna luctus nulla, ut pharetra sem nisl id est. Nam commodo enim et accumsan imperdiet. Quisque et scelerisque justo, porttitor tempor urna. Sed diam quam, interdum nec semper sit amet, molestie in elit. Aliquam erat volutpat. Integer non porttitor libero. Fusce porttitor dictum gravida. Nunc in fringilla ex. Nulla ultrices justo a felis lacinia iaculis. Praesent ac consequat neque, et ornare risus. Quisque semper feugiat fermentum.
-
-Maecenas malesuada commodo facilisis. Suspendisse blandit pretium nisi, in scelerisque felis lobortis mollis. Donec tristique velit eget sapien sagittis pharetra. Curabitur ac interdum magna. Morbi euismod et arcu sit amet tincidunt. Cras dictum nisl ac imperdiet laoreet. Ut vel interdum ipsum. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Sed iaculis dapibus erat quis tincidunt. Sed mollis risus elit, pharetra scelerisque risus facilisis id. Etiam elementum, est vel tincidunt lacinia, mauris dui finibus libero, tempus imperdiet enim magna mattis metus.
-
-Curabitur bibendum tincidunt justo. Fusce condimentum erat eu eleifend faucibus. Praesent malesuada suscipit ultrices. Sed fermentum dignissim lorem, sit amet porta nisl sollicitudin vel. Nullam nec libero venenatis, tincidunt nibh nec, laoreet lectus. Vestibulum eget egestas ipsum. Morbi vel interdum libero, in consequat sem. Integer finibus in tellus vel pretium. Quisque sit amet enim a neque venenatis euismod ac ut est. Curabitur cursus odio est. Cras interdum arcu nec tempus congue. Donec auctor est massa, eget pretium lorem vulputate eget. Nulla pulvinar magna mauris, non interdum massa rhoncus sed. Donec vestibulum at dui at tincidunt.
-
-Donec elit tellus, lacinia ac tincidunt non, lobortis quis nisi. Sed aliquam convallis massa in euismod. Integer porttitor molestie purus, non ornare nibh viverra sed. Mauris placerat nisl magna, eu bibendum enim varius eget. Donec venenatis efficitur bibendum. Mauris vitae quam sit amet erat feugiat dapibus. Praesent porta vitae est id ultricies. Praesent nec congue augue. Vivamus mattis libero et ullamcorper tincidunt. Phasellus euismod viverra orci, id scelerisque mi euismod et. Pellentesque cursus rhoncus feugiat. Ut bibendum tristique nisl eget imperdiet. Nam bibendum et magna eu imperdiet. Phasellus tempus suscipit massa ac aliquet.
-
-Nulla facilisi. Cras lorem lectus, venenatis quis diam aliquam, egestas malesuada sem. Nam vitae erat eget elit varius vehicula quis in ipsum. Vivamus ultricies felis ut quam lobortis viverra. Duis interdum, velit sed bibendum molestie, mauris ante bibendum quam, nec fermentum ligula purus vel neque. Etiam nisl ante, convallis eget lorem ut, ultricies viverra nulla. Morbi id varius lectus. Vestibulum eleifend rutrum dui in ultrices. In dictum, elit id malesuada ullamcorper, purus turpis vehicula mauris, at eleifend dui nisl et sapien. Sed felis massa, egestas ac vehicula ut, sagittis eget orci. Proin tempus, massa varius commodo rhoncus, ante quam laoreet leo, at porta purus odio vel mauris. Cras quis lacus felis.
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eu sollicitudin justo, in pretium metus. Morbi consequat, dolor quis laoreet mollis, lectus magna luctus nulla, ut pharetra sem nisl id est. Nam commodo enim et accumsan imperdiet. Quisque et scelerisque justo, porttitor tempor urna. Sed diam quam, interdum nec semper sit amet, molestie in elit. Aliquam erat volutpat. Integer non porttitor libero. Fusce porttitor dictum gravida. Nunc in fringilla ex. Nulla ultrices justo a felis lacinia iaculis. Praesent ac consequat neque, et ornare risus. Quisque semper feugiat fermentum.
-
-Maecenas malesuada commodo facilisis. Suspendisse blandit pretium nisi, in scelerisque felis lobortis mollis. Donec tristique velit eget sapien sagittis pharetra. Curabitur ac interdum magna. Morbi euismod et arcu sit amet tincidunt. Cras dictum nisl ac imperdiet laoreet. Ut vel interdum ipsum. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Sed iaculis dapibus erat quis tincidunt. Sed mollis risus elit, pharetra scelerisque risus facilisis id. Etiam elementum, est vel tincidunt lacinia, mauris dui finibus libero, tempus imperdiet enim magna mattis metus.
-
-Curabitur bibendum tincidunt justo. Fusce condimentum erat eu eleifend faucibus. Praesent malesuada suscipit ultrices. Sed fermentum dignissim lorem, sit amet porta nisl sollicitudin vel. Nullam nec libero venenatis, tincidunt nibh nec, laoreet lectus. Vestibulum eget egestas ipsum. Morbi vel interdum libero, in consequat sem. Integer finibus in tellus vel pretium. Quisque sit amet enim a neque venenatis euismod ac ut est. Curabitur cursus odio est. Cras interdum arcu nec tempus congue. Donec auctor est massa, eget pretium lorem vulputate eget. Nulla pulvinar magna mauris, non interdum massa rhoncus sed. Donec vestibulum at dui at tincidunt.
-
-Donec elit tellus, lacinia ac tincidunt non, lobortis quis nisi. Sed aliquam convallis massa in euismod. Integer porttitor molestie purus, non ornare nibh viverra sed. Mauris placerat nisl magna, eu bibendum enim varius eget. Donec venenatis efficitur bibendum. Mauris vitae quam sit amet erat feugiat dapibus. Praesent porta vitae est id ultricies. Praesent nec congue augue. Vivamus mattis libero et ullamcorper tincidunt. Phasellus euismod viverra orci, id scelerisque mi euismod et. Pellentesque cursus rhoncus feugiat. Ut bibendum tristique nisl eget imperdiet. Nam bibendum et magna eu imperdiet. Phasellus tempus suscipit massa ac aliquet.
-
-Nulla facilisi. Cras lorem lectus, venenatis quis diam aliquam, egestas malesuada sem. Nam vitae erat eget elit varius vehicula quis in ipsum. Vivamus ultricies felis ut quam lobortis viverra. Duis interdum, velit sed bibendum molestie, mauris ante bibendum quam, nec fermentum ligula purus vel neque. Etiam nisl ante, convallis eget lorem ut, ultricies viverra nulla. Morbi id varius lectus. Vestibulum eleifend rutrum dui in ultrices. In dictum, elit id malesuada ullamcorper, purus turpis vehicula mauris, at eleifend dui nisl et sapien. Sed felis massa, egestas ac vehicula ut, sagittis eget orci. Proin tempus, massa varius commodo rhoncus, ante quam laoreet leo, at porta purus odio vel mauris. Cras quis lacus felis.
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eu sollicitudin justo, in pretium metus. Morbi consequat, dolor quis laoreet mollis, lectus magna luctus nulla, ut pharetra sem nisl id est. Nam commodo enim et accumsan imperdiet. Quisque et scelerisque justo, porttitor tempor urna. Sed diam quam, interdum nec semper sit amet, molestie in elit. Aliquam erat volutpat. Integer non porttitor libero. Fusce porttitor dictum gravida. Nunc in fringilla ex. Nulla ultrices justo a felis lacinia iaculis. Praesent ac consequat neque, et ornare risus. Quisque semper feugiat fermentum.
-
-Maecenas malesuada commodo facilisis. Suspendisse blandit pretium nisi, in scelerisque felis lobortis mollis. Donec tristique velit eget sapien sagittis pharetra. Curabitur ac interdum magna. Morbi euismod et arcu sit amet tincidunt. Cras dictum nisl ac imperdiet laoreet. Ut vel interdum ipsum. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Sed iaculis dapibus erat quis tincidunt. Sed mollis risus elit, pharetra scelerisque risus facilisis id. Etiam elementum, est vel tincidunt lacinia, mauris dui finibus libero, tempus imperdiet enim magna mattis metus.
-
-Curabitur bibendum tincidunt justo. Fusce condimentum erat eu eleifend faucibus. Praesent malesuada suscipit ultrices. Sed fermentum dignissim lorem, sit amet porta nisl sollicitudin vel. Nullam nec libero venenatis, tincidunt nibh nec, laoreet lectus. Vestibulum eget egestas ipsum. Morbi vel interdum libero, in consequat sem. Integer finibus in tellus vel pretium. Quisque sit amet enim a neque venenatis euismod ac ut est. Curabitur cursus odio est. Cras interdum arcu nec tempus congue. Donec auctor est massa, eget pretium lorem vulputate eget. Nulla pulvinar magna mauris, non interdum massa rhoncus sed. Donec vestibulum at dui at tincidunt.
-
-Donec elit tellus, lacinia ac tincidunt non, lobortis quis nisi. Sed aliquam convallis massa in euismod. Integer porttitor molestie purus, non ornare nibh viverra sed. Mauris placerat nisl magna, eu bibendum enim varius eget. Donec venenatis efficitur bibendum. Mauris vitae quam sit amet erat feugiat dapibus. Praesent porta vitae est id ultricies. Praesent nec congue augue. Vivamus mattis libero et ullamcorper tincidunt. Phasellus euismod viverra orci, id scelerisque mi euismod et. Pellentesque cursus rhoncus feugiat. Ut bibendum tristique nisl eget imperdiet. Nam bibendum et magna eu imperdiet. Phasellus tempus suscipit massa ac aliquet.
-
-Nulla facilisi. Cras lorem lectus, venenatis quis diam aliquam, egestas malesuada sem. Nam vitae erat eget elit varius vehicula quis in ipsum. Vivamus ultricies felis ut quam lobortis viverra. Duis interdum, velit sed bibendum molestie, mauris ante bibendum quam, nec fermentum ligula purus vel neque. Etiam nisl ante, convallis eget lorem ut, ultricies viverra nulla. Morbi id varius lectus. Vestibulum eleifend rutrum dui in ultrices. In dictum, elit id malesuada ullamcorper, purus turpis vehicula mauris, at eleifend dui nisl et sapien. Sed felis massa, egestas ac vehicula ut, sagittis eget orci. Proin tempus, massa varius commodo rhoncus, ante quam laoreet leo, at porta purus odio vel mauris. Cras quis lacus felis.
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eu sollicitudin justo, in pretium metus. Morbi consequat, dolor quis laoreet mollis, lectus magna luctus nulla, ut pharetra sem nisl id est. Nam commodo enim et accumsan imperdiet. Quisque et scelerisque justo, porttitor tempor urna. Sed diam quam, interdum nec semper sit amet, molestie in elit. Aliquam erat volutpat. Integer non porttitor libero. Fusce porttitor dictum gravida. Nunc in fringilla ex. Nulla ultrices justo a felis lacinia iaculis. Praesent ac consequat neque, et ornare risus. Quisque semper feugiat fermentum.
-
-Maecenas malesuada commodo facilisis. Suspendisse blandit pretium nisi, in scelerisque felis lobortis mollis. Donec tristique velit eget sapien sagittis pharetra. Curabitur ac interdum magna. Morbi euismod et arcu sit amet tincidunt. Cras dictum nisl ac imperdiet laoreet. Ut vel interdum ipsum. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Sed iaculis dapibus erat quis tincidunt. Sed mollis risus elit, pharetra scelerisque risus facilisis id. Etiam elementum, est vel tincidunt lacinia, mauris dui finibus libero, tempus imperdiet enim magna mattis metus.
-
-Curabitur bibendum tincidunt justo. Fusce condimentum erat eu eleifend faucibus. Praesent malesuada suscipit ultrices. Sed fermentum dignissim lorem, sit amet porta nisl sollicitudin vel. Nullam nec libero venenatis, tincidunt nibh nec, laoreet lectus. Vestibulum eget egestas ipsum. Morbi vel interdum libero, in consequat sem. Integer finibus in tellus vel pretium. Quisque sit amet enim a neque venenatis euismod ac ut est. Curabitur cursus odio est. Cras interdum arcu nec tempus congue. Donec auctor est massa, eget pretium lorem vulputate eget. Nulla pulvinar magna mauris, non interdum massa rhoncus sed. Donec vestibulum at dui at tincidunt.
-
-Donec elit tellus, lacinia ac tincidunt non, lobortis quis nisi. Sed aliquam convallis massa in euismod. Integer porttitor molestie purus, non ornare nibh viverra sed. Mauris placerat nisl magna, eu bibendum enim varius eget. Donec venenatis efficitur bibendum. Mauris vitae quam sit amet erat feugiat dapibus. Praesent porta vitae est id ultricies. Praesent nec congue augue. Vivamus mattis libero et ullamcorper tincidunt. Phasellus euismod viverra orci, id scelerisque mi euismod et. Pellentesque cursus rhoncus feugiat. Ut bibendum tristique nisl eget imperdiet. Nam bibendum et magna eu imperdiet. Phasellus tempus suscipit massa ac aliquet.
-
-Nulla facilisi. Cras lorem lectus, venenatis quis diam aliquam, egestas malesuada sem. Nam vitae erat eget elit varius vehicula quis in ipsum. Vivamus ultricies felis ut quam lobortis viverra. Duis interdum, velit sed bibendum molestie, mauris ante bibendum quam, nec fermentum ligula purus vel neque. Etiam nisl ante, convallis eget lorem ut, ultricies viverra nulla. Morbi id varius lectus. Vestibulum eleifend rutrum dui in ultrices. In dictum, elit id malesuada ullamcorper, purus turpis vehicula mauris, at eleifend dui nisl et sapien. Sed felis massa, egestas ac vehicula ut, sagittis eget orci. Proin tempus, massa varius commodo rhoncus, ante quam laoreet leo, at porta purus odio vel mauris. Cras quis lacus felis.
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eu sollicitudin justo, in pretium metus. Morbi consequat, dolor quis laoreet mollis, lectus magna luctus nulla, ut pharetra sem nisl id est. Nam commodo enim et accumsan imperdiet. Quisque et scelerisque justo, porttitor tempor urna. Sed diam quam, interdum nec semper sit amet, molestie in elit. Aliquam erat volutpat. Integer non porttitor libero. Fusce porttitor dictum gravida. Nunc in fringilla ex. Nulla ultrices justo a felis lacinia iaculis. Praesent ac consequat neque, et ornare risus. Quisque semper feugiat fermentum.
-
-Maecenas malesuada commodo facilisis. Suspendisse blandit pretium nisi, in scelerisque felis lobortis mollis. Donec tristique velit eget sapien sagittis pharetra. Curabitur ac interdum magna. Morbi euismod et arcu sit amet tincidunt. Cras dictum nisl ac imperdiet laoreet. Ut vel interdum ipsum. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Sed iaculis dapibus erat quis tincidunt. Sed mollis risus elit, pharetra scelerisque risus facilisis id. Etiam elementum, est vel tincidunt lacinia, mauris dui finibus libero, tempus imperdiet enim magna mattis metus.
-
-Curabitur bibendum tincidunt justo. Fusce condimentum erat eu eleifend faucibus. Praesent malesuada suscipit ultrices. Sed fermentum dignissim lorem, sit amet porta nisl sollicitudin vel. Nullam nec libero venenatis, tincidunt nibh nec, laoreet lectus. Vestibulum eget egestas ipsum. Morbi vel interdum libero, in consequat sem. Integer finibus in tellus vel pretium. Quisque sit amet enim a neque venenatis euismod ac ut est. Curabitur cursus odio est. Cras interdum arcu nec tempus congue. Donec auctor est massa, eget pretium lorem vulputate eget. Nulla pulvinar magna mauris, non interdum massa rhoncus sed. Donec vestibulum at dui at tincidunt.
-
-Donec elit tellus, lacinia ac tincidunt non, lobortis quis nisi. Sed aliquam convallis massa in euismod. Integer porttitor molestie purus, non ornare nibh viverra sed. Mauris placerat nisl magna, eu bibendum enim varius eget. Donec venenatis efficitur bibendum. Mauris vitae quam sit amet erat feugiat dapibus. Praesent porta vitae est id ultricies. Praesent nec congue augue. Vivamus mattis libero et ullamcorper tincidunt. Phasellus euismod viverra orci, id scelerisque mi euismod et. Pellentesque cursus rhoncus feugiat. Ut bibendum tristique nisl eget imperdiet. Nam bibendum et magna eu imperdiet. Phasellus tempus suscipit massa ac aliquet.
-
-Nulla facilisi. Cras lorem lectus, venenatis quis diam aliquam, egestas malesuada sem. Nam vitae erat eget elit varius vehicula quis in ipsum. Vivamus ultricies felis ut quam lobortis viverra. Duis interdum, velit sed bibendum molestie, mauris ante bibendum quam, nec fermentum ligula purus vel neque. Etiam nisl ante, convallis eget lorem ut, ultricies viverra nulla. Morbi id varius lectus. Vestibulum eleifend rutrum dui in ultrices. In dictum, elit id malesuada ullamcorper, purus turpis vehicula mauris, at eleifend dui nisl et sapien. Sed felis massa, egestas ac vehicula ut, sagittis eget orci. Proin tempus, massa varius commodo rhoncus, ante quam laoreet leo, at porta purus odio vel mauris. Cras quis lacus felis.
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eu sollicitudin justo, in pretium metus. Morbi consequat, dolor quis laoreet mollis, lectus magna luctus nulla, ut pharetra sem nisl id est. Nam commodo enim et accumsan imperdiet. Quisque et scelerisque justo, porttitor tempor urna. Sed diam quam, interdum nec semper sit amet, molestie in elit. Aliquam erat volutpat. Integer non porttitor libero. Fusce porttitor dictum gravida. Nunc in fringilla ex. Nulla ultrices justo a felis lacinia iaculis. Praesent ac consequat neque, et ornare risus. Quisque semper feugiat fermentum.
-
-Maecenas malesuada commodo facilisis. Suspendisse blandit pretium nisi, in scelerisque felis lobortis mollis. Donec tristique velit eget sapien sagittis pharetra. Curabitur ac interdum magna. Morbi euismod et arcu sit amet tincidunt. Cras dictum nisl ac imperdiet laoreet. Ut vel interdum ipsum. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Sed iaculis dapibus erat quis tincidunt. Sed mollis risus elit, pharetra scelerisque risus facilisis id. Etiam elementum, est vel tincidunt lacinia, mauris dui finibus libero, tempus imperdiet enim magna mattis metus.
-
-Curabitur bibendum tincidunt justo. Fusce condimentum erat eu eleifend faucibus. Praesent malesuada suscipit ultrices. Sed fermentum dignissim lorem, sit amet porta nisl sollicitudin vel. Nullam nec libero venenatis, tincidunt nibh nec, laoreet lectus. Vestibulum eget egestas ipsum. Morbi vel interdum libero, in consequat sem. Integer finibus in tellus vel pretium. Quisque sit amet enim a neque venenatis euismod ac ut est. Curabitur cursus odio est. Cras interdum arcu nec tempus congue. Donec auctor est massa, eget pretium lorem vulputate eget. Nulla pulvinar magna mauris, non interdum massa rhoncus sed. Donec vestibulum at dui at tincidunt.
-
-Donec elit tellus, lacinia ac tincidunt non, lobortis quis nisi. Sed aliquam convallis massa in euismod. Integer porttitor molestie purus, non ornare nibh viverra sed. Mauris placerat nisl magna, eu bibendum enim varius eget. Donec venenatis efficitur bibendum. Mauris vitae quam sit amet erat feugiat dapibus. Praesent porta vitae est id ultricies. Praesent nec congue augue. Vivamus mattis libero et ullamcorper tincidunt. Phasellus euismod viverra orci, id scelerisque mi euismod et. Pellentesque cursus rhoncus feugiat. Ut bibendum tristique nisl eget imperdiet. Nam bibendum et magna eu imperdiet. Phasellus tempus suscipit massa ac aliquet.
-
-Nulla facilisi. Cras lorem lectus, venenatis quis diam aliquam, egestas malesuada sem. Nam vitae erat eget elit varius vehicula quis in ipsum. Vivamus ultricies felis ut quam lobortis viverra. Duis interdum, velit sed bibendum molestie, mauris ante bibendum quam, nec fermentum ligula purus vel neque. Etiam nisl ante, convallis eget lorem ut, ultricies viverra nulla. Morbi id varius lectus. Vestibulum eleifend rutrum dui in ultrices. In dictum, elit id malesuada ullamcorper, purus turpis vehicula mauris, at eleifend dui nisl et sapien. Sed felis massa, egestas ac vehicula ut, sagittis eget orci. Proin tempus, massa varius commodo rhoncus, ante quam laoreet leo, at porta purus odio vel mauris. Cras quis lacus felis.
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eu sollicitudin justo, in pretium metus. Morbi consequat, dolor quis laoreet mollis, lectus magna luctus nulla, ut pharetra sem nisl id est. Nam commodo enim et accumsan imperdiet. Quisque et scelerisque justo, porttitor tempor urna. Sed diam quam, interdum nec semper sit amet, molestie in elit. Aliquam erat volutpat. Integer non porttitor libero. Fusce porttitor dictum gravida. Nunc in fringilla ex. Nulla ultrices justo a felis lacinia iaculis. Praesent ac consequat neque, et ornare risus. Quisque semper feugiat fermentum.
-
-Maecenas malesuada commodo facilisis. Suspendisse blandit pretium nisi, in scelerisque felis lobortis mollis. Donec tristique velit eget sapien sagittis pharetra. Curabitur ac interdum magna. Morbi euismod et arcu sit amet tincidunt. Cras dictum nisl ac imperdiet laoreet. Ut vel interdum ipsum. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Sed iaculis dapibus erat quis tincidunt. Sed mollis risus elit, pharetra scelerisque risus facilisis id. Etiam elementum, est vel tincidunt lacinia, mauris dui finibus libero, tempus imperdiet enim magna mattis metus.
-
-Curabitur bibendum tincidunt justo. Fusce condimentum erat eu eleifend faucibus. Praesent malesuada suscipit ultrices. Sed fermentum dignissim lorem, sit amet porta nisl sollicitudin vel. Nullam nec libero venenatis, tincidunt nibh nec, laoreet lectus. Vestibulum eget egestas ipsum. Morbi vel interdum libero, in consequat sem. Integer finibus in tellus vel pretium. Quisque sit amet enim a neque venenatis euismod ac ut est. Curabitur cursus odio est. Cras interdum arcu nec tempus congue. Donec auctor est massa, eget pretium lorem vulputate eget. Nulla pulvinar magna mauris, non interdum massa rhoncus sed. Donec vestibulum at dui at tincidunt.
-
-Donec elit tellus, lacinia ac tincidunt non, lobortis quis nisi. Sed aliquam convallis massa in euismod. Integer porttitor molestie purus, non ornare nibh viverra sed. Mauris placerat nisl magna, eu bibendum enim varius eget. Donec venenatis efficitur bibendum. Mauris vitae quam sit amet erat feugiat dapibus. Praesent porta vitae est id ultricies. Praesent nec congue augue. Vivamus mattis libero et ullamcorper tincidunt. Phasellus euismod viverra orci, id scelerisque mi euismod et. Pellentesque cursus rhoncus feugiat. Ut bibendum tristique nisl eget imperdiet. Nam bibendum et magna eu imperdiet. Phasellus tempus suscipit massa ac aliquet.
-
-Nulla facilisi. Cras lorem lectus, venenatis quis diam aliquam, egestas malesuada sem. Nam vitae erat eget elit varius vehicula quis in ipsum. Vivamus ultricies felis ut quam lobortis viverra. Duis interdum, velit sed bibendum molestie, mauris ante bibendum quam, nec fermentum ligula purus vel neque. Etiam nisl ante, convallis eget lorem ut, ultricies viverra nulla. Morbi id varius lectus. Vestibulum eleifend rutrum dui in ultrices. In dictum, elit id malesuada ullamcorper, purus turpis vehicula mauris, at eleifend dui nisl et sapien. Sed felis massa, egestas ac vehicula ut, sagittis eget orci. Proin tempus, massa varius commodo rhoncus, ante quam laoreet leo, at porta purus odio vel mauris. Cras quis lacus felis.
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eu sollicitudin justo, in pretium metus. Morbi consequat, dolor quis laoreet mollis, lectus magna luctus nulla, ut pharetra sem nisl id est. Nam commodo enim et accumsan imperdiet. Quisque et scelerisque justo, porttitor tempor urna. Sed diam quam, interdum nec semper sit amet, molestie in elit. Aliquam erat volutpat. Integer non porttitor libero. Fusce porttitor dictum gravida. Nunc in fringilla ex. Nulla ultrices justo a felis lacinia iaculis. Praesent ac consequat neque, et ornare risus. Quisque semper feugiat fermentum.
-
-Maecenas malesuada commodo facilisis. Suspendisse blandit pretium nisi, in scelerisque felis lobortis mollis. Donec tristique velit eget sapien sagittis pharetra. Curabitur ac interdum magna. Morbi euismod et arcu sit amet tincidunt. Cras dictum nisl ac imperdiet laoreet. Ut vel interdum ipsum. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Sed iaculis dapibus erat quis tincidunt. Sed mollis risus elit, pharetra scelerisque risus facilisis id. Etiam elementum, est vel tincidunt lacinia, mauris dui finibus libero, tempus imperdiet enim magna mattis metus.
-
-Curabitur bibendum tincidunt justo. Fusce condimentum erat eu eleifend faucibus. Praesent malesuada suscipit ultrices. Sed fermentum dignissim lorem, sit amet porta nisl sollicitudin vel. Nullam nec libero venenatis, tincidunt nibh nec, laoreet lectus. Vestibulum eget egestas ipsum. Morbi vel interdum libero, in consequat sem. Integer finibus in tellus vel pretium. Quisque sit amet enim a neque venenatis euismod ac ut est. Curabitur cursus odio est. Cras interdum arcu nec tempus congue. Donec auctor est massa, eget pretium lorem vulputate eget. Nulla pulvinar magna mauris, non interdum massa rhoncus sed. Donec vestibulum at dui at tincidunt.
-
-Donec elit tellus, lacinia ac tincidunt non, lobortis quis nisi. Sed aliquam convallis massa in euismod. Integer porttitor molestie purus, non ornare nibh viverra sed. Mauris placerat nisl magna, eu bibendum enim varius eget. Donec venenatis efficitur bibendum. Mauris vitae quam sit amet erat feugiat dapibus. Praesent porta vitae est id ultricies. Praesent nec congue augue. Vivamus mattis libero et ullamcorper tincidunt. Phasellus euismod viverra orci, id scelerisque mi euismod et. Pellentesque cursus rhoncus feugiat. Ut bibendum tristique nisl eget imperdiet. Nam bibendum et magna eu imperdiet. Phasellus tempus suscipit massa ac aliquet.
-
-Nulla facilisi. Cras lorem lectus, venenatis quis diam aliquam, egestas malesuada sem. Nam vitae erat eget elit varius vehicula quis in ipsum. Vivamus ultricies felis ut quam lobortis viverra. Duis interdum, velit sed bibendum molestie, mauris ante bibendum quam, nec fermentum ligula purus vel neque. Etiam nisl ante, convallis eget lorem ut, ultricies viverra nulla. Morbi id varius lectus. Vestibulum eleifend rutrum dui in ultrices. In dictum, elit id malesuada ullamcorper, purus turpis vehicula mauris, at eleifend dui nisl et sapien. Sed felis massa, egestas ac vehicula ut, sagittis eget orci. Proin tempus, massa varius commodo rhoncus, ante quam laoreet leo, at porta purus odio vel mauris. Cras quis lacus felis.
-
+<MudText Typo="Typo.h5" Class="pt-20 mb-4" id="logic">Quantum logic</MudText>
+<MudText>This part of the quick reference will give you some information on the most important quantum operations.</MudText>
+<MudText Typo="Typo.h6" Class="pt-20 mt-4" id="hgate">H-gate</MudText>
+<MudText Class="mt-4">A very fundamental but powerful quantum gate is the Hadamard gate, based on the Hadamard transform and named after the French mathematician Jacques Hadamard.</MudText>
+<MudText Class="mt-4">The Hadamard gate allows you to manipulate the state vector of a single qubit and put it in a superposition of the |0⟩ and |1⟩ states. In a graphical visualization for a circuit, which is shown in the next figure, the Hadamard gate is often represented by a box with the capital letter H inside. The figure also shows a wire, representing the lifetime of a qubit |q⟩ in an arbitrary state.</MudText>
+<MudImage Src="/03-01_gate-h.svg" />
+<MudText Class="mt-4">If you visualize the Hadamard transformation on the Bloch sphere, think about a rotation of the state vector around a diagonal axis in between the x and z axis. The figure illustrates this rotation of π radians or 180 degrees on the Bloch sphere.</MudText>
+<MudImage Src="/03-02_gate-h-bloch-sphere.svg" />
+<MudText Typo="Typo.h6" Class="pt-20 mt-4" id="xgate">X-gate</MudText>
+<MudText Class="mt-4">Another fundamental quantum gate is the X-gate, which is also sometimes called the bitflip gate. The X-gate allows you to flip the |0⟩ state to a |1⟩ state and vice versa. Because of this, it is very similar to the classical NOT gate.</MudText>
+<MudText Class="mt-4">In a circuit, the X-gate is often visualized as a box with the capital letter X inside. The next figure shows a circuit where a qubit |q⟩ has the X-gate applied to it.</MudText>
+<MudImage Src="/03-03_gate-x.svg" />
+<MudText Class="mt-4">If you visualize the X-gate on the Bloch sphere, you should think about a π radians or 180 degrees rotation around the x axis. The figure shows this rotation if you start with a |0⟩ state making you end up with the |1⟩ state.</MudText>
+<MudImage Src="/03-04_gate-x-bloch-sphere.svg" />
+<MudText Typo="Typo.h6" Class="pt-20 mt-4" id="ygate">Y-gate</MudText>
+<MudText Class="mt-4">Just like the X-gate, the Y-gate will rotate the state vector with an angle of π radians or 180 degrees, but this time, around the Y-axis.</MudText>
+<MudText Class="mt-4">Very similarly to the H- and X-gate, the Y-gate is visualized in a circuit as a box with the capital letter Y inside. The next figure shows the Y-gate applied to a qubit |q⟩.</MudText>
+<MudImage Src="/03-05_gate-y.svg" />
+<MudText Class="mt-4">You can visualize the Y-gate on the Bloch sphere by thinking about a π radians or 180 degrees rotation around the y axis. The figure shows this rotation if you start with a |0⟩ state making you end up with the |1⟩ state.</MudText>
+<MudImage Src="/03-06_gate-y-bloch-sphere.svg" />
+<MudText Typo="Typo.h6" Class="pt-20 mt-4" id="zgate">Z-gate</MudText>
+<MudText Class="mt-4">Finally, the third rotation-gate or Z-gate will rotate the state vector π radians or 180 degrees around the Z-axis.</MudText>
+<MudText Class="mt-4">Very similarly to the H-, X-, and Y-gate, the Z-gate is visualized in a circuit as a box with the capital letter Z inside. The next figure shows the Z-gate applied to a qubit |q⟩.</MudText>
+<MudImage Src="/03-07_gate-z.svg" />
+<MudText Class="mt-4">You can visualize the Z-gate on the Bloch sphere by thinking about a π radians or 180 degrees rotation around the z axis. The figure shows this rotation if you start with a superposition |+⟩ state making you end up with the superposition |-⟩ state.</MudText>
+<MudImage Src="/03-08_gate-z-bloch-sphere.svg" />
+<MudText Typo="Typo.h6" Class="pt-20 mt-4" id="mgate">Measurement</MudText>
+<MudText Class="mt-4">The measurement gate is a bit different when compared to the other gates. The measurement gate does not apply a unitary transformation to the state vector but is collapses the state to one of its basis states. Because of this, the measurement gate is not reversible because you lose complex state information and is therefore not an actual quantum gate. Measurement causes the quantum state to be observed and thus collapses the wave function. The quantum state will be projected to one of its basis states, |0⟩ or |1⟩.</MudText>
+<MudText Class="mt-4">The measurement gate bridges the gap between the quantum world and the classical Boolean world. You can use quantum state information to achieve logic that can otherwise not be achieved in the classical world, but you need to retrieve classical information in the end. A typical quantum algorithm will have its quantum state prepared by a classical computer, several quantum operations executed on that state by quantum hardware and finally some measurements performed to return a piece of classical information.</MudText>
+<MudText Class="mt-4">The next figure shows the graphical visualization in a quantum circuit. A measurement is represented by a box with a measurement device and the capital letter M.</MudText>
+<MudImage Src="/03-09_gate-m.svg" />
+<MudText Typo="Typo.h6" Class="pt-20 mt-4" id="cnotgate">CNOT-gate</MudText>
+<MudText Class="mt-4">The CNOT-gate is a very important quantum gate and is the base for the entanglement circuit which will be uncovered later in this section. The CNOT-gate is the controlled version of the X-gate, which means that it will apply the X-gate on one of two qubits, only if the other qubit is ONE. The next figure shows the visualization of a CNOT-gate, applied on two qubits. The CNOT-gate has a solid dot on the qubit that is the control qubit and a circle with a plus inside on the qubit where the X-gate is applied to. The solid dot and the circle are connected with a line to make it clear that both shapes belong to the same gate.</MudText>
+<MudImage Src="/03-10_gate-cnot.svg" />
+<MudText Typo="Typo.h6" Class="pt-20 mt-4" id="entanglement">Entanglement</MudText>
+<MudText Class="mt-4">The next figure shows a circuit with two wires, representing two qubits that have been initialized to the |0⟩ state. The first qubit is put in superposition with the help of the Hadamard gate. Next, the CNOT gate is applied with the first qubit, which is in superposition, as the control qubit and the second qubit as the target qubit. The CNOT gate will apply the X gate to the target qubit if the control qubit is in the |1⟩ state. Because the control qubit is in superposition, the two qubits participating in the CNOT gate are entangled. Measuring the two qubits at the end of this circuit will have them collapse to |00⟩ or |11⟩ with a 50% chance each.</MudText>
+<MudImage Src="/03-11_circuit-entanglement.svg" />
+<MudText Typo="Typo.h6" Class="pt-20 mt-4" id="teleportation">Teleportation</MudText>
+<MudText Class="mt-4">Quantum teleportation is about moving the quantum state from one qubit to another qubit. This quantum state is not just the |0⟩ or |1⟩ states but includes every kind of superposition state.</MudText>
+<MudText Class="mt-4">A very important word in the previous paragraph is the word move. Quantum teleportation will not copy the quantum state, it will move or teleport it. A very important rule in quantum mechanics is the non-cloning theorem. This rule makes quantum computing more difficult because it cannot use classical error correction. In chapter 1, I talked about physical and logical qubits, where a single logical qubit is backed by many physical qubits to make sure the quantum state is as stable as possible using error correction. Since you are not able to copy a quantum state from one qubit to another, the only way to make that work is to repeat every operation you performed on a single qubit on the other qubits.</MudText>
+<MudText Class="mt-4">Because cloning a quantum state is not possible, teleporting a quantum state will invalidate the source qubit leaving it useless.</MudText>
+<MudText Class="mt-4">An example of this mind-boggling concept is the teleportation circuit visualized in the next figure.</MudText>
+<MudImage Src="/03-12_circuit-teleportation.svg" />
+<MudText Typo="Typo.h5" Class="pt-20 mb-4" id="qsharp">Q# in 15-minutes</MudText>
+<MudText>This part of the quick reference will give you some starters on the Q# programming language.</MudText>
+<MudText Typo="Typo.h6" Class="pt-20 mt-4" id="operations">Quantum operations</MudText>
+<MudText Class="mt-4">A quantum operation is like a function or method in any other programming language, with the exception that it is used to perform a quantum operation: It should change the state of a qubit.</MudText>
+<MudContainer Class="mt-4">
+    <MudMarkdown Value="@_operation1" />
+</MudContainer>
+<MudText Class="mt-4">An operation starts with the keyword 'operation', followed by its unique name and a list of arguments in parentheses. There can be zero to multiple arguments, separated by a comma, and always formed by their name, followed by a colon and its datatype. The operation is always followed by a colon an the data type of its return value: Unit if there is nothing to return. Finally, the body of an operation is delimited by curly braces.</MudText>
+<MudText Class="mt-4">In the previous example you can see an operation with 'Solve' as its name, including a single argument 'a' of type Qubit and the Unit return type marking there is nothing to return.</MudText>
+<MudContainer Class="mt-4">
+    <MudMarkdown Value="@_operation2" />
+</MudContainer>
+<MudText Class="mt-4">The previous operation with the name 'Main' is the single entry point of your Q# application and it should be named 'Main' in order to work. You can use this in a Visual Studio Code *.qs file to start simulating quantum programs on your local machine.</MudText>
+<MudText Class="mt-4">If your operation should return a value, like for example a number represented by the Integer type, it will also need to return a compatible value at the end of its body, or at least in every branch of its execution path.</MudText>
+<MudContainer Class="mt-4">
+    <MudMarkdown Value="@_operation3" />
+</MudContainer>
+<MudText Typo="Typo.h6" Class="pt-20 mt-4" id="qubits">Working with qubits</MudText>
+<MudText Class="mt-4">A qubit is a special data type in Q#: Qubit. You need to allocate a single, or multiple, qubits in a use statement and think of them as a sparse resource.</MudText>
+<MudText Class="mt-4">Q# uses the Qubit() or Qubit[n] constructor to allocate a single or multiple qubits in an array.</MudText>
+<MudContainer Class="mt-4">
+    <MudMarkdown Value="@_qubit1" />
+</MudContainer>
+<MudText Class="mt-4">Once an allocated qubit goes out of the scope where is was allocated (leaves the scope of a set of curly braces, like for example an operation) it will be freed by the runtime. One important think to know about this: You need to leave the qubit in its |0⟩ state. You can use the Reset or ResetAll operation to achieve this.</MudText>
+<MudContainer Class="mt-4">
+    <MudMarkdown Value="@_qubit2" />
+</MudContainer>
+<MudText Typo="Typo.h6" Class="pt-20 mt-4" id="gates">Gate logic</MudText>
+<MudText Class="mt-4">Most quantum gates are available in Q# as operations. To put a qubit in superposition, call the H-operation and feed the qubit variable as its argument.</MudText>
+<MudContainer Class="mt-4">
+    <MudMarkdown Value="@_call1" />
+</MudContainer>
+<MudText Class="mt-4">Some operations accept multiple arguments and sometimes even multiple qubits. The following example allocates two qubits and entangles them using the CNOT-gate.</MudText>
+<MudContainer Class="mt-4">
+    <MudMarkdown Value="@_call2" />
+</MudContainer>
+<MudText Typo="Typo.h6" Class="pt-20 mt-4" id="variables">Working with variables</MudText>
+<MudText Class="mt-4">You can allocate other types of variables, both as immutable and mutable. After measuring a qubit for example, you will get a distinct collapsed state |0⟩ or |1⟩ as a result. The type of this state is 'Result' and can be stored in an immutable variable using the 'let' keyword.</MudText>
+<MudContainer Class="mt-4">
+    <MudMarkdown Value="@_variables1" />
+</MudContainer>
+<MudText Class="mt-4">You can also create mutable variables by using the 'mutable' and 'set' keywords and change their values after creation.</MudText>
+<MudContainer Class="mt-4">
+    <MudMarkdown Value="@_variables2" />
+</MudContainer>
+<MudText Class="mt-4">You can rewrite the previous logic in the following shorthand using a conditional expression.</MudText>
+<MudContainer Class="mt-4">
+    <MudMarkdown Value="@_variables2" />
+</MudContainer>
+<MudText Typo="Typo.h6" Class="pt-20 mt-4" id="debugging">Debugging</MudText>
+<MudText Class="mt-4">Since Q# runs in a simulated environment on your PC, you can use all kinds of debugging methods to see what is happening and learn what you are doing.</MudText>
+<MudText Class="mt-4">You can use 'Message' and string interpolation to write anything to the Terminal.</MudText>
+<MudContainer Class="mt-4">
+    <MudMarkdown Value="@_debugging1" />
+</MudContainer>
+<MudText Class="mt-4">You can use 'DumpRegister' to write the actual state representation to the Terminal.</MudText>
+<MudContainer Class="mt-4">
+    <MudMarkdown Value="@_debugging2" />
+</MudContainer>
+<MudText Class="mt-4">The above example will output the following table:</MudText>
+<MudContainer Class="mt-4">
+    <MudMarkdown Value="@_debugging3" />
+</MudContainer>
 @code
 {
-    private MudNavLink navlink1;
+    private string _operation1 =
+@"```js
+operation Solve(q : Qubit) : Unit 
+{
+    // Do something with qubits here
+} 
+```";
+
+    private string _operation2 =
+@"```js
+operation Main() : Unit 
+{
+    // Your quantum experience starts here
+} 
+```";
+
+    private string _operation3 =
+@"```js
+operation Solve(q : Qubit) : Int 
+{
+    // Do something with qubits here
+    return 1;
+} 
+```";
+
+    private string _qubit1 =
+@"```js
+    use q = Qubit();
+    use register = Qubit[3];
+```";
+
+    private string _qubit2 =
+@"```js
+    use q = Qubit();
+    use register = Qubit[3];
+
+    // Do something useful.
+
+    Reset(q);
+    ResetAll(register);
+```";
+
+    private string _call1 =
+@"```js
+    use q = Qubit();
+    H(q);
+    Reset(q);
+```";
+
+    private string _call2 =
+@"```js
+    use qs = Qubit[2];
+    H(qs[0]);
+    CNOT(qs[0], qs[1]);
+    ResetAll(qs);
+```";
+
+    private string _variables1 =
+@"```js
+    use q = Qubit();
+    H(q);
+    let b = M(q);
+    Reset(q);
+```";
+
+    private string _variables2 =
+@"```js
+    mutable countOfOnes = 0;
+
+    for i in 1..100
+    {
+        use q = Qubit();
+        H(q);
+        if( M(q) == One )
+        {
+            set countOfOnes += 1;
+        }
+    }
+
+    Reset(q);
+```";
+
+    private string _variables3 =
+@"```js
+    mutable countOfOnes = 0;
+
+    for i in 1..100
+    {
+        use q = Qubit();
+        H(q);
+        set countOfOnes += M(q) == One ? 1 | 0;
+    }
+
+    Reset(q);
+```";
+
+    private string _debugging1 =
+@"```js
+    use q = Qubit();
+    H(q);
+    Message($""The state of the qubit after measurement is {M(q)}"");
+    Reset(q);
+```";
+
+    private string _debugging2 =
+@"```js
+    use qs = Qubit[2];
+    H(qs[0]);
+    CNOT(qs[0], qs[1]);
+    DumpRegister(qs);
+    ResetAll(qs);
+```";
+
+    private string _debugging3 =
+@"```txt
+    Basis | Amplitude      | Probability | Phase
+    --------------------------------------------
+    |00⟩  | 0.7071+0.0000i | 50.0000%    | 0.0000
+    |11⟩  | 0.7071+0.0000i | 50.0000%    | 0.0000
+```";
 
     private async Task OnNavigateToHeading(string selector)
     {

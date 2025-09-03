@@ -33,7 +33,7 @@
                 </MudTd>
                 <MudTd DataLabel="Team"><strong>@context.TeamName</strong></MudTd>
                 <MudTd DataLabel="Score">
-                    <MudChip T="string" Color="@(context.TotalPoints > 0 ? Color.Success : Color.Warning)">@context.TotalPoints points</MudChip>
+                    <MudChip T="string" Color="@(context.TotalPoints > 0 ? Color.Success : Color.Warning)">@(context.TotalPoints > 0 ? $"{context.TotalPoints}" : "no") points</MudChip>
                 </MudTd>
                 <MudTd DataLabel="Comments">
                     @if (context.TotalPoints == 0)
