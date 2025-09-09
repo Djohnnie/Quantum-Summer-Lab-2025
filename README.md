@@ -7,6 +7,12 @@ For reference: [https://github.com/qsharp-community/qsharp-bridge](https://githu
 
 With special thanks to the Q# Community and Filip W.
 
+## Q# Hands-on workshop & Challenges
+
+[Online platform with challenges](https://qsharp.quantum-summer-lab.eu/)
+
+Solutions in the [_challenges](./_challenges/) folder
+
 ## Day 1 Presentation
 
 ![Slide 1](_slides/100.jpg)
